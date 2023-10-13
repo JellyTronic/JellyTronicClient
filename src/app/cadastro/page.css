@@ -1,0 +1,47 @@
+input {
+    padding-left: 10px;
+}
+
+.divForm1 {
+    width: 75% !important;
+}
+
+
+
+/* .globalButton {
+    background-color: #004e7f;
+  } */
+
+.campoCadastro {
+    margin-bottom: 10px !important;
+}
+
+
+.infoPessoal,
+.infoLogin {
+    font-size: 19px;
+    font-weight: bold;
+
+    z-index: 1;
+    /* Garante que o <h1> fique sobre as divs */
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Adicione um fundo transparente para melhor legibilidade */
+
+    margin: 35px 0;
+    /* border: 1px solid #4f46e5; */
+}
+
+.infoLogin {
+    margin-top: 0 !important;
+}
+
+.textoCrie {
+    font-size: 30px;
+}
+
+
+.divForm2 {
+    margin-top: 0 !important;
+    margin: auto;
+}
