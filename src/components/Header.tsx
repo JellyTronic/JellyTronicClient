@@ -24,14 +24,6 @@ const Header = () => {
       setSobrenomeLocalStorage(sobrenome);
     }
   }, []);
-  // const handleLoginClick = () => {
-  //   signIn();
-  // };
-
-  // const handleLogoutClick = () => {
-  //   setMenuIsOpen(false);
-  //   signOut();
-  // };
 
   const handleMenuClick = () => setMenuIsOpen(!menuIsOpen);
 
@@ -98,11 +90,11 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  <Link href={'/user/register'} onClick={() => setMenuIsOpen(false)}>
+                  <Link href={'/cadastro'} onClick={() => setMenuIsOpen(false)}>
                     <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold  hover:text-primary'><BsFillPersonPlusFill />Cadastre-se</p>
                   </Link>
 
-                  <Link href={'/user/login'} onClick={() => setMenuIsOpen(false)}>
+                  <Link href={'/login'} onClick={() => setMenuIsOpen(false)}>
                     <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold hover:text-primary'><BsFillPersonFill />Acesse agora</p>
                   </Link>
 
@@ -131,8 +123,8 @@ const Header = () => {
           <div className='hidden lg:flex lg:items-center'>
             <BsPersonFill color='#17a2b8' size={34} />
             <div className='hidden lg:flex flex-col ml-2'>
-              <p>Faça seu <Link href={'/user/login'} className='text-primary'>login</Link> ou </p>
-              <Link href={'/user/register'} className='text-primary block lg:inline-block lg:ml-0 mt-1'>
+              <p>Faça seu <Link href={'/login'} className='text-primary'>login</Link> ou </p>
+              <Link href={'/cadastro'} className='text-primary block lg:inline-block lg:ml-0 mt-1'>
                 cadastre-se
               </Link>
             </div>
