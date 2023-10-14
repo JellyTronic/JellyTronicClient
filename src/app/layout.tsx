@@ -1,4 +1,4 @@
-import { NextAuthProvider } from '@/providers/auth'
+// import { NextAuthProvider } from '@/providers/auth'
 import './globals.css'
 import { Poppins } from 'next/font/google'
 import Header from '@/components/Header'
@@ -16,17 +16,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <NextAuthProvider>
-          <ToastProvider>
-            <div className="flex flex-col h-screen">
-              <div className='h-[95px]'>
-                <Header />
-              </div>
-              <div className="flex-1">{children}</div>
-              <Footer />
+        <ToastProvider>
+          <div className="flex flex-col h-screen">
+            <div className='h-[95px]'>
+              <Header />
             </div>
-          </ToastProvider>
-        </NextAuthProvider>
+            <div className="flex-1">{children}</div>
+            <Footer />
+          </div>
+        </ToastProvider>
       </body>
     </html>
   )

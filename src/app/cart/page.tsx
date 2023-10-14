@@ -92,47 +92,62 @@ const Cart = () => {
   };
 
   const handleBuyClick = async () => {
-    const productPromises = cartItems.map(async (cartItem) => {
-      const response = await fetch(
-        `https://api-fatec.onrender.com/api/v1/product/${cartItem.productId}`
-      );
 
-      const data = await response.json();
-      console.log(data)
-      const itemValue = data.price * cartItem.quantity;
-      return ({
-        name: data.desc, // Substitua com a propriedade correta que contém o nome do produto
-        totalPrice: itemValue, // Substitua com a propriedade correta que contém o preço do produto
-        quantity: cartItem.quantity, // Substitua com a propriedade correta que contém a quantidade do produto
-        price: data.price,
-        images: data.images[0].image_path
-      })
-    });
+    const isUserLoggedIn = sessionStorage.getItem("secretToken") !== null;
 
-    // Aguarde todas as Promises serem resolvidas
-    const products = await Promise.all(productPromises);
+    if (isUserLoggedIn) {
 
-    const data = {
-      products // Substitua pelo valor desejado
-    };
+      const productPromises = cartItems.map(async (cartItem) => {
+        const response = await fetch(
+          `https://api-fatec.onrender.com/api/v1/product/${cartItem.productId}`
+        );
 
-    const res = await fetch("http://localhost:3000/api/payment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON
-      },
-      body: JSON.stringify(data), // Converte o objeto em uma string JSON
-    });
+        const data = await response.json();
+        console.log(data)
+        const itemValue = data.price * cartItem.quantity;
+        return ({
+          name: data.desc, // Substitua com a propriedade correta que contém o nome do produto
+          totalPrice: itemValue, // Substitua com a propriedade correta que contém o preço do produto
+          quantity: cartItem.quantity, // Substitua com a propriedade correta que contém a quantidade do produto
+          price: data.price,
+          images: data.images[0].image_path
+        })
+      });
 
-    if (!res.ok) {
-      return console.log("Ocorreu um erro ao realizar a compra");
+      // Aguarde todas as Promises serem resolvidas
+      const products = await Promise.all(productPromises);
+
+      const data = {
+        products // Substitua pelo valor desejado
+      };
+
+      const res = await fetch("http://localhost:3000/api/payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON
+        },
+        body: JSON.stringify(data), // Converte o objeto em uma string JSON
+      });
+
+      if (!res.ok) {
+        return console.log("Ocorreu um erro ao realizar a compra");
+      }
+
+      const { sessionId } = await res.json();
+
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
+
+      await stripe?.redirectToCheckout({ sessionId })
+
+    } else {
+
+      const specialToken = generateSpecialToken();
+      // Redirecione o usuário para a página de checkout com o token especial
+      window.location.href = `/checkout/login?token=${specialToken}`;
+      // alert('Você precisa estar logado para continuar.');
+      // window.location.href = "/login"
+
     }
-
-    const { sessionId } = await res.json();
-
-    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
-
-    await stripe?.redirectToCheckout({ sessionId })
   };
 
 
@@ -204,3 +219,7 @@ const Cart = () => {
 }
 
 export default Cart;
+function generateSpecialToken() {
+  throw new Error("Function not implemented.");
+}
+
