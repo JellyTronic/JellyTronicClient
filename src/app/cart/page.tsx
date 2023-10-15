@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import { formatPrice } from "@/providers/formatCurrency";
 import Loading from "../loading";
 import { loadStripe } from "@stripe/stripe-js";
+import { nanoid } from 'nanoid';
 
 const Cart = () => {
 
@@ -141,9 +142,13 @@ const Cart = () => {
 
     } else {
 
-      const specialToken = generateSpecialToken();
+      // const specialToken = generateSpecialToken();
+      // console.log(specialToken)
+      const specialToken = nanoid(); // Gera um token aleatório
+      console.log(specialToken);
+      sessionStorage.setItem("specialToken", specialToken)
       // Redirecione o usuário para a página de checkout com o token especial
-      window.location.href = `/checkout/login?token=${specialToken}`;
+      window.location.href = `/checkout/login/${specialToken}`;
       // alert('Você precisa estar logado para continuar.');
       // window.location.href = "/login"
 
