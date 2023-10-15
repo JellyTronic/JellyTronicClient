@@ -19,7 +19,7 @@ const Header = () => {
 
   const [idSessionStorage, setIdSessionStorage] = useState<string>();
   const [token, setToken] = useState<string>();
-  const [name, setName] = useState<string>();
+  const [name, setName] = useState<string>("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -28,21 +28,34 @@ const Header = () => {
       setIdSessionStorage(id!);
       setToken(secretToken!)
 
+      if (id && secretToken) {
+        (async () => {
+          try {
+            const response = await fetch(`${perfil.api_online}/${id}`, {
+              headers: {
+                Authorization: `Bearer ${secretToken}`,
+              },
+              method: "GET",
+            });
 
-      fetch(`${perfil.api_online}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${secretToken}`,
-        },
-        method: "GET",
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const nomeCompleto = data.data.name;
-          const partesDoNome = nomeCompleto.split(" ");
-          const primeiroNome = partesDoNome[0];
-          setName(primeiroNome);
-        });
+
+            if (response.ok) {
+              const data = await response.json();
+              const nomeCompleto = data.data.name;
+              const partesDoNome = nomeCompleto.split(" ");
+              const primeiroNome = partesDoNome[0];
+              setName(primeiroNome);
+            } else {
+              console.log("deu erro")
+            }
+
+          } catch (error) {
+            console.error("Erro ao buscar dados do perfil:", error);
+          }
+        })();
+      }
     }
+
   }, []);
 
   const handleLogout = () => {
