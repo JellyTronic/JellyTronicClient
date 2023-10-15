@@ -28,7 +28,6 @@ const ProductCard = ({ product, value, quantity, onRemove, onQuantityChange }: P
       const response = await fetch(`https://api-fatec.onrender.com/api/v1/product/${product}`);
       const data = await response.json();
       setProduto(data);
-      console.log(data)
     };
 
     Products();

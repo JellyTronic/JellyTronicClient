@@ -104,7 +104,6 @@ const Cart = () => {
         );
 
         const data = await response.json();
-        console.log(data)
         const itemValue = data.price * cartItem.quantity;
         return ({
           name: data.desc, // Substitua com a propriedade correta que contém o nome do produto
