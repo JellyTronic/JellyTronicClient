@@ -48,12 +48,14 @@ const ProductDetails = async ({ params }: { params: { productId: string } }) => 
   return (
     <div className="container mx-auto mt-8 lg:mt-12 lg:px-40">
       <div className="lg:grid lg:grid-cols-2 lg:gap-8">
-        <div className="relative h-[300px] w-full lg:h-[400px]">
-          {product.images ? (
-            <Image src={product.images[0].image_path} alt={product.desc} layout="fill" objectFit="cover" />
-          ) : (
-            <Image src="/produto-sem-imagem.png" alt="Default Product" layout="fill" objectFit="cover" />
-          )}
+        <div className="flex items-center justify-center">
+          <div className="relative h-[300px] w-full lg:h-[400px]">
+            {product.images ? (
+              <Image src={product.images[0].image_path} alt={product.desc} layout="fill" objectFit="contain" />
+            ) : (
+              <Image src="/produto-sem-imagem.png" alt="Default Product" layout="fill" objectFit="cover" />
+            )}
+          </div>
         </div>
         <div className="mt-5 mx-1.5 flex flex-col justify-between h-full">
           <h2 className="text-2xl font-semibold">{product.desc}</h2>
