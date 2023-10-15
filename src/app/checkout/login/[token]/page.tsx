@@ -4,6 +4,8 @@ import FormLogin from "./components/formLogin";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import IsLogged from "./components/isLogged";
+import CartItem from "@/types/Cart";
+import { loadStripe } from "@stripe/stripe-js";
 
 export default function Login({ params }: { params: { token: string } }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -11,47 +13,95 @@ export default function Login({ params }: { params: { token: string } }) {
   const [tokenParams, setTokenParams] = useState<string>("");
   const [tokenSession, setTokenSession] = useState<string>("");
   const [isTokenValid, setIsTokenValid] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const handleLoginSubmit = (formData: { token: string; id: number }) => {
     sessionStorage.setItem("secretToken", formData.token);
     sessionStorage.setItem("id", formData.id.toString());
     setIsAuthenticated(true);
+    sessionStorage.removeItem('specialToken')
+    handleBuyClick();
+
   };
 
+  const handleBuyClick = async () => {
+
+    const isUserLoggedIn = sessionStorage.getItem("secretToken") !== null;
+
+    if (isUserLoggedIn) {
+
+      const productPromises = cartItems.map(async (cartItem) => {
+        const response = await fetch(
+          `https://api-fatec.onrender.com/api/v1/product/${cartItem.productId}`
+        );
+
+        const data = await response.json();
+        const itemValue = data.price * cartItem.quantity;
+        return ({
+          name: data.desc, // Substitua com a propriedade correta que contém o nome do produto
+          totalPrice: itemValue, // Substitua com a propriedade correta que contém o preço do produto
+          quantity: cartItem.quantity, // Substitua com a propriedade correta que contém a quantidade do produto
+          price: data.price,
+          images: data.images[0].image_path
+        })
+      });
+
+      // Aguarde todas as Promises serem resolvidas
+      const products = await Promise.all(productPromises);
+
+      const data = {
+        products // Substitua pelo valor desejado
+      };
+
+      const res = await fetch("http://localhost:3000/api/payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON
+        },
+        body: JSON.stringify(data), // Converte o objeto em uma string JSON
+      });
+
+      if (!res.ok) {
+        return console.log("Ocorreu um erro ao realizar a compra");
+      }
+
+      const { sessionId } = await res.json();
+
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
+
+      await stripe?.redirectToCheckout({ sessionId })
+    }
+  }
+
   useEffect(() => {
+    const cartItemsFromLocalStorage = localStorage.getItem("cart");
+    const tokenSpecial = sessionStorage.getItem('specialToken');
+
     if (sessionStorage.getItem("secretToken")) {
       setIsAuthenticated(true);
     }
 
-    // const searchParams = new URLSearchParams(window.location.search);
-    // const token = searchParams.get("token");
-    const tokenSpecial = sessionStorage.getItem('specialToken')
-    // console.log(token)
-    // console.log(params.token)
-    // alert(params.token)
-
-    // Verifique se o token é uma sequência hexadecimal válida
     if (params.token === tokenSpecial) {
       setIsTokenValid(true)
-      // O token é válido (é uma sequência hexadecimal)
-      // Continue com o processo de login do checkout
-      // router.push('/checkout');
-      // alert('token valido')
+
+      if (cartItemsFromLocalStorage) {
+        const parsedCartItems = JSON.parse(cartItemsFromLocalStorage);
+        setCartItems(parsedCartItems);
+        // calculateTotal(parsedCartItems);
+      }
+
     } else {
-      alert("Desculpa, você não precisa acessar essa página e estamos redirecionando você a tela de login!")
+      // alert("Desculpa, você não precisa acessar essa página e estamos redirecionando você a tela de login!")
       window.location.href = "/login"
+      sessionStorage.removeItem('specialToken')
     }
 
   }, []);
 
-  // const IsLogged = () => {
-  //   window.location.href = "/cart"
-  // }
-
 
   return (
     <>
-      {!isAuthenticated ? (
+      {!isAuthenticated && (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             {/* <img
@@ -77,8 +127,6 @@ export default function Login({ params }: { params: { token: string } }) {
             </p>
           </div>
         </div>
-      ) : (
-        <IsLogged />
       )}
     </>
   );
