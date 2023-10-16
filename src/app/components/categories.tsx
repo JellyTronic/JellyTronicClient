@@ -30,9 +30,9 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     const response = await fetch('https://api-fatec.onrender.com/api/v1/category');
-    console.log(response)
+    // console.log(response)
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     setCategories(data);
     setIsLoading(false);
   };
@@ -75,7 +75,7 @@ const Categories = () => {
 
             {categories.map((category: any) => {
               const textColor = getRandomColor();
-              console.log(categories)
+              // console.log(categories)
               return (
                 <div key={category.id} className='inline-block cursor-pointer pr-6'>
                   <Link href={`/product/category/${category.id}`}>

@@ -16,7 +16,7 @@ const ProductsByCategory = ({ params }: { params: { id: string } }) => {
   const getProductByCategory = async (Id: string) => {
     const response = await fetch(`https://api-fatec.onrender.com/api/v1/product/category/${Id}`);
     const products = await response.json();
-    console.log(products)
+    // console.log(products)
     setProductByCategory(products);
     setName(products[0].id_categoria.nome);
   };

@@ -4,22 +4,28 @@ import Button from "@/components/Button";
 import { formatPrice } from "@/providers/formatCurrency";
 import CartItem from "@/types/Cart";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import Product from "@/types/Product";
 
 // eslint-disable-next-line @next/next/no-async-client-component
-const ProductDetails = async ({ params }: { params: { productId: string } }) => {
+const ProductDetails = ({ params }: { params: { productId: string } }) => {
+
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [secretToken, setSecretToken] = useState<string>("");
+  const [product, setProduct] = useState<Product | null>(null);
+  const [idClient, setIdClient] = useState<string>("");
 
   const getProductDetails = async (productId: string) => {
     const response = await fetch(`https://api-fatec.onrender.com/api/v1/product/${productId}`);
     const products = await response.json();
 
-    return products;
+    // return products;
+    setProduct(products);
   };
 
-  const [cart, setCart] = useState<CartItem[]>([]);
 
-  const handleAddToCart = (productId: string) => {
+  const handleAddToCart = async (productId: string) => {
     const newItem: CartItem = {
       productId, quantity: 1,
       id: ""
@@ -40,7 +46,53 @@ const ProductDetails = async ({ params }: { params: { productId: string } }) => 
 
   };
 
-  const product = await getProductDetails(params.productId);
+  const handleAddToCartLogin = async (productId: string) => {
+    try {
+      const token = sessionStorage.getItem("secretToken");
+      if (!token) {
+        return;
+      }
+
+
+      const data = {
+        product_id: productId,
+        amount: 1,
+      };
+      console.log(JSON.stringify(data));
+      const response = await fetch(`https://129.148.27.50/api/carrinho/add/item/${idClient}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        console.log(response)
+      } else {
+        // Trate erros de acordo com a resposta da API.
+        console.error('Erro ao adicionar o item ao carrinho.');
+      }
+    } catch (error) {
+      console.error('Erro na solicitação de adição ao carrinho:', error);
+    }
+
+  };
+
+
+
+  useEffect(() => {
+    // getProductByCategory(categoryId)
+    const token = sessionStorage.getItem("secretToken")
+    const idClientSession = sessionStorage.getItem("id")
+    console.log(token)
+    console.log(idClientSession)
+    setSecretToken(token!);
+    setIdClient(idClientSession!);
+
+
+    getProductDetails(params.productId);
+  }, [])
 
 
   if (!product) return null;
@@ -65,11 +117,20 @@ const ProductDetails = async ({ params }: { params: { productId: string } }) => 
           <p className="text-primaryDarker text-xl font-bold mt-1 lg:mt-[-50px]">{formatPrice(product.price)}</p>
           <p className="mt-2 text-gray-500 lg:mt-[-50px]">Stock: {product.stock}</p>
           <div className="flex items-center justify-between lg:mb-[30px]">
-            <Button variant="outlined" className="w-[48%] mt-2 font-semibold text-lg" onClick={() => handleAddToCart(product.id)}>
-              <Link href="/cart">
-                Add to Cart
-              </Link>
-            </Button>
+            {secretToken ? (
+              <Button variant="outlined" className="w-[48%] mt-2 font-semibold text-lg" onClick={() => handleAddToCartLogin(product.id)}>
+                <Link href="/cart">
+                  Add to Cart
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="outlined" className="w-[48%] mt-2 font-semibold text-lg" onClick={() => handleAddToCart(product.id)}>
+                <Link href="/cart">
+                  Add to Cart
+                </Link>
+              </Button>
+            )}
+
             {/* <Button variant="border" className="w-[48%] mt-2 font-semibold text-lg">
               buy now
             </Button> */}

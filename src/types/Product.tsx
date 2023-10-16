@@ -1,16 +1,20 @@
 import Category from "./Category";
 
 interface Produto {
-  id: number;
+  price: string;
+  stock: string;
+  desc: string;
+  images: any;
+  id: string;
   nome: string;
   descricao: string;
-  marca: string;
+  brand: string;
   preco: number;
-  estoque: number;
-  largura: number;
-  comprimento: number;
-  peso: number;
-  altura: number;
+  // estoque: number;
+  width: number;
+  // : number;
+  weight: number;
+  height: number;
   id_categoria: Category;
 }
 
