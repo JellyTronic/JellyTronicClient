@@ -73,7 +73,7 @@ const Header = () => {
 
           <Link href='/'>
             <div className='hidden lg:flex relative h-[100px] w-[120px]'>
-              <Image src='/logo.png' alt='ShopWave' fill />
+              <Image src='/logo.png' alt='ShopWave' fill objectFit='cover'/>
             </div>
           </Link>
 
@@ -147,9 +147,9 @@ const Header = () => {
 
         </div>
 
-        <Link href='/'>
+        <Link href='/' className='pl-4'>
           <div className='relative h-[32px] w-[183px] lg:hidden'>
-            <Image src='/logoName.png' alt='ShopWave' fill />
+            <Image src='/logoName.png' alt='ShopWave' fill objectFit='cover'/>
           </div>
         </Link>
 

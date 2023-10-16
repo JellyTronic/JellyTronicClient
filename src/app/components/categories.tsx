@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { BsPhone } from 'react-icons/bs';
@@ -28,6 +30,7 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     const response = await fetch('https://api-fatec.onrender.com/api/v1/category');
+    console.log(response)
     const data = await response.json();
     console.log(data);
     setCategories(data);
@@ -35,9 +38,7 @@ const Categories = () => {
   };
 
   useEffect(() => {
-
     fetchCategories();
-
   }, []);
 
   function getRandomColor() {
@@ -74,18 +75,18 @@ const Categories = () => {
 
             {categories.map((category: any) => {
               const textColor = getRandomColor();
-
+              console.log(categories)
               return (
                 <div key={category.id} className='inline-block cursor-pointer pr-6'>
                   <Link href={`/product/category/${category.id}`}>
                     <div
                       className='flex flex-col items-center justify-center lg:mr-10'
                       style={{
-                        color: textColor,
+                        // color: "primary",
                       }}
                     >
-                      <MdStore size={40} className='lg:h-20 lg:w-20' />
-                      <p className='font-semibold lg:text-lg'>{category.nome}</p>
+                      {/* <MdStore size={40} className='lg:h-20 lg:w-20' /> */}
+                      <p className='font-semibold lg:text-lg'>{category.name}</p>
                     </div>
                   </Link>
                 </div>

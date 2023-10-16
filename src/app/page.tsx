@@ -7,7 +7,7 @@ import Categories from "./components/categories";
 export default function Home() {
 
   return (
-    <div>
+    <div className="bg-gray-100 pb-10">
       <Categories />
       <Carrousel />
       <ProductItem />

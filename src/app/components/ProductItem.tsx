@@ -14,7 +14,6 @@ const ProductItem = () => {
     const data = await response.json();
     setProducts(data);
     setIsLoading(false);
-    console.log(data);
   }
 
   useEffect(() => {
@@ -51,7 +50,7 @@ const ProductItem = () => {
                   )}
                 </div>
                 <div className="flex-grow">
-                  <h2 className="text-xl font-semibold mb-2">
+                  <h2 className="text-lg font-semibold mb-2">
                     {product && product.desc && product.desc.length >= 26
                       ? `${product.desc.slice(0, 26)}...`
                       : product.desc}
