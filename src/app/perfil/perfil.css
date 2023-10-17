@@ -1,4 +1,9 @@
 .perfil {
-    padding-top: 2%;
-    padding-left: 20px;
+  padding-top: 2%;
+  padding-left: 20px;
+}
+
+.perfil-container {
+  margin-top: 50px;
+  margin-left: 5%;
 }
