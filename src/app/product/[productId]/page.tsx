@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Product from "@/types/Product";
+import axios from 'axios';
 
 // eslint-disable-next-line @next/next/no-async-client-component
 const ProductDetails = ({ params }: { params: { productId: string } }) => {
@@ -53,26 +54,53 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
         return;
       }
 
+      console.log("tste")
+
+
+      const teste = await fetch(`https://129.148.27.50/api/pedido`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        // body: JSON.stringify(data),
+      });
+
+      console.log("tste")
+      console.log(teste)
+
 
       const data = {
         product_id: productId,
         amount: 1,
       };
-      console.log(JSON.stringify(data));
-      const response = await fetch(`https://129.148.27.50/api/carrinho/add/item/${idClient}`, {
-        method: 'PUT',
+
+      const config = {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
-      });
+      };
 
-      if (response.ok) {
-        console.log(response)
-      } else {
-        // Trate erros de acordo com a resposta da API.
-        console.error('Erro ao adicionar o item ao carrinho.');
-      }
+      console.log(JSON.stringify(data));
+
+      axios.put(`https://129.148.27.50/api/carrinho/add/item/${idClient}`, data, config)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log('Item adicionado com sucesso:', response.data);
+          } else {
+            console.error('Erro ao adicionar o item ao carrinho.');
+          }
+        })
+        .catch((error) => {
+          console.error('Erro na solicitação de adição ao carrinho:', error);
+        });
+
+      // if (response.ok) {
+      //   console.log(response)
+      // } else {
+      //   // Trate erros de acordo com a resposta da API.
+      //   console.error('Erro ao adicionar o item ao carrinho.');
+      // }
+
     } catch (error) {
       console.error('Erro na solicitação de adição ao carrinho:', error);
     }
