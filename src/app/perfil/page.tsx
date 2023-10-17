@@ -1,8 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import ICustomer from "./interfaces/ICustomer";
-import Navbar from "@/components/navbar";
 import "./perfil.css";
 import Image from "next/image";
 import { perfil } from "@/utils/apiUrl";
@@ -53,8 +51,7 @@ export default function Perfil() {
     return (
       <>
         {isAuthenticated ? (
-          <div>
-            <Navbar />
+          <div className="perfil-container">
             <div className="perfil">
               <Image
                 alt="foto de perfil"
