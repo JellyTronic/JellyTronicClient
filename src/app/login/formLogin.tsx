@@ -66,7 +66,6 @@ export default function FormLogin({ onSubmit }: LoginFormProps) {
       if (response.ok) {
         const data = await response.json();
         Swal.fire("Bom trabalho!", data.message, "success");
-
         onSubmit({ token: data.token, id: data.id });
       } else {
         if (response.status === 400) {
@@ -114,7 +113,8 @@ export default function FormLogin({ onSubmit }: LoginFormProps) {
           <div className="text-sm">
             <a
               href="/recuperarSenha"
-              className="font-semibold text-indigo-600 hover:text-indigo-500"
+              // className="font-semibold text-indigo-600 hover:text-indigo-500 text-primary"
+              className="text-primary"
             >
               Esqueceu sua senha?
             </a>
@@ -136,7 +136,7 @@ export default function FormLogin({ onSubmit }: LoginFormProps) {
       <div>
         <button
           type="submit"
-          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 buttonSubmit"
         >
           {!isLoading ? "Entrar" : loadingText}
         </button>
