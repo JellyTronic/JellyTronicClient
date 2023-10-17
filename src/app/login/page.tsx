@@ -1,7 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
 import FormLogin from "./formLogin";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import IsLogged from "@/components/isLogged";
 
@@ -41,7 +39,7 @@ export default function Login() {
               Não está cadastrado?{" "}
               <a
                 href="/cadastro"
-                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                className="font-semibold leading-6 text-indigo-600 text-primary"
               >
                 Cadastre-se aqui
               </a>
