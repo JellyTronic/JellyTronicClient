@@ -58,10 +58,7 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
 
 
       const teste = await fetch(`https://129.148.27.50/api/pedido`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        method: 'GET'
         // body: JSON.stringify(data),
       });
 
@@ -82,7 +79,7 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
 
       console.log(JSON.stringify(data));
 
-      axios.put(`https://129.148.27.50/api/carrinho/add/item/${idClient}`, data, config)
+      await axios.put(`https://129.148.27.50/api/carrinho/add/item/${idClient}`, data, config)
         .then((response) => {
           if (response.status === 200) {
             console.log('Item adicionado com sucesso:', response.data);
