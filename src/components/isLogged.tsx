@@ -8,7 +8,7 @@ export default function IsLogged() {
   const router = useRouter();
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/perfil");
+      router.push("/");
     }, 3000);
 
     const interval = setInterval(() => {
