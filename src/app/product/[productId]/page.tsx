@@ -20,7 +20,6 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
   const getProductDetails = async (productId: string) => {
     const response = await fetch(`https://api-fatec.onrender.com/api/v1/product/${productId}`);
     const products = await response.json();
-
     // return products;
     setProduct(products);
   };
@@ -28,8 +27,9 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
 
   const handleAddToCart = async (productId: string) => {
     const newItem: CartItem = {
-      productId, quantity: 1,
-      id: ""
+      productId,
+      quantity: 1
+      // id: ""
     }; // Defina a quantidade inicial como 1
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -53,11 +53,6 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
       if (!token) {
         return;
       }
-
-      console.log("tste")
-
-
-      
 
       const data = {
         product_id: productId,
@@ -84,19 +79,12 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
           console.error('Erro na solicitação de adição ao carrinho:', error);
         });
 
-      // if (response.ok) {
-      //   console.log(response)
-      // } else {
-      //   // Trate erros de acordo com a resposta da API.
-      //   console.error('Erro ao adicionar o item ao carrinho.');
-      // }
 
     } catch (error) {
       console.error('Erro na solicitação de adição ao carrinho:', error);
     }
 
   };
-
 
 
   useEffect(() => {

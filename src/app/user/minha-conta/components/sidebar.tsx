@@ -8,17 +8,22 @@ const Sidebar = () => {
       <ul>
         <div className="bg-white border border-gray-300 rounded-md p-2 mb-2">
           <li className="mb-2">
-            <a href="/account/orders">Pedidos</a>
+            <a href="/user/pedido">Minha Conta</a>
           </li>
         </div>
         <div className="bg-white border border-gray-300 rounded-md p-2 mb-2">
           <li className="mb-2">
-            <a href="/account/profile">Cadastro</a>
+            <a href="/user/pedido">Pedidos</a>
           </li>
         </div>
         <div className="bg-white border border-gray-300 rounded-md p-2 mb-2">
           <li className="mb-2">
-            <a href="/account/address">Endereço</a>
+            <a href="/user/perfil">Cadastro</a>
+          </li>
+        </div>
+        <div className="bg-white border border-gray-300 rounded-md p-2 mb-2">
+          <li className="mb-2">
+            <a href="/user/endereco">Endereço</a>
           </li>
         </div>
         {/* Adicione mais itens de menu conforme necessário */}
