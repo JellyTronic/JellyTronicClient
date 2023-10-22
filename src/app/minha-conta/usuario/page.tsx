@@ -1,10 +1,10 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import Sidebar from '../minha-conta/components/sidebar'; // Componente da barra lateral
+import Sidebar from '../../../components/sidebar'; // Componente da barra lateral
 import { perfil } from '@/utils/apiUrl';
 import Image from "next/image";
 
-const Perfil = () => {
+const Cadastro = () => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -49,7 +49,7 @@ const Perfil = () => {
   return (
     <div className="container mx-auto pl-2 pb-4 mt-8 bg-gray-200">
       <div className="flex">
-        <Sidebar />
+        <Sidebar activeLink={'cadastro'} />
         <div className="flex-1 p-4 bg-white rounded-md mt-4 mr-4">
           {isAuthenticated ? (
             <div className="perfil-container">
@@ -140,4 +140,4 @@ const Perfil = () => {
   );
 };
 
-export default Perfil;
+export default Cadastro;

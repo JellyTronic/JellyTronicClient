@@ -191,15 +191,15 @@ const Header = () => {
         {menuIsOpenDesk && (
           <div className='z-50 absolute top-24 right-[8em] w-[260px] h-auto bg-slate-200 rounded-lg shadow-md flex flex-col justify-center p-2 pl-4'>
 
-            <Link href={'/user/minha-conta'} className='flex items-center gap-2 text-lg font-semibold p-2 hover:font-semibold  hover:text-primary'>
+            <Link href={'/minha-conta'} className='flex items-center gap-2 text-lg font-semibold p-2 hover:font-semibold  hover:text-primary'>
               <BsFillPersonFill size={22} />ver minha conta {name}
             </Link>
 
-            <Link href={'/myRequests'} onClick={() => setMenuIsOpen(false)}>
+            <Link href={'/minha-conta/pedidos'} onClick={() => setMenuIsOpen(false)}>
               <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><BsBoxFill />pedidos</p>
             </Link>
 
-            <Link href={'/'} onClick={() => setMenuIsOpen(false)} className='pb-2'>
+            <Link href={'/minha-conta/endereco'} onClick={() => setMenuIsOpen(false)} className='pb-2'>
               <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><BiSolidMap />endereço</p>
             </Link>
 
