@@ -14,11 +14,11 @@ const Sidebar = ({ activeLink }:SidebarProps) => {
   return (
     <nav className="bg-gray-200 w-[22em] mt-12 p-4">
       <ul>
-        <li className={`bg-white rounded-xl p-2 mb-2 ${activeLink === 'minha-conta' ? 'border-l-2 border-primary' : ''}`}>
+        <li className={`bg-white border-2 rounded-xl p-2 mb-2 ${activeLink === 'minha-conta' ? 'border-primary' : ''}`}>
           <a href="/minha-conta">Minha Conta</a>
         </li>
 
-        <li className={`bg-white rounded-xl pl-3 py-2 mb-2 pr-1 cursor-pointer ${activeLink === 'pedido' ? 'border-l-2 border-primary' : ''}`}>
+        <li className={`bg-white border-2 rounded-xl pl-3 py-2 mb-2 pr-1 cursor-pointer ${activeLink === 'pedidos' ? 'border-primary' : ''}`}>
           <Link href="/minha-conta/pedidos" className='flex items-center justify-between gap-2'>
             <BsBox />
             <div>
@@ -29,7 +29,7 @@ const Sidebar = ({ activeLink }:SidebarProps) => {
           </Link>
         </li>
 
-        <li className={`bg-white rounded-xl pl-3 py-2 mb-2 pr-1 cursor-pointer ${activeLink === 'cadastro' ? 'border-l-2 border-primary' : ''}`}>
+        <li className={`bg-white border-2 rounded-xl pl-3 py-2 mb-2 pr-1 cursor-pointer ${activeLink === 'cadastro' ? 'border-primary' : ''}`}>
           <Link href="/minha-conta/usuario" className='flex items-center justify-between gap-2'>
             <BsPerson className="text-xl mr-2"/>
             <div>
@@ -40,7 +40,7 @@ const Sidebar = ({ activeLink }:SidebarProps) => {
           </Link>
         </li>
 
-        <li className={`bg-white rounded-xl pl-3 py-2 mb-2 pr-1 cursor-pointer ${activeLink === 'endereco' ? 'border-l-2 border-primary' : ''}`}>
+        <li className={`bg-white border-2 rounded-xl pl-3 py-2 mb-2 pr-1 cursor-pointer ${activeLink === 'endereco' ? 'border-primary' : ''}`}>
           <Link href="/minha-conta/endereco" className='flex items-center justify-between'>
             <CiLocationOn className="text-xl"/>
             <div className='ml-[-2.5em]'>
