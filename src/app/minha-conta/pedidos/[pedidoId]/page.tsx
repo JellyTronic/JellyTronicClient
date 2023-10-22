@@ -1,16 +1,16 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import Sidebar from '../../../components/sidebar'; // Componente da barra lateral
-import Pedido from '@/types/Order';
-import { formatPrice } from '@/providers/formatCurrency';
-import OrderCard from './components/OrderCard';
-import Order from '@/types/Order';
+import Sidebar from '@/components/sidebar'; // Componente da barra lateral
+// import Pedido from '@/types/Order';
+// import { formatPrice } from '@/providers/formatCurrency';
+// import OrderCard from './components/OrderCard';
+// import Order from '@/types/Order';
 
 // Função para formatar o status
 
 
-const Pedidos = () => {
+const PedidosById = () => {
 
   const [secretToken, setSecretToken] = useState<string>('');
   const [idUserClient, setIdUserClient] = useState<string>('');
@@ -41,9 +41,10 @@ const Pedidos = () => {
         <div className="flex-1 p-4 bg-white rounded-md mt-4 mr-4">
           <h1 className="text-2xl font-semibold mb-4">Meus Pedidos</h1>
           <div>
-            {orders.map((order: Order) => (
+            {/* {orders.map((order: Order) => (
               <OrderCard key={order.id} order={order} />
-            ))}
+            ))} */}
+            <p>teste</p>
           </div>
         </div>
       </div>
@@ -51,4 +52,4 @@ const Pedidos = () => {
   );
 };
 
-export default Pedidos;
+export default PedidosById;
