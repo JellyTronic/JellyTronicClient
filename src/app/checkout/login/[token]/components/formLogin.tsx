@@ -114,7 +114,7 @@ export default function FormLogin({ onSubmit }: LoginFormProps) {
           <div className="text-sm">
             <a
               href="/recuperarSenha"
-              className="font-semibold text-indigo-600 hover:text-indigo-500"
+              className="font-semibold text-primary hover:text-primaryDarker"
             >
               Esqueceu sua senha?
             </a>
@@ -136,7 +136,7 @@ export default function FormLogin({ onSubmit }: LoginFormProps) {
       <div>
         <button
           type="submit"
-          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primaryDarker focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           {!isLoading ? "Entrar" : loadingText}
         </button>

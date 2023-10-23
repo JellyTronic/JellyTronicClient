@@ -120,7 +120,7 @@ export default function Login({ params }: { params: { token: string } }) {
               Não está cadastrado?{" "}
               <a
                 href="/cadastro"
-                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                className="font-semibold leading-6 text-primary"
               >
                 Cadastre-se aqui
               </a>
