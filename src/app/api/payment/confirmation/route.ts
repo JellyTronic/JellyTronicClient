@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -11,18 +12,18 @@ export async function POST(request: Request) {
 
   const event = stripe.webhooks.constructEvent(text, sig, process.env.STRIPE_WEBHOOK_SECRET_KEY!)
 
-  if (event.type === 'checkout.session.completed'){
+  if (event.type === 'checkout.session.completed') {
     const session = event.data.object as any;
 
-    console.log(session)
+    console.log({session})
 
     const data = {
-        delivery_type: "Expresso",
-        delivery_price: 30,
-        payment_type: "MasterCard",
-        payment_discount: 1,
-        installment_payment: 2,
-        obs: "Frágil"
+      delivery_type: "Expresso",
+      delivery_price: 30,
+      payment_type: "MasterCard",
+      payment_discount: 1,
+      installment_payment: 2,
+      obs: "Frágil"
     }
 
 
@@ -46,4 +47,6 @@ export async function POST(request: Request) {
 
 
   }
+
+  return new NextResponse(JSON.stringify({ received: true }), { status: 200 });
 }

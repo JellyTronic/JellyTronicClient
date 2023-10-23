@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   try {
     const req = await request.json();
 
-  
+
     const { products } = req;
 
     // Array para armazenar as sessões de pagamento
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
           unit_amount: price * 100,
           product_data: {
             name: productName,
+            description: "tetstetetetetee",
             images:[images]
             // price: totalPrice
           },

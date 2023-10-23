@@ -39,27 +39,32 @@ const ProductItem = () => {
 
       {!isLoading &&
         products.map((product: any) => (
-          <Link href={`/product/${product.id}`} key={product.id}>
+          <Link href={`/product/${product.id}`} key={product.id} className="h-96 lg:h-1/4">
             <div className="bg-gray-50 shadow-md rounded-lg overflow-hidden h-96 hover:shadow-xl transition duration-200">
               <div className="p-4 flex flex-col h-full justify-center">
-                <div className="w-9/10 mt-1">
+                <div className="w-9/10 mt-3">
                   {product && product.images && product.images.length > 0 ? (
-                    <Image src={product.images[0].image_path} alt={product.nome} height={100} width={100} className="w-full" />
+                    <Image src={product.images[0].image_path} alt={product.name} height={100} width={100} className="w-full container" />
                   ) : (
-                    <Image src="/produto-sem-imagem.png" alt="Default Product" height={100} width={100} className="w-full" />
+                    <Image src="/produto-sem-imagem.png" alt="Default Product" height={100} width={100} className="w-full container" />
                   )}
+
+                  {/* {product && product.images && product.images.lenght === 0 && (
+                    <Image src="/produto-sem-imagem.png" alt="Default Product" height={100} width={100} className="w-full container" />
+                    // <Image src={product.images[0].image_path} alt={product.name} height={100} width={100} className="w-full container" />
+                  )} */}
                 </div>
                 <div className="flex-grow">
-                  <h2 className="text-lg font-semibold mb-2">
-                    {product && product.desc && product.desc.length >= 26
-                      ? `${product.desc.slice(0, 26)}...`
+                  <p className="text-base font-semibold mb-2">
+                    {product && product.name && product.name.length >= 46
+                      ? `${product.name.slice(0, 46)}...`
+                      : product.name}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    {product && product.desc && product.desc.length > 40
+                      ? `${product.desc.slice(0, 40)}...`
                       : product.desc}
-                  </h2>
-                  {/* <p className="text-gray-600">
-                    {product && product.desc && product.desc.length > 20
-                      ? `${product.desc.slice(0, 20)}...`
-                      : product.desc}
-                  </p> */}
+                  </p>
                 </div>
                 <p className="text-primaryDarker mt-2 font-bold text-xl">{formatPrice(product.price)}</p>
                 {/* <Button>Add to cart</Button> */}

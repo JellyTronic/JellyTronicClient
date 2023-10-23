@@ -1,6 +1,8 @@
 import Category from "./Category";
 
 interface Produto {
+  name: string;
+  name: ReactNode;
   item_total: any;
   product_img: string | StaticImport;
   unity_price: any;
