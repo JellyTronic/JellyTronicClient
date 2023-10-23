@@ -184,6 +184,15 @@ const OrderCard = ({ order }: OrderCardProps) => {
 
       </div>
 
+      <div className='flex items-center justify-center mt-10'>
+        <Link href={`/minha-conta/pedidos/${order.id}`} className="text-gray-700 underline">
+          click aqui e saiba mais detalhes do pedido
+        </Link>
+
+      </div>
+
+
+
     </div >
 
   );
