@@ -35,19 +35,27 @@ const Pedidos = () => {
   }
 
   return (
-    <div className="container mx-auto pl-2 pb-4 mt-8 bg-gray-200">
-      <div className="flex">
-        <Sidebar activeLink={'pedidos'} />
-        <div className="flex-1 p-4 bg-white rounded-md mt-4 mr-4">
-          <h1 className="text-2xl font-semibold mb-4">Meus Pedidos</h1>
-          <div>
-            {orders.map((order: Order) => (
-              <OrderCard key={order.id} order={order} />
-            ))}
+    <>
+      {orders.length ? (
+        <div className="container mx-auto pl-2 pb-4 mt-8 bg-gray-200">
+          <div className="flex">
+            <Sidebar activeLink={'pedidos'} />
+            <div className="flex-1 p-4 bg-white rounded-md mt-4 mr-4">
+              <h1 className="text-2xl font-semibold mb-4">Meus Pedidos</h1>
+              <div>
+                {orders.map((order: Order) => (
+                  <OrderCard key={order.id} order={order} />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      ) : (
+<p>
+  Você ainda não possui nenhuma compra, clique aqui e comece a comprar
+</p>
+      )}
+    </>
   );
 };
 

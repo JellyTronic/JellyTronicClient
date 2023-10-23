@@ -1,13 +1,12 @@
 import Category from "./Category";
 
 interface Produto {
-  name: string;
-  name: ReactNode;
+  name: any;
   item_total: any;
-  product_img: string | StaticImport;
+  product_img: any
   unity_price: any;
-  amount: ReactNode;
-  product_name: ReactNode;
+  amount: any;
+  product_name: any;
   price: string;
   stock: string;
   desc: string;
@@ -17,9 +16,7 @@ interface Produto {
   descricao: string;
   brand: string;
   preco: number;
-  // estoque: number;
   width: number;
-  // : number;
   weight: number;
   height: number;
   id_categoria: Category;
