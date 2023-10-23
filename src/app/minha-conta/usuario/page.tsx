@@ -34,14 +34,14 @@ const Cadastro = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          setId(data.data.id);
-          setIdentify_document(data.data.identify_document);
-          setName(data.data.name);
-          setPhone(data.data.phone);
-          setBirthdate(data.data.birthdate);
-          setEmail(data.data.email);
-          setGender(data.data.gender);
-          setImage_path(data.data.image_path);
+          setId(data.data.customer.id);
+          setIdentify_document(data.data.customer.identify_document);
+          setName(data.data.customer.name);
+          setPhone(data.data.customer.phone);
+          setBirthdate(data.data.customer.birthdate);
+          setEmail(data.data.customer.email);
+          setGender(data.data.customer.gender);
+          setImage_path(data.data.customer.image_path);
         });
     }
   }, []);

@@ -41,7 +41,7 @@ const Header = () => {
 
             if (response.ok) {
               const data = await response.json();
-              const nomeCompleto = data.data.name;
+              const nomeCompleto = data.data.customer.name;
               const partesDoNome = nomeCompleto.split(" ");
               const primeiroNome = partesDoNome[0];
               setName(primeiroNome);
@@ -104,7 +104,7 @@ const Header = () => {
                     <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><AiOutlineShoppingCart />Carrinho</p>
                   </Link>
 
-                  <Link href={'/myRequests'} onClick={() => setMenuIsOpen(false)}>
+                  <Link href={'/minha-conta/pedidos'} onClick={() => setMenuIsOpen(false)}>
                     <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><BsBoxFill />Meus pedidos</p>
                   </Link>
 

@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/sidebar'; // Componente da barra lateral
 import OrderCard from './pedidos/components/OrderCard'; // Importe o componente OrderCard
 import Link from 'next/link';
+import Order from '@/types/Order';
 
 const Account = () => {
-  const [latestOrder, setLatestOrder] = useState(null); // Estado para armazenar o último pedido
+  const [latestOrder, setLatestOrder] = useState<Order>(); // Estado para armazenar o último pedido
 
   useEffect(() => {
     const token = sessionStorage.getItem('secretToken');
