@@ -54,10 +54,10 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
         return;
       }
 
-      const data = {
+      const data = [{
         product_id: productId,
         amount: 1,
-      };
+      }];
 
       const config = {
         headers: {
