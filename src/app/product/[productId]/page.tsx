@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Product from "@/types/Product";
 import axios from 'axios';
+import CartItemCart from "@/types/CartItemCart";
 
 // eslint-disable-next-line @next/next/no-async-client-component
 const ProductDetails = ({ params }: { params: { productId: string } }) => {
@@ -26,7 +27,7 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
 
 
   const handleAddToCart = async (productId: string) => {
-    const newItem: CartItem = {
+    const newItem: CartItemCart = {
       productId,
       quantity: 1
       // id: ""
@@ -109,17 +110,17 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
         <div className="flex items-center justify-center">
           <div className="relative h-[300px] w-full lg:h-[400px]">
             {product.images ? (
-              <Image src={product.images[0].image_path} alt={product.desc} layout="fill" objectFit="contain" />
+              <Image src={product.images[0].image_path} alt={product.name} layout="fill" objectFit="contain" />
             ) : (
               <Image src="/produto-sem-imagem.png" alt="Default Product" layout="fill" objectFit="cover" />
             )}
           </div>
         </div>
         <div className="mt-5 mx-1.5 flex flex-col justify-between h-full">
-          <h2 className="text-2xl font-semibold">{product.desc}</h2>
-          {/* <p className="lg:text-xl lg:text-gray-600 lg:mt-[-50px]">
-            {product.descricao.length > 100 ? `${product.descricao.slice(0, 100)}...` : product.descricao}
-          </p> */}
+          <h2 className="text-2xl font-semibold">{product.name}</h2>
+          <p className="lg:text-xl lg:text-gray-600 lg:mt-[-50px]">
+            {product.desc.length > 100 ? `${product.desc.slice(0, 100)}...` : product.desc}
+          </p>
           <p className="text-primaryDarker text-xl font-bold mt-1 lg:mt-[-50px]">{formatPrice(product.price)}</p>
           <p className="mt-2 text-gray-500 lg:mt-[-50px]">Stock: {product.stock}</p>
           <div className="flex items-center justify-between lg:mb-[30px]">
@@ -146,9 +147,9 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
 
         <div className="mt-10 mx-1.5 border-y pb-4 pt-6 border-gray-300 lg:mt-0 lg:col-span-2">
           <h2 className="text-2xl font-semibold mb-4">Description</h2>
-          {/* <p className="text-gray-700 leading-relaxed">
-            {product.descricao}
-          </p> */}
+          <p className="text-gray-700 leading-relaxed">
+            {product.desc}
+          </p>
         </div>
 
         <div className="my-10 mx-1.5 border-b pb-1 border-gray-300 lg:mt-0 lg:col-span-2">

@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className='h-[95px]'>
               <Header />
             </div>
-            <div className="flex-1">{children}</div>
+            <div className="flex-1 mt-6">{children}</div>
             <Footer />
           </div>
         </ToastProvider>
