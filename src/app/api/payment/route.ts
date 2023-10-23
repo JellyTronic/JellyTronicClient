@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   try {
     const req = await request.json();
 
-    // Certifique-se de que o objeto req.body contenha os dados esperados
+  
     const { products } = req;
 
     // Array para armazenar as sessões de pagamento
