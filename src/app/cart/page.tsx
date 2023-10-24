@@ -202,7 +202,7 @@ const Cart = () => {
         products // Substitua pelo valor desejado
       };
 
-      const res = await fetch("http://localhost:3000/api/payment", {
+      const res = await fetch("https://jelly-tronic-client.vercel.app/api/payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON
