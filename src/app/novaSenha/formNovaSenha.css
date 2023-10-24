@@ -1,30 +1,42 @@
 .descriptionForm h1 {
-    text-align: left;
-    margin-bottom: 5px;
-    font-size: 25px;
+  text-align: left;
+  margin-bottom: 5px;
+  font-size: 25px;
 }
 
 .descriptionForm p {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .descriptionForm {
-    padding-bottom: 50px;
+  padding-bottom: 50px;
 }
 
 .container {
-    padding: 50px 20px;
-    background-color: #f2f2f2;
-    border-radius: 15px;
+  padding: 50px 20px;
+  background-color: #f2f2f2;
+  border-radius: 15px;
 }
 
 .button {
-    width: 60%;
+  width: 60%;
 }
 
 .divButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+}
+
+.inputSenha {
+  padding-left: 10px;
+}
+
+.buttonSend {
+  background-color: #f36300;
+}
+
+.buttonSend:hover {
+  background-color: #f88f49;
 }
