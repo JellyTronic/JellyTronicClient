@@ -1,0 +1,11 @@
+.form-input {
+  width: 85%;
+}
+
+.buttonChange {
+  background-color: #f36300;
+}
+
+.buttonChange:hover {
+  background-color: #f88f49;
+}
