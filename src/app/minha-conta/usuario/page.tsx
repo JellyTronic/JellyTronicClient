@@ -1,20 +1,24 @@
-'use client'
-import React, { useEffect, useState } from 'react';
-import Sidebar from '../../../components/sidebar'; // Componente da barra lateral
-import { perfil } from '@/utils/apiUrl';
+"use client";
+
+import "./page.css";
+import React, { useEffect, useState } from "react";
+import Sidebar from "../../../components/sidebar"; // Componente da barra lateral
+import { perfil } from "@/utils/apiUrl";
 import Image from "next/image";
+import formatDate from "./utils/formatDate";
+import formatPhone from "./utils/formatPhone";
+import formatRg from "./utils/formatRg";
 
 const Cadastro = () => {
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [id, setId] = useState();
-  const [identify_document, setIdentify_document] = useState(0);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [email, setEmail] = useState("");
-  const [gender, setGender] = useState("");
+  const [identify_document, setIdentify_document] = useState("**.***.***-*");
+  const [name, setName] = useState("*******");
+  const [phone, setPhone] = useState("(**) *****-****");
+  const [birthdate, setBirthdate] = useState("************");
+  const [email, setEmail] = useState("***********@******");
+  const [gender, setGender] = useState("***");
   const [image_path, setImage_path] = useState("/imgs/perfil/foto.jpg");
 
   useEffect(() => {
@@ -22,7 +26,7 @@ const Cadastro = () => {
     const id = sessionStorage.getItem("id");
 
     if (!currentToken) {
-      window.location.href = '/login';
+      window.location.href = "/login";
     } else {
       setIsAuthenticated(true);
 
@@ -35,12 +39,20 @@ const Cadastro = () => {
         .then((response) => response.json())
         .then((data) => {
           setId(data.data.customer.id);
-          setIdentify_document(data.data.customer.identify_document);
+          setIdentify_document(
+            formatRg(data.data.customer.identify_document.toString())
+          );
           setName(data.data.customer.name);
-          setPhone(data.data.customer.phone);
-          setBirthdate(data.data.customer.birthdate);
+          setPhone(formatPhone(data.data.customer.phone));
+          setBirthdate(formatDate(data.data.customer.birthdate));
           setEmail(data.data.customer.email);
-          setGender(data.data.customer.gender);
+
+          if (data.data.customer.gender == "F") {
+            setGender("Feminino");
+          } else {
+            setGender("Masculino");
+          }
+
           setImage_path(data.data.customer.image_path);
         });
     }
@@ -49,7 +61,7 @@ const Cadastro = () => {
   return (
     <div className="container mx-auto pl-2 pb-4 mt-8 bg-gray-200">
       <div className="flex">
-        <Sidebar activeLink={'cadastro'} />
+        <Sidebar activeLink={"cadastro"} />
         <div className="flex-1 p-4 bg-white rounded-md mt-4 mr-4">
           {isAuthenticated ? (
             <div className="perfil-container">
@@ -66,7 +78,6 @@ const Cadastro = () => {
                 </div>
                 <hr className="my-4" />
                 <div>
-                  <h2 className="text-lg">Dados:</h2>
                   <div className="mb-4">
                     <label className="block text-gray-600 font-bold">RG:</label>
                     <input
@@ -77,7 +88,9 @@ const Cadastro = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-gray-600 font-bold">Telefone:</label>
+                    <label className="block text-gray-600 font-bold">
+                      Telefone:
+                    </label>
                     <input
                       type="text"
                       value={phone}
@@ -86,7 +99,9 @@ const Cadastro = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-gray-600 font-bold">Data de Nascimento:</label>
+                    <label className="block text-gray-600 font-bold">
+                      Data de Nascimento:
+                    </label>
                     <input
                       type="text"
                       value={birthdate}
@@ -95,7 +110,9 @@ const Cadastro = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-gray-600 font-bold">Email:</label>
+                    <label className="block text-gray-600 font-bold">
+                      Email:
+                    </label>
                     <input
                       type="text"
                       value={email}
@@ -104,29 +121,15 @@ const Cadastro = () => {
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-gray-600 font-bold">Gênero:</label>
-                    <div className="flex space-x-4">
-                      <label>
-                        <input
-                          type="radio"
-                          value="M"
-                          checked={gender === "M"}
-                          onChange={() => setGender("M")}
-                          disabled
-                        />
-                        Masculino
-                      </label>
-                      <label>
-                        <input
-                          type="radio"
-                          value="F"
-                          checked={gender === "F"}
-                          onChange={() => setGender("F")}
-                          disabled
-                        />
-                        Feminino
-                      </label>
-                    </div>
+                    <label className="block text-gray-600 font-bold">
+                      Gênero:
+                    </label>
+                    <input
+                      type="text"
+                      value={gender}
+                      className="form-input border rounded py-2 px-4"
+                      disabled
+                    />
                   </div>
                 </div>
               </div>
