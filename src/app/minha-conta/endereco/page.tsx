@@ -3,20 +3,182 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/sidebar"; // Componente da barra lateral
-import { perfil } from "@/utils/apiUrl";
-import Image from "next/image";
+import { apiAtualizarEndereco, apiCadastro, perfil } from "@/utils/apiUrl";
+import "./page.css";
+import Swal from "sweetalert2";
 
 const Endereco = () => {
+  const [token, setToken] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [cep, setCep] = useState("*****-***");
+  const [number, setNumber] = useState("****");
+  const [complement, setComplement] = useState("******");
+  const [reference, setReference] = useState("*******");
+  const [logradouro, setLogradouro] = useState("**********************");
+  const [bairro, setBairro] = useState("****************");
+  const [localidade, setLocalidade] = useState("**********");
+  const [uf, setUf] = useState("**");
+  const [addressId, setAddressId] = useState();
 
-  const [cep, setCep] = useState("");
-  const [number, setNumber] = useState("");
-  const [complement, setComplement] = useState("");
-  const [reference, setReference] = useState("");
-  const [logradouro, setLogradouro] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [localidade, setLocalidade] = useState("");
-  const [uf, setUf] = useState("");
+  const [editandoCep, setEditandoCep] = useState(false);
+  const [editandoNumber, setEditandoNumber] = useState(false);
+  const [editandoComplement, setEditandoComplement] = useState(false);
+  const [editandoReference, setEditandoReference] = useState(false);
+
+  const [isLoadingCep, setIsLoadingCep] = useState(false);
+  const [isLoadingNumber, setIsLoadingNumber] = useState(false);
+  const [isLoadingComplement, setIsLoadingComplement] = useState(false);
+  const [isLoadingReference, setIsLoadingReference] = useState(false);
+
+  const handleEdicaoCep = async () => {
+    if (editandoCep) {
+      try {
+        setIsLoadingCep(true);
+        const response = await fetch(
+          `${apiAtualizarEndereco.api_local}/${addressId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ cep }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsLoadingCep(false);
+          Swal.fire("Cep atualizado!", data, "success");
+        } else {
+          if (response.status === 400) {
+            const errorData = await response.json();
+            const { message } = errorData;
+            setIsLoadingCep(false);
+            Swal.fire("Erro ao atualizar!", message, "error");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setEditandoCep(!editandoCep);
+  };
+  const handleEdicaoNumber = async () => {
+    if (editandoNumber) {
+      setIsLoadingNumber(true);
+      try {
+        const response = await fetch(
+          `${apiAtualizarEndereco.api_local}/${addressId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ number }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsLoadingNumber(false);
+          Swal.fire("Número atualizado!", data, "success");
+        } else {
+          if (response.status === 400) {
+            const errorData = await response.json();
+            const { message } = errorData;
+            setIsLoadingNumber(false);
+            Swal.fire("Erro ao atualizar!", message, "error");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setEditandoNumber(!editandoNumber);
+  };
+  const handleEdicaoComplement = async () => {
+    if (editandoComplement) {
+      try {
+        setIsLoadingComplement(true);
+        const response = await fetch(
+          `${apiAtualizarEndereco.api_local}/${addressId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ complement }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsLoadingComplement(false);
+          Swal.fire("Complemento atualizado!", data, "success");
+        } else {
+          if (response.status === 400) {
+            const errorData = await response.json();
+            const { message } = errorData;
+            setIsLoadingComplement(false);
+            Swal.fire("Erro ao atualizar!", message, "error");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setEditandoComplement(!editandoComplement);
+  };
+  const handleEdicaoReference = async () => {
+    if (editandoReference) {
+      try {
+        setIsLoadingReference(true);
+        const response = await fetch(
+          `${apiAtualizarEndereco.api_local}/${addressId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ reference }),
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsLoadingReference(false);
+          Swal.fire("Referência atualizada!", data, "success");
+        } else {
+          if (response.status === 400) {
+            const errorData = await response.json();
+            const { message } = errorData;
+            setIsLoadingReference(false);
+            Swal.fire("Erro ao atualizar!", message, "error");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setEditandoReference(!editandoReference);
+  };
+
+  const handleChangeCep = (e: any) => {
+    setCep(e.target.value);
+  };
+  const handleChangeNumber = (e: any) => {
+    setNumber(e.target.value);
+  };
+  const handleChangeComplement = (e: any) => {
+    setComplement(e.target.value);
+  };
+  const handleChangeReference = (e: any) => {
+    setReference(e.target.value);
+  };
 
   useEffect(() => {
     const currentToken = sessionStorage.getItem("secretToken");
@@ -26,7 +188,7 @@ const Endereco = () => {
       window.location.href = "/login";
     } else {
       setIsAuthenticated(true);
-
+      setToken(currentToken);
       fetch(`${perfil.api_online}/${id}`, {
         headers: {
           Authorization: `Bearer ${currentToken}`,
@@ -37,6 +199,7 @@ const Endereco = () => {
         .then((data) => {
           const newCep = data.data.deliveryAddress.cep.replace("-", "");
           setCep(newCep);
+          setAddressId(data.data.deliveryAddress.id);
           setComplement(data.data.deliveryAddress.complement);
           setNumber(data.data.deliveryAddress.number);
           setReference(data.data.deliveryAddress.reference);
@@ -123,8 +286,21 @@ const Endereco = () => {
                         type="text"
                         value={cep}
                         className="form-input border rounded py-2 px-4"
-                        disabled
+                        disabled={!editandoCep}
+                        onChange={handleChangeCep}
                       />
+                      <button
+                        className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
+                        onClick={handleEdicaoCep}
+                      >
+                        {isLoadingCep ? (
+                          <div className="h-6 w-6 border-4 border-l-gray-200 border-r-gray-200 border-b-gray-200 border-t-primary animate-spin ease-linear rounded-full"></div>
+                        ) : editandoCep ? (
+                          "Salvar"
+                        ) : (
+                          "Editar"
+                        )}
+                      </button>
                     </div>
                     <div className="mb-4">
                       <label className="block text-gray-600 font-bold">
@@ -134,8 +310,21 @@ const Endereco = () => {
                         type="text"
                         value={number}
                         className="form-input border rounded py-2 px-4"
-                        disabled
+                        disabled={!editandoNumber}
+                        onChange={handleChangeNumber}
                       />
+                      <button
+                        className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
+                        onClick={handleEdicaoNumber}
+                      >
+                        {isLoadingNumber ? (
+                          <div className="h-6 w-6 border-4 border-l-gray-200 border-r-gray-200 border-b-gray-200 border-t-primary animate-spin ease-linear rounded-full"></div>
+                        ) : editandoNumber ? (
+                          "Salvar"
+                        ) : (
+                          "Editar"
+                        )}
+                      </button>
                     </div>
                     <div className="mb-4">
                       <label className="block text-gray-600 font-bold">
@@ -145,8 +334,21 @@ const Endereco = () => {
                         type="text"
                         value={complement}
                         className="form-input border rounded py-2 px-4"
-                        disabled
+                        disabled={!editandoComplement}
+                        onChange={handleChangeComplement}
                       />
+                      <button
+                        className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
+                        onClick={handleEdicaoComplement}
+                      >
+                        {isLoadingComplement ? (
+                          <div className="h-6 w-6 border-4 border-l-gray-200 border-r-gray-200 border-b-gray-200 border-t-primary animate-spin ease-linear rounded-full"></div>
+                        ) : editandoComplement ? (
+                          "Salvar"
+                        ) : (
+                          "Editar"
+                        )}
+                      </button>
                     </div>
                     <div className="mb-4">
                       <label className="block text-gray-600 font-bold">
@@ -156,14 +358,29 @@ const Endereco = () => {
                         type="text"
                         value={reference}
                         className="form-input border rounded py-2 px-4"
-                        disabled
+                        disabled={!editandoReference}
+                        onChange={handleChangeReference}
                       />
+                      <button
+                        className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
+                        onClick={handleEdicaoReference}
+                      >
+                        {isLoadingReference ? (
+                          <div className="h-6 w-6 border-4 border-l-gray-200 border-r-gray-200 border-b-gray-200 border-t-primary animate-spin ease-linear rounded-full"></div>
+                        ) : editandoReference ? (
+                          "Salvar"
+                        ) : (
+                          "Editar"
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div>Carregando...</div>
+              <div className="container flex flex-col items-center justify-center mt-52">
+                <div className="h-12 w-12 border-4 border-l-gray-200 border-r-gray-200 border-b-gray-200 border-t-primary animate-spin ease-linear rounded-full"></div>
+              </div>
             )}
           </div>
         </main>
