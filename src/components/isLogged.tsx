@@ -18,6 +18,7 @@ export default function IsLogged() {
     return () => {
       clearTimeout(timer);
       clearInterval(interval);
+      window.location.reload();
     };
   }, [router]);
 
