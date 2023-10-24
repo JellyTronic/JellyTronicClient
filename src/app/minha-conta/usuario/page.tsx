@@ -9,6 +9,7 @@ import formatDate from "./utils/formatDate";
 import formatPhone from "./utils/formatPhone";
 import formatRg from "./utils/formatRg";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const Cadastro = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -33,6 +34,8 @@ const Cadastro = () => {
   const [isLoadingEmail, setIsLoadingEmail] = useState(false);
   const [isLoadingPassword, setIsLoadingPassword] = useState(false);
   const [isLoadingName, setIsLoadingName] = useState(false);
+
+  const router = useRouter();
 
   const handleChangePhone = (e: any) => {
     setPhone(e.target.value);
@@ -149,7 +152,9 @@ const Cadastro = () => {
     setEditandoName(!editandoName);
   };
 
-  const handleEdicaoPassword = () => {};
+  const handleEdicaoPassword = () => {
+    router.push("/recuperarSenha");
+  };
 
   useEffect(() => {
     const currentToken = sessionStorage.getItem("secretToken");

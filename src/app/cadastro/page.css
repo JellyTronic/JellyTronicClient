@@ -53,3 +53,19 @@ input {
 .buttonSubmit:hover {
   background-color: #f88f49;
 }
+
+@media screen and (max-width: 1000px) {
+  .containerCadastro {
+    flex-direction: column;
+  }
+
+  .w-1\/2 {
+    width: 100%;
+  }
+
+
+  .divForm1 {
+    width: 100% !important;
+  }
+
+}

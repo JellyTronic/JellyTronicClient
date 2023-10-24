@@ -149,7 +149,7 @@ export default function Cadastro() {
         <div className="mt-10 md:mx-auto sm:w-full sm:max-w-x1 divForm1">
           <form className="space-y-6" onSubmit={envioForm}>
             <h1 className="infoPessoal">Informações pessoais</h1>
-            <div className="flex">
+            <div className="flex containerCadastro">
               <div className="w-1/2 mr-20">
                 <div className="mb-4">
                   <label
