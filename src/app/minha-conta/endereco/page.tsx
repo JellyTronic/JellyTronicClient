@@ -13,6 +13,10 @@ const Endereco = () => {
   const [number, setNumber] = useState("");
   const [complement, setComplement] = useState("");
   const [reference, setReference] = useState("");
+  const [logradouro, setLogradouro] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [localidade, setLocalidade] = useState("");
+  const [uf, setUf] = useState("");
 
   useEffect(() => {
     const currentToken = sessionStorage.getItem("secretToken");
@@ -31,10 +35,22 @@ const Endereco = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          setCep(data.data.deliveryAddress.cep);
+          const newCep = data.data.deliveryAddress.cep.replace("-", "");
+          setCep(newCep);
           setComplement(data.data.deliveryAddress.complement);
           setNumber(data.data.deliveryAddress.number);
           setReference(data.data.deliveryAddress.reference);
+
+          fetch(`https://viacep.com.br/ws/${newCep}/json`, {
+            method: "GET",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              setBairro(data.bairro);
+              setLocalidade(data.localidade);
+              setLogradouro(data.logradouro);
+              setUf(data.uf);
+            });
         });
     }
   }, []);
@@ -55,6 +71,50 @@ const Endereco = () => {
 
                   <hr className="my-4" />
                   <div>
+                    <div className="mb-4">
+                      <label className="block text-gray-600 font-bold">
+                        Logradouro:
+                      </label>
+                      <input
+                        type="text"
+                        value={logradouro}
+                        className="form-input border rounded py-2 px-4"
+                        disabled
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-gray-600 font-bold">
+                        Bairro:
+                      </label>
+                      <input
+                        type="text"
+                        value={bairro}
+                        className="form-input border rounded py-2 px-4"
+                        disabled
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-gray-600 font-bold">
+                        Localidade:
+                      </label>
+                      <input
+                        type="text"
+                        value={localidade}
+                        className="form-input border rounded py-2 px-4"
+                        disabled
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="block text-gray-600 font-bold">
+                        UF:
+                      </label>
+                      <input
+                        type="text"
+                        value={uf}
+                        className="form-input border rounded py-2 px-4"
+                        disabled
+                      />
+                    </div>
                     <div className="mb-4">
                       <label className="block text-gray-600 font-bold">
                         Cep:
