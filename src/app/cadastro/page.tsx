@@ -397,7 +397,11 @@ export default function Cadastro() {
                 type="submit"
                 className="globalButton flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 btnCadastra buttonSubmit"
               >
-                {!isLoading ? "Cadastrar" : loadingText}
+                {!isLoading ? (
+                  "Cadastrar"
+                ) : (
+                  <div className="h-6 w-6 border-4 border-l-gray-200 border-r-gray-200 border-b-gray-200 border-t-primary animate-spin ease-linear rounded-full"></div>
+                )}
               </button>
             </div>
           </form>
