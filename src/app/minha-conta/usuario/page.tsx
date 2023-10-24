@@ -50,7 +50,7 @@ const Cadastro = () => {
     if (editandoPhone) {
       try {
         setIsLoadingPhone(true);
-        const response = await fetch(`${apiCadastro.api_local}/${id}`, {
+        const response = await fetch(`${apiCadastro.api_online}/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const Cadastro = () => {
     if (editandoEmail) {
       try {
         setIsLoadingEmail(true);
-        const response = await fetch(`${apiCadastro.api_local}/${id}`, {
+        const response = await fetch(`${apiCadastro.api_online}/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -121,7 +121,7 @@ const Cadastro = () => {
     if (editandoName) {
       try {
         setIsLoadingName(true);
-        const response = await fetch(`${apiCadastro.api_local}/${id}`, {
+        const response = await fetch(`${apiCadastro.api_online}/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",

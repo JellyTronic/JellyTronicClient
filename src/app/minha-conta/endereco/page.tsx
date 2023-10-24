@@ -35,7 +35,7 @@ const Endereco = () => {
       try {
         setIsLoadingCep(true);
         const response = await fetch(
-          `${apiAtualizarEndereco.api_local}/${addressId}`,
+          `${apiAtualizarEndereco.api_online}/${addressId}`,
           {
             method: "PATCH",
             headers: {
@@ -69,7 +69,7 @@ const Endereco = () => {
       setIsLoadingNumber(true);
       try {
         const response = await fetch(
-          `${apiAtualizarEndereco.api_local}/${addressId}`,
+          `${apiAtualizarEndereco.api_online}/${addressId}`,
           {
             method: "PATCH",
             headers: {
@@ -137,7 +137,7 @@ const Endereco = () => {
       try {
         setIsLoadingReference(true);
         const response = await fetch(
-          `${apiAtualizarEndereco.api_local}/${addressId}`,
+          `${apiAtualizarEndereco.api_online}/${addressId}`,
           {
             method: "PATCH",
             headers: {
