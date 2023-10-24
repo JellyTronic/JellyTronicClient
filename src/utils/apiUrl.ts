@@ -30,3 +30,16 @@ export const atualizarSenha = {
   api_online:
     "https://api-clientes-fatec-v1.onrender.com/api/v1/auth/nova-senha",
 };
+
+export const apiPayment = {
+  // api: "http://localhost:3000/api/payment",
+  api:
+    "https://jelly-tronic-client.vercel.app/api/payment",
+};
+
+export const apiConfirmation = {
+  // api: "http://localhost:3001/api/payment/confirmation",
+  api:
+    "https://jelly-tronic-client.vercel.app/api/payment/confirmation",
+};
+
