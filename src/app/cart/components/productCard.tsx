@@ -58,7 +58,7 @@ const ProductCard = ({ product, value, quantity, onRemove, onQuantityChange }: P
   }
 
   return (
-    <div className="bg-gray-100 shadow-md rounded-lg p-4 my-3 w-[90%] ml-[5%] lg:w-[130%]">
+    <div className="bg-gray-100 shadow-md rounded-lg p-4 my-3 w-[90%] lg:w-[50em]">
 
       <div className="flex">
         <div className="flex-shrink-0 w-24 h-24 mr-4 flex items-center">
@@ -73,16 +73,16 @@ const ProductCard = ({ product, value, quantity, onRemove, onQuantityChange }: P
           </div>
         </div>
         <div className="flex-grow">
-          <h2 className="text-lg font-semibold">
-            {produto && produto.desc && produto.desc.length >= 26
-              ? `${produto.desc.slice(0, 46)}...`
-              : produto.desc}
+          <h2 className="text-base font-semibold">
+            {produto && produto.name && produto.name.length >= 36
+              ? `${produto.name.slice(0, 36)}...`
+              : produto.name}
           </h2>
-          {/* <p className="text-gray-600 text-sm">
-            {produto.descricao && produto.descricao.length > 30
-              ? `${produto.descricao.slice(0, 30)}...`
-              : produto.descricao}
-          </p> */}
+          <p className="text-gray-600 text-sm">
+            {produto.desc && produto.desc.length > 36
+              ? `${produto.desc.slice(0, 36)}...`
+              : produto.desc}
+          </p>
           <p className="text-primaryDarker font-bold mt-2">
             {value !== undefined ? (
               formatPrice(value)
