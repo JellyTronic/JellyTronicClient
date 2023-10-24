@@ -3,14 +3,17 @@
 import "./page.css";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/sidebar"; // Componente da barra lateral
-import { perfil } from "@/utils/apiUrl";
+import { apiCadastro, perfil } from "@/utils/apiUrl";
 import Image from "next/image";
 import formatDate from "./utils/formatDate";
 import formatPhone from "./utils/formatPhone";
 import formatRg from "./utils/formatRg";
+import Swal from "sweetalert2";
 
 const Cadastro = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const [token, setToken] = useState("");
 
   const [id, setId] = useState();
   const [identify_document, setIdentify_document] = useState("**.***.***-*");
@@ -20,6 +23,133 @@ const Cadastro = () => {
   const [email, setEmail] = useState("***********@******");
   const [gender, setGender] = useState("***");
   const [image_path, setImage_path] = useState("/imgs/perfil/foto.jpg");
+  const [defaultName, setDefaultName] = useState("");
+  const [editandoPhone, setEditandoPhone] = useState(false);
+  const [editandoEmail, setEditandoEmail] = useState(false);
+  const [editandoPassword, setEditandoPassword] = useState(false);
+  const [editandoName, setEditandoName] = useState(false);
+
+  const [isLoadingPhone, setIsLoadingPhone] = useState(false);
+  const [isLoadingEmail, setIsLoadingEmail] = useState(false);
+  const [isLoadingPassword, setIsLoadingPassword] = useState(false);
+  const [isLoadingName, setIsLoadingName] = useState(false);
+
+  const handleChangePhone = (e: any) => {
+    setPhone(e.target.value);
+  };
+  const handleChangeEmail = (e: any) => {
+    setEmail(e.target.value);
+  };
+  const handleChangeName = (e: any) => {
+    setName(e.target.value);
+  };
+
+  const handleChangePassword = (e: any) => {};
+
+  const handleEdicaoPhone = async () => {
+    if (editandoPhone) {
+      try {
+        setIsLoadingPhone(true);
+        const response = await fetch(`${apiCadastro.api_local}/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ phone }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsLoadingPhone(false);
+          Swal.fire("Telefone atualizado!", data, "success");
+        } else {
+          if (response.status === 400) {
+            const errorData = await response.json();
+            const { message } = errorData;
+            setIsLoadingPhone(false);
+            Swal.fire("Erro ao atualizar!", message, "error");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setEditandoPhone(!editandoPhone);
+  };
+
+  const handleEdicaoEmail = async () => {
+    if (editandoEmail) {
+      try {
+        setIsLoadingEmail(true);
+        const response = await fetch(`${apiCadastro.api_local}/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsLoadingEmail(false);
+          Swal.fire("Email atualizado!", data, "success");
+        } else {
+          if (response.status === 400) {
+            const errorData = await response.json();
+            const { message } = errorData;
+            setIsLoadingEmail(false);
+            Swal.fire("Erro ao atualizar!", message, "error");
+          }
+          if (response.status === 404) {
+            const errorData = await response.json();
+
+            const { error } = errorData;
+            setIsLoadingEmail(false);
+            Swal.fire("Erro ao atualizar!", error, "error");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setEditandoEmail(!editandoEmail);
+  };
+
+  const handleEdicaoName = async () => {
+    if (editandoName) {
+      try {
+        setIsLoadingName(true);
+        const response = await fetch(`${apiCadastro.api_local}/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ name }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsLoadingName(false);
+          Swal.fire("Nome atualizado!", data, "success");
+        } else {
+          if (response.status === 400) {
+            const errorData = await response.json();
+            const { message } = errorData;
+            setIsLoadingName(false);
+            Swal.fire("Erro ao atualizar!", message, "error");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setEditandoName(!editandoName);
+  };
+
+  const handleEdicaoPassword = () => {};
 
   useEffect(() => {
     const currentToken = sessionStorage.getItem("secretToken");
@@ -29,7 +159,7 @@ const Cadastro = () => {
       window.location.href = "/login";
     } else {
       setIsAuthenticated(true);
-
+      setToken(currentToken);
       fetch(`${perfil.api_online}/${id}`, {
         headers: {
           Authorization: `Bearer ${currentToken}`,
@@ -43,7 +173,8 @@ const Cadastro = () => {
             formatRg(data.data.customer.identify_document.toString())
           );
           setName(data.data.customer.name);
-          setPhone(formatPhone(data.data.customer.phone));
+          setDefaultName(data.data.customer.name);
+          setPhone(data.data.customer.phone);
           setBirthdate(formatDate(data.data.customer.birthdate));
           setEmail(data.data.customer.email);
 
@@ -74,10 +205,34 @@ const Cadastro = () => {
                     width={70}
                     height={70}
                   />
-                  <h2>Seja bem-vindo, {name}</h2>
+                  <h2>Seja bem-vindo, {defaultName.split(" ")[0]}</h2>
                 </div>
                 <hr className="my-4" />
                 <div>
+                  <div className="mb-4">
+                    <label className="block text-gray-600 font-bold">
+                      Nome Completo:
+                    </label>
+                    <input
+                      type="text"
+                      value={name}
+                      className="form-input border rounded py-2 px-4"
+                      disabled={!editandoName}
+                      onChange={handleChangeName}
+                    />
+                    <button
+                      className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
+                      onClick={handleEdicaoName}
+                    >
+                      {isLoadingName ? (
+                        <div className="h-6 w-6 border-4 border-l-gray-200 border-r-gray-200 border-b-gray-200 border-t-primary animate-spin ease-linear rounded-full"></div>
+                      ) : editandoName ? (
+                        "Salvar"
+                      ) : (
+                        "Editar"
+                      )}
+                    </button>
+                  </div>
                   <div className="mb-4">
                     <label className="block text-gray-600 font-bold">RG:</label>
                     <input
@@ -95,8 +250,21 @@ const Cadastro = () => {
                       type="text"
                       value={phone}
                       className="form-input border rounded py-2 px-4"
-                      disabled
+                      disabled={!editandoPhone}
+                      onChange={handleChangePhone}
                     />
+                    <button
+                      className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
+                      onClick={handleEdicaoPhone}
+                    >
+                      {isLoadingPhone ? (
+                        <div className="h-6 w-6 border-4 border-l-gray-200 border-r-gray-200 border-b-gray-200 border-t-primary animate-spin ease-linear rounded-full"></div>
+                      ) : editandoPhone ? (
+                        "Salvar"
+                      ) : (
+                        "Editar"
+                      )}
+                    </button>
                   </div>
                   <div className="mb-4">
                     <label className="block text-gray-600 font-bold">
@@ -117,8 +285,38 @@ const Cadastro = () => {
                       type="text"
                       value={email}
                       className="form-input border rounded py-2 px-4"
+                      disabled={!editandoEmail}
+                      onChange={handleChangeEmail}
+                    />
+                    <button
+                      className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
+                      onClick={handleEdicaoEmail}
+                    >
+                      {isLoadingEmail ? (
+                        <div className="h-6 w-6 border-4 border-l-gray-200 border-r-gray-200 border-b-gray-200 border-t-primary animate-spin ease-linear rounded-full"></div>
+                      ) : editandoEmail ? (
+                        "Salvar"
+                      ) : (
+                        "Editar"
+                      )}
+                    </button>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-gray-600 font-bold">
+                      Senha:
+                    </label>
+                    <input
+                      type="text"
+                      value="**********"
+                      className="form-input border rounded py-2 px-4"
                       disabled
                     />
+                    <button
+                      className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
+                      onClick={handleEdicaoPassword}
+                    >
+                      Altere
+                    </button>
                   </div>
                   <div className="mb-4">
                     <label className="block text-gray-600 font-bold">
