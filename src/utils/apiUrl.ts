@@ -32,14 +32,14 @@ export const atualizarSenha = {
 };
 
 export const apiPayment = {
-  // api: "http://localhost:3000/api/payment",
-  api:
-    "https://jelly-tronic-client.vercel.app/api/payment",
+  api: "http://localhost:3000/api/payment",
+  // api:
+  //   "https://jelly-tronic-client.vercel.app/api/payment",
 };
 
 export const apiConfirmation = {
-  // api: "http://localhost:3001/api/payment/confirmation",
-  api:
-    "https://jelly-tronic-client.vercel.app/api/payment/confirmation",
+  api: "http://localhost:3001/api/payment/confirmation",
+  // api:
+  //   "https://jelly-tronic-client.vercel.app/api/payment/confirmation",
 };
 
