@@ -11,6 +11,7 @@ import Loading from "../loading";
 import { loadStripe } from "@stripe/stripe-js";
 import { nanoid } from 'nanoid';
 import { tokenToString } from "typescript";
+import { apiPayment } from "@/utils/apiUrl";
 
 const Cart = () => {
 
@@ -202,7 +203,7 @@ const Cart = () => {
         products // Substitua pelo valor desejado
       };
 
-      const res = await fetch("https://jelly-tronic-client.vercel.app/api/payment", {
+      const res = await fetch(`${apiPayment.api}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON

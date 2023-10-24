@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import IsLogged from "./components/isLogged";
 import CartItem from "@/types/Cart";
 import { loadStripe } from "@stripe/stripe-js";
+import { apiPayment } from "@/utils/apiUrl";
 
 export default function Login({ params }: { params: { token: string } }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -54,7 +55,7 @@ export default function Login({ params }: { params: { token: string } }) {
       };
       console.log(data)
 
-      const res = await fetch("https://jelly-tronic-client.vercel.app/api/payment", {
+      const res = await fetch(`${apiPayment.api}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON
