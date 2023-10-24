@@ -43,3 +43,8 @@ export const apiConfirmation = {
   //   "https://jelly-tronic-client.vercel.app/api/payment/confirmation",
 };
 
+export const apiAtualizarEndereco = {
+  api_local: "http://localhost:3001/api/v1/clientes/endereco",
+  api_online:
+    "https://api-clientes-fatec-v1.onrender.com/api/v1/clientes/endereco",
+};
