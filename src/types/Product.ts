@@ -1,6 +1,7 @@
 import Category from "./Category";
 
 interface Produto {
+  image_path: any;
   name: any;
   item_total: any;
   product_img: any

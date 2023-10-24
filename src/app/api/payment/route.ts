@@ -31,7 +31,7 @@ export async function POST(request: Request) {
           product_data: {
             name: productName,
             description: "tetstetetetetee",
-            images:['26013e08-95ba-4a74-94df-ba83ec5c3516.png']
+            images:[images]
             // price: totalPrice
           },
         },

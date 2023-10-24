@@ -15,10 +15,12 @@ export default function Login({ params }: { params: { token: string } }) {
   const [tokenSession, setTokenSession] = useState<string>("");
   const [isTokenValid, setIsTokenValid] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [idUser, setIdUser] = useState<string>('');
 
   const handleLoginSubmit = (formData: { token: string; id: number }) => {
     sessionStorage.setItem("secretToken", formData.token);
     sessionStorage.setItem("id", formData.id.toString());
+    setIdUser(formData.id.toString());
     setIsAuthenticated(true);
     sessionStorage.removeItem('specialToken')
     handleBuyClick();
@@ -31,17 +33,35 @@ export default function Login({ params }: { params: { token: string } }) {
 
     if (isUserLoggedIn) {
 
+      const teste = sessionStorage.getItem("id");
+
+      const response = await fetch(`https://129.148.27.50/api/carrinho/add/item/${teste}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON
+        },
+        body: JSON.stringify(cartItems)
+      })
+
+      if (response.ok) {
+        // console.log(response)
+        console.log("adicionado com sucesso")
+      } else {
+        return console.log("Ocorreu um erro ao realizar a compra");
+      }
+
+
       const productPromises = cartItems.map(async (cartItem) => {
         const response = await fetch(
-          `https://api-fatec.onrender.com/api/v1/product/${cartItem.productId}`
+          `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
         );
 
         const data = await response.json();
-        const itemValue = data.price * cartItem.quantity;
+        const itemValue = data.price * cartItem.amount;
         return ({
           name: data.name, // Substitua com a propriedade correta que contém o nome do produto
           totalPrice: itemValue, // Substitua com a propriedade correta que contém o preço do produto
-          quantity: cartItem.quantity, // Substitua com a propriedade correta que contém a quantidade do produto
+          quantity: cartItem.amount, // Substitua com a propriedade correta que contém a quantidade do produto
           price: data.price,
           images: data.images[0].image_path || '26013e08-95ba-4a74-94df-ba83ec5c3516.png'
         })
@@ -53,7 +73,6 @@ export default function Login({ params }: { params: { token: string } }) {
       const data = {
         products // Substitua pelo valor desejado
       };
-      console.log(data)
 
       const res = await fetch(`${apiPayment.api}`, {
         method: "POST",

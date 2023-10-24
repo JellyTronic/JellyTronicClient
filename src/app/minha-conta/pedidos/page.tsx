@@ -32,7 +32,7 @@ const Pedidos = () => {
   const getCartUserLogin = async (idUserClient: string) => {
     const response = await fetch(`https://129.148.27.50/api/pedido/cliente/${idUserClient}`);
     const pedidosUser = await response.json();
-    console.log(pedidosUser);
+    console.log(pedidosUser.reverse());
     setOrders(pedidosUser);
   }
 

@@ -28,17 +28,17 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
 
   const handleAddToCart = async (productId: string) => {
     const newItem: CartItemCart = {
-      productId,
-      quantity: 1
+      product_id: productId,
+      amount: 1
       // id: ""
     }; // Defina a quantidade inicial como 1
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
     // Verifique se o produto já existe no carrinho
-    const existingItemIndex = existingCart.findIndex((item: { productId: string; }) => item.productId === productId);
+    const existingItemIndex = existingCart.findIndex((item: { product_id: string; }) => item.product_id === productId);
 
     if (existingItemIndex !== -1) {
-      existingCart[existingItemIndex].quantity += 1; // Se existe, aumente a quantidade
+      existingCart[existingItemIndex].amount += 1; // Se existe, aumente a quantidade
     } else {
       existingCart.push(newItem); // Se não existe, adicione o novo item
     }

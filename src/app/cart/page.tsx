@@ -61,8 +61,8 @@ const Cart = () => {
 
     const cartItemArray = cartUserLogin.cart_items.map((item: any) => {
       return {
-        productId: item.product_id,
-        quantity: item.amount
+        product_id: item.product_id,
+        amount: item.amount
       };
     });
 
@@ -72,7 +72,7 @@ const Cart = () => {
   }
 
   const handleRemoveProduct = (productId: string) => {
-    const updatedCartItems = cartItems.filter(item => item.productId !== productId);
+    const updatedCartItems = cartItems.filter(item => item.product_id !== productId);
     setCartItems(updatedCartItems);
     localStorage.setItem("cart", JSON.stringify(updatedCartItems));
   };
@@ -97,14 +97,14 @@ const Cart = () => {
 
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
     const existingItemIndex = existingCart.findIndex(
-      (item: { productId: string }) => item.productId === productId
+      (item: { product_id: string }) => item.product_id === productId
     );
 
     if (existingItemIndex !== -1) {
       if (action === "increment") {
-        existingCart[existingItemIndex].quantity += 1;
-      } else if (action === "decrement" && existingCart[existingItemIndex].quantity > 1) {
-        existingCart[existingItemIndex].quantity -= 1;
+        existingCart[existingItemIndex].amount += 1;
+      } else if (action === "decrement" && existingCart[existingItemIndex].amount > 1) {
+        existingCart[existingItemIndex].amount -= 1;
       }
     }
 
@@ -115,10 +115,10 @@ const Cart = () => {
 
   const handleQuantityChangeLogin = async (productId: string, currentQuantity: number, action: "increment" | "decrement") => {
 
-    const data = {
+    const data = [{
       product_id: productId,
       amount: currentQuantity,
-    };
+    }];
 
     const response = await fetch(`https://129.148.27.50/api/carrinho/add/item/${idUserClient}`, {
       method: 'PUT',
@@ -132,14 +132,14 @@ const Cart = () => {
       console.log("item adicionado")
       const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
       const existingItemIndex = existingCart.findIndex(
-        (item: { productId: string }) => item.productId === productId
+        (item: { product_id: string }) => item.product_id === productId
       );
 
       if (existingItemIndex !== -1) {
         if (action === "increment") {
-          existingCart[existingItemIndex].quantity += 1;
-        } else if (action === "decrement" && existingCart[existingItemIndex].quantity > 1) {
-          existingCart[existingItemIndex].quantity -= 1;
+          existingCart[existingItemIndex].amount += 1;
+        } else if (action === "decrement" && existingCart[existingItemIndex].amount > 1) {
+          existingCart[existingItemIndex].amount -= 1;
         }
       }
 
@@ -159,12 +159,13 @@ const Cart = () => {
 
     const promises = items.map(async (cartItem) => {
       const response = await fetch(
-        `https://api-fatec.onrender.com/api/v1/product/${cartItem.productId}`
+        `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
       );
       const data = await response.json();
-      const itemValue = (data.price || 0) * cartItem.quantity;
+      console.log(data)
+      const itemValue = (data.price || 0) * cartItem.amount;
       valorTotal += itemValue;
-      quantidadeTotal += cartItem.quantity;
+      quantidadeTotal += cartItem.amount;
     });
 
     await Promise.all(promises);
@@ -182,15 +183,15 @@ const Cart = () => {
 
       const productPromises = cartItems.map(async (cartItem) => {
         const response = await fetch(
-          `https://api-fatec.onrender.com/api/v1/product/${cartItem.productId}`
+          `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
         );
 
         const data = await response.json();
-        const itemValue = data.price * cartItem.quantity;
+        const itemValue = data.price * cartItem.amount;
         return ({
           name: data.desc, // Substitua com a propriedade correta que contém o nome do produto
           totalPrice: itemValue, // Substitua com a propriedade correta que contém o preço do produto
-          quantity: cartItem.quantity, // Substitua com a propriedade correta que contém a quantidade do produto
+          quantity: cartItem.amount, // Substitua com a propriedade correta que contém a quantidade do produto
           price: data.price,
           images: data.images[0].image_path
         })
@@ -266,16 +267,16 @@ const Cart = () => {
             {cartItems.map(async (cartItem, index) => {
               // let valorTotal = 0
               const response = await fetch(
-                `https://api-fatec.onrender.com/api/v1/product/${cartItem.productId}`
+                `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
               );
               const data = await response.json();
               // console.log(cartItem.quantity)
-              const itemValue2 = data.price * cartItem.quantity;
+              const itemValue2 = data.price * cartItem.amount;
 
               // setItemValue(itemValue2)
 
               return (
-                <ProductCard key={index} product={cartItem.productId} value={itemValue2} quantity={cartItem.quantity} onRemove={() => handleRemoveProduct(cartItem.productId)} onQuantityChange={handleQuantityChange} />
+                <ProductCard key={index} product={cartItem.product_id} value={itemValue2} quantity={cartItem.amount} onRemove={() => handleRemoveProduct(cartItem.product_id)} onQuantityChange={handleQuantityChange} />
               )
             })}
           </div>

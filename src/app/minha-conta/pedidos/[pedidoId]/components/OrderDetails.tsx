@@ -37,9 +37,9 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
 
         <div>
           {/* Imagem do Produto (se houver) */}
-          {order.sale_items[0]?.product_img && (
+          {order.sale_items[0]?.image_path && (
             <Image
-              src={order.sale_items[0].product_img}
+              src={order.sale_items[0].image_path[0]}
               alt={order.sale_items[0].product_name}
               width={200}
               height={200}
@@ -99,9 +99,9 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
           {order.sale_items.map((item) => (
             <li key={item.id} className="flex items-center space-x-4">
               <div className="w-16 h-16">
-                {item.product_img && (
+                {item.image_path && (
                   <Image
-                    src={item.product_img}
+                    src={item.image_path}
                     alt={item.product_name}
                     width={200}
                     height={200}

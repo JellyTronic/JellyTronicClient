@@ -75,7 +75,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
         <div className="mb-4 flex items-start">
           <div className="mr-4">
             <Image
-              src={order.sale_items[0].product_img}
+              src={order.sale_items[0].image_path[0]}
               alt={order.sale_items[0].product_name}
               width={200}
               height={200}
