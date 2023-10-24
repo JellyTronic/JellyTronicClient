@@ -109,7 +109,7 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
       <div className="lg:grid lg:grid-cols-2 lg:gap-8">
         <div className="flex items-center justify-center">
           <div className="relative h-[300px] w-full lg:h-[400px]">
-            {product.images ? (
+            {product.images.length != 0 ? (
               <Image src={product.images[0].image_path} alt={product.name} layout="fill" objectFit="contain" />
             ) : (
               <Image src="/produto-sem-imagem.png" alt="Default Product" layout="fill" objectFit="cover" />

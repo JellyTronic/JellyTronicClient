@@ -38,11 +38,11 @@ export default function Login({ params }: { params: { token: string } }) {
         const data = await response.json();
         const itemValue = data.price * cartItem.quantity;
         return ({
-          name: data.desc, // Substitua com a propriedade correta que contém o nome do produto
+          name: data.name, // Substitua com a propriedade correta que contém o nome do produto
           totalPrice: itemValue, // Substitua com a propriedade correta que contém o preço do produto
           quantity: cartItem.quantity, // Substitua com a propriedade correta que contém a quantidade do produto
           price: data.price,
-          images: data.images[0].image_path
+          images: data.images[0].image_path || '26013e08-95ba-4a74-94df-ba83ec5c3516.png'
         })
       });
 
@@ -52,6 +52,7 @@ export default function Login({ params }: { params: { token: string } }) {
       const data = {
         products // Substitua pelo valor desejado
       };
+      console.log(data)
 
       const res = await fetch("http://localhost:3000/api/payment", {
         method: "POST",
@@ -104,11 +105,6 @@ export default function Login({ params }: { params: { token: string } }) {
       {!isAuthenticated && (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            {/* <img
-              className="mx-auto h-10 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt="Your Company"
-            /> */}
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
               Entre em sua conta
             </h2>
