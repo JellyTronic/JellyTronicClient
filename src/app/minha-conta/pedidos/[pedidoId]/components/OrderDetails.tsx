@@ -98,19 +98,19 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
         <ul className="space-y-4">
           {order.sale_items.map((item) => (
             <li key={item.id} className="flex items-center space-x-4">
-              <div className="w-16 h-16">
-                {item.image_path && (
-                  <Image
-                    src={item.image_path}
-                    alt={item.product_name}
-                    width={200}
-                    height={200}
-                  // className="w-full h-full object-cover rounded-md"
-                  />
-                )}
-              </div>
+              {/* <div className="w-16 h-16"> */}
+              {item.image_path && (
+                <Image
+                  src={item.image_path[0]}
+                  alt={item.product_name}
+                  width={150}
+                  height={150}
+                // className="w-full h-full object-cover rounded-md"
+                />
+              )}
+              {/* </div> */}
               <div>
-                <p className="text-lg font-semibold">{item.product_name}</p>
+                <p className="text-base font-semibold">{item.product_name}</p>
                 <p>Quantidade: {item.amount}</p>
                 <p>Preço Unitário: R$ {item.unity_price.toFixed(2)}</p>
                 <p>Total do Item: R$ {item.item_total.toFixed(2)}</p>

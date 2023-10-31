@@ -11,7 +11,8 @@ import Loading from "../loading";
 import { loadStripe } from "@stripe/stripe-js";
 import { nanoid } from 'nanoid';
 import { tokenToString } from "typescript";
-import { apiPayment } from "@/utils/apiUrl";
+import { apiAtualizarEndereco, apiPayment, perfil } from "@/utils/apiUrl";
+import Address from "@/types/Address";
 
 const Cart = () => {
 
@@ -26,6 +27,8 @@ const Cart = () => {
   const [itemValue, setItemValue] = useState<number>(0);
   const [secretToken, setSecretToken] = useState<string>('');
   const [idUserClient, setIdUserClient] = useState<string>('');
+  const [userAddresses, setUserAddresses] = useState<Address | undefined | any>([]);
+  const [newAddress, setNewAddress] = useState("");
   // const [customerName, setCustomerName] = useState("");4
 
 
@@ -41,6 +44,7 @@ const Cart = () => {
 
     if (token && idUser) {
       getCartUserLogin(idUser);
+      getUser(idUser, token);
     }
 
     if (nomeLocalStorage) {
@@ -53,6 +57,20 @@ const Cart = () => {
       calculateTotal(parsedCartItems);
     }
   }, []);
+
+  const getUser = async (idUserClient: string, token: string) => {
+    const response = await fetch(`${perfil.api_online}/${idUserClient}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    // console.log(response)
+    const userLogin = await response.json();
+    setUserAddresses(userLogin.data.deliveryAddress);
+    console.log(userLogin.data.deliveryAddress);
+
+  }
 
   const getCartUserLogin = async (idUserClient: string) => {
     const response = await fetch(`https://129.148.27.50/api/carrinho/${idUserClient}`);
@@ -316,6 +334,44 @@ const Cart = () => {
         </div>
 
       </div>
+
+
+
+      <div className="w-1/2">
+        <h2 className="text-2xl font-bold mb-4">Seu endereço</h2>
+        <div className="rounded-lg p-4 bg-white shadow-md">
+          <div className="user-addresses space-y-4">
+            <div className="border p-4">
+              <p><span className="font-semibold">CEP:</span> {userAddresses.cep}</p>
+              <p><span className="font-semibold">Complemento:</span> {userAddresses.complement}</p>
+              <p><span className="font-semibold">Número:</span> {userAddresses.number}</p>
+              <p><span className="font-semibold">Referência:</span> {userAddresses.reference}</p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6">
+          <h3>Se deseja receber em outro endereço, digite o cep:</h3>
+          <input
+            type="text"
+            placeholder="Digite o CEP"
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:ring-primary focus:border-primary-dark"
+            value={newAddress}
+            onChange={(e) => setNewAddress(e.target.value)}
+          />
+          <button
+            // onClick={handleAddAddress}
+            disabled={isLoading}
+            className="mt-2 bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-md transition duration-300"
+          >
+            Adicionar Endereço
+          </button>
+        </div>
+      </div>
+
+
+
+
+
     </div >
   );
 }
