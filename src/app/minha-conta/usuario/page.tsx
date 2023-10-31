@@ -10,6 +10,7 @@ import formatPhone from "./utils/formatPhone";
 import formatRg from "./utils/formatRg";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import { InputMask } from "primereact/inputmask";
 
 const Cadastro = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -224,6 +225,7 @@ const Cadastro = () => {
                       className="form-input border rounded py-2 px-4"
                       disabled={!editandoName}
                       onChange={handleChangeName}
+                      maxLength={50}
                     />
                     <button
                       className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
@@ -251,12 +253,13 @@ const Cadastro = () => {
                     <label className="block text-gray-600 font-bold">
                       Telefone:
                     </label>
-                    <input
+                    <InputMask
                       type="text"
                       value={phone}
                       className="form-input border rounded py-2 px-4"
                       disabled={!editandoPhone}
                       onChange={handleChangePhone}
+                      mask="(99) 99999-9999"
                     />
                     <button
                       className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
@@ -292,6 +295,7 @@ const Cadastro = () => {
                       className="form-input border rounded py-2 px-4"
                       disabled={!editandoEmail}
                       onChange={handleChangeEmail}
+                      maxLength={50}
                     />
                     <button
                       className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
