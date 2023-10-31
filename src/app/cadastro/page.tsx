@@ -1,11 +1,11 @@
 "use client";
 
-import { InputMask } from "@react-input/mask";
 import "./page.css";
 import { apiCadastro } from "@/utils/apiUrl";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { InputMask } from "primereact/inputmask";
 
 export default function Cadastro() {
   const router = useRouter();
@@ -167,6 +167,7 @@ export default function Cadastro() {
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       onChange={setarNome}
+                      maxLength={50}
                     />
                   </div>
                 </div>
@@ -179,7 +180,7 @@ export default function Cadastro() {
                     Documento de identificação
                   </label>
                   <div className="mt-2">
-                    <input
+                    <InputMask
                       id="identity_document"
                       name="identity_document"
                       type="text"
@@ -187,6 +188,7 @@ export default function Cadastro() {
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       onChange={setarRg}
+                      mask="99.999.999-9"
                     />
                   </div>
                 </div>
@@ -199,7 +201,7 @@ export default function Cadastro() {
                     Telefone/Celular
                   </label>
                   <div className="mt-2">
-                    <input
+                    <InputMask
                       id="phone"
                       name="phone"
                       type="text"
@@ -207,6 +209,7 @@ export default function Cadastro() {
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       onChange={setarTelefone}
+                      mask="(99) 99999-9999"
                     />
                   </div>
                 </div>
@@ -260,7 +263,7 @@ export default function Cadastro() {
                     Cep
                   </label>
                   <div className="mt-2">
-                    <input
+                    <InputMask
                       id="cep"
                       name="cep"
                       type="text"
@@ -268,6 +271,7 @@ export default function Cadastro() {
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       onChange={setarCep}
+                      mask="99999-999"
                     />
                   </div>
                 </div>
@@ -287,6 +291,7 @@ export default function Cadastro() {
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       onChange={setarNum}
+                      maxLength={10}
                     />
                   </div>
                 </div>
@@ -306,6 +311,7 @@ export default function Cadastro() {
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       onChange={setarComplemento}
+                      maxLength={255}
                     />
                   </div>
                 </div>
@@ -325,6 +331,7 @@ export default function Cadastro() {
                       required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       onChange={setarReferencia}
+                      maxLength={255}
                     />
                   </div>
                 </div>
@@ -348,6 +355,7 @@ export default function Cadastro() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     onChange={setarEmail}
+                    maxLength={50}
                   />
                 </div>
               </div>
@@ -368,6 +376,7 @@ export default function Cadastro() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     onChange={setarPassword}
+                    maxLength={20}
                   />
                 </div>
               </div>
