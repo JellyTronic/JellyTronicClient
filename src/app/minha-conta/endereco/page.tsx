@@ -6,6 +6,8 @@ import Sidebar from "../../../components/sidebar"; // Componente da barra latera
 import { apiAtualizarEndereco, apiCadastro, perfil } from "@/utils/apiUrl";
 import "./page.css";
 import Swal from "sweetalert2";
+import { InputMask } from "primereact/inputmask";
+import { Router } from "next/router";
 
 const Endereco = () => {
   const [token, setToken] = useState("");
@@ -50,6 +52,17 @@ const Endereco = () => {
           const data = await response.json();
           setIsLoadingCep(false);
           Swal.fire("Cep atualizado!", data, "success");
+          const newCep = cep.replace("-", "");
+          fetch(`https://viacep.com.br/ws/${newCep}/json`, {
+            method: "GET",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              setBairro(data.bairro);
+              setLocalidade(data.localidade);
+              setLogradouro(data.logradouro);
+              setUf(data.uf);
+            });
         } else {
           if (response.status === 400) {
             const errorData = await response.json();
@@ -103,7 +116,7 @@ const Endereco = () => {
       try {
         setIsLoadingComplement(true);
         const response = await fetch(
-          `${apiAtualizarEndereco.api_local}/${addressId}`,
+          `${apiAtualizarEndereco.api_online}/${addressId}`,
           {
             method: "PATCH",
             headers: {
@@ -198,7 +211,7 @@ const Endereco = () => {
         .then((response) => response.json())
         .then((data) => {
           const newCep = data.data.deliveryAddress.cep.replace("-", "");
-          setCep(newCep);
+          setCep(data.data.deliveryAddress.cep);
           setAddressId(data.data.deliveryAddress.id);
           setComplement(data.data.deliveryAddress.complement);
           setNumber(data.data.deliveryAddress.number);
@@ -282,12 +295,13 @@ const Endereco = () => {
                       <label className="block text-gray-600 font-bold">
                         Cep:
                       </label>
-                      <input
+                      <InputMask
                         type="text"
                         value={cep}
                         className="form-input border rounded py-2 px-4"
                         disabled={!editandoCep}
                         onChange={handleChangeCep}
+                        mask="99999-999"
                       />
                       <button
                         className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
@@ -312,6 +326,7 @@ const Endereco = () => {
                         className="form-input border rounded py-2 px-4"
                         disabled={!editandoNumber}
                         onChange={handleChangeNumber}
+                        maxLength={10}
                       />
                       <button
                         className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
@@ -336,6 +351,7 @@ const Endereco = () => {
                         className="form-input border rounded py-2 px-4"
                         disabled={!editandoComplement}
                         onChange={handleChangeComplement}
+                        maxLength={255}
                       />
                       <button
                         className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
@@ -360,6 +376,7 @@ const Endereco = () => {
                         className="form-input border rounded py-2 px-4"
                         disabled={!editandoReference}
                         onChange={handleChangeReference}
+                        maxLength={255}
                       />
                       <button
                         className="ml-2 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded buttonChange"
