@@ -69,7 +69,7 @@ const Header = () => {
   return (
     <div className='container mx-auto p-2 pt-4 lg:pt-1'>
       <div className='flex justify-between items-center lg:border-b lg:border-gray-500'>
-        <div className='flex items-center p-2 px-3 relative'>
+        <div className='flex items-center p-2 px-3 relative pl-1'>
 
           <Link href='/'>
             <div className='hidden lg:flex relative h-[100px] w-[120px]'>
@@ -147,8 +147,8 @@ const Header = () => {
 
         </div>
 
-        <Link href='/' className='pl-1'>
-          <div className='relative h-[32px] w-[260px] lg:hidden'>
+        <Link href='/' className='pl-1 md:pl-8'>
+          <div className='relative h-[32px] w-[260px] md:w-[440px]  lg:hidden'>
             <Image src='/logoName.png' alt='ShopWave' fill objectFit='container'/>
           </div>
         </Link>
