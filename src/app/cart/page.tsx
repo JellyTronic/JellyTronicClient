@@ -268,35 +268,63 @@ const Cart = () => {
 
         {secretToken ? (
           <div className="lg:m-4">
-            {cartItemsLogin.map(async (cartItem, index) => {
-              const response = await fetch(
-                `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
-              );
-              const data = await response.json();
-              const itemValue2 = cartItem.item_total
+            {cartItemsLogin.length === 0 ? (
+              <div className='flex flex-col items-center'>
+                <p className='mb-6'>
+                  Você ainda não possui nenhum produto no seu carrinho, clique no botão abaixo e comece a comprar
+                </p>
+                <Button>
+                  <Link href={'/'}>Começar a comprar</Link>
+                </Button>
+              </div>
+            ) : (
+              <>
+                {cartItemsLogin.map(async (cartItem, index) => {
+                  const response = await fetch(
+                    `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
+                  );
+                  const data = await response.json();
+                  const itemValue2 = cartItem.item_total
 
-              return (
-                <ProductCard key={index} product={cartItem.product_id} value={itemValue2} quantity={cartItem.amount} onRemove={() => handleRemoveProductLogin(cartItem.id)} onQuantityChange={handleQuantityChangeLogin} />
-              )
-            })}
+                  return (
+                    <ProductCard key={index} product={cartItem.product_id} value={itemValue2} quantity={cartItem.amount} onRemove={() => handleRemoveProductLogin(cartItem.id)} onQuantityChange={handleQuantityChangeLogin} />
+                  )
+                })}
+              </>
+            )}
+
           </div>
         ) : (
           <div className="lg:m-4">
-            {cartItems.map(async (cartItem, index) => {
-              // let valorTotal = 0
-              const response = await fetch(
-                `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
-              );
-              const data = await response.json();
-              // console.log(cartItem.quantity)
-              const itemValue2 = data.price * cartItem.amount;
+            {cartItems.length === 0 ? (
+              <div className='flex flex-col items-center'>
+                <p className='mb-6'>
+                  Você ainda não possui nenhum produto no seu carrinho, clique no botão abaixo e comece a comprar
+                </p>
+                <Button>
+                  <Link href={'/'}>Começar a comprar</Link>
+                </Button>
+              </div>
+            ) : (
+              <>
+                {cartItems.map(async (cartItem, index) => {
+                  // let valorTotal = 0
+                  const response = await fetch(
+                    `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
+                  );
+                  const data = await response.json();
+                  // console.log(cartItem.quantity)
+                  const itemValue2 = data.price * cartItem.amount;
 
-              // setItemValue(itemValue2)
+                  // setItemValue(itemValue2)
 
-              return (
-                <ProductCard key={index} product={cartItem.product_id} value={itemValue2} quantity={cartItem.amount} onRemove={() => handleRemoveProduct(cartItem.product_id)} onQuantityChange={handleQuantityChange} />
-              )
-            })}
+                  return (
+                    <ProductCard key={index} product={cartItem.product_id} value={itemValue2} quantity={cartItem.amount} onRemove={() => handleRemoveProduct(cartItem.product_id)} onQuantityChange={handleQuantityChange} />
+                  )
+                })}
+              </>
+            )}
+
           </div>
         )}
 
