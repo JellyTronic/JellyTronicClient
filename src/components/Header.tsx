@@ -147,9 +147,9 @@ const Header = () => {
 
         </div>
 
-        <Link href='/' className='pl-4'>
-          <div className='relative h-[32px] w-[183px] lg:hidden'>
-            <Image src='/logoName.png' alt='ShopWave' fill objectFit='cover'/>
+        <Link href='/' className='pl-1'>
+          <div className='relative h-[32px] w-[260px] lg:hidden'>
+            <Image src='/logoName.png' alt='ShopWave' fill objectFit='container'/>
           </div>
         </Link>
 
