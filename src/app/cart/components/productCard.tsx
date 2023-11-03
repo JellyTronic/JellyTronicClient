@@ -120,7 +120,4 @@ const ProductCard = ({ product, value, valueUnity, quantity, onRemove, onQuantit
 }
 
 export default ProductCard;
-function onRemove() {
-  throw new Error('Function not implemented.');
-}
 

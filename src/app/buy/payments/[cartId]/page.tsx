@@ -16,7 +16,7 @@ export default function App({ params }: { params: { cartId: string } }) {
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    fetch(process.env.STRIPE_CLIENTID!, {
+    fetch(process.env.NEXT_PUBLIC_STRIPE_CLIENTID!, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export default function App({ params }: { params: { cartId: string } }) {
       console.log(clientSecret);
       setClientSecret(clientSecret);
     });
-  })
+  }, [])
 
 
   return (

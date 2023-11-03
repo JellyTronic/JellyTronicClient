@@ -8,12 +8,15 @@ import AddressCard from './components/AddressCard';
 import { CiLocationOn } from 'react-icons/ci';
 import ResumoPayment from './components/ResumoPayment';
 
+
+
 const Address = ({ params }: { params: { cartId: string } }) => {
   const [cartId, setCartId] = useState(params.cartId);
   const [idUser, setIdUser] = useState();
   const [token, setToken] = useState<string>('');
   const [isAuthenticated, setIsAuthenticated] = useState<Boolean>(false);
   const [addresses, setAdresses] = useState<AddressPayment[]>([]);
+
 
   useEffect(() => {
     const currentToken = sessionStorage.getItem("secretToken");
@@ -53,11 +56,13 @@ const Address = ({ params }: { params: { cartId: string } }) => {
     }
   }, []);
 
+
+
   return (
     <div className="mx-auto container mt-2">
       <h1 className='font-semibold text-xl mb-4'>opções de entrega</h1>
       <div className='flex'>
-        <div className="p-8 rounded shadow-md bg-gray-300 w-[70%]">
+        <div className="p-8 rounded shadow-md bg-gray-300 w-[70%] h-full">
           <h2 className="text-1xl font-semibold mb-4">endereço de entrega</h2>
 
           <div className="mb-4">
@@ -78,7 +83,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
           ))}
         </div>
 
-        <ResumoPayment cartId={cartId}/>
+        <ResumoPayment cartId={cartId} />
 
       </div>
 

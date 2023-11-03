@@ -32,7 +32,6 @@ const Cart = () => {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    const nomeLocalStorage = localStorage.getItem("nome");
     const token = sessionStorage.getItem("secretToken")
     const idUser = sessionStorage.getItem("id")
     const cartItemsFromLocalStorage = localStorage.getItem("cart");
@@ -45,9 +44,6 @@ const Cart = () => {
       getUser(idUser, token);
     }
 
-    if (nomeLocalStorage) {
-      setIsCustomerRegistered(true);
-    }
 
     if (cartItemsFromLocalStorage) {
       const parsedCartItems = JSON.parse(cartItemsFromLocalStorage);
@@ -82,7 +78,6 @@ const Cart = () => {
       };
     });
 
-    // Define os dados do carrinho no sessionStorage
     localStorage.setItem('cart', JSON.stringify(cartItemArray));
     setCartItemsLogin(cartUserLogin.cart_items);
   }
@@ -187,7 +182,6 @@ const Cart = () => {
 
     setTotalValue(valorTotal);
     setTotalQuantity(quantidadeTotal);
-    setIsLoading(false);
   };
 
   const handleBuyClick = async () => {
@@ -278,7 +272,6 @@ const Cart = () => {
                   );
                   const data = await response.json();
                   const itemValue2 = cartItem.item_total
-                  console.log(data);
 
                   return (
                     <ProductCard key={index} product={cartItem.product_id} value={itemValue2} valueUnity={data.price} quantity={cartItem.amount} onRemove={() => handleRemoveProductLogin(cartItem.id)} onQuantityChange={handleQuantityChangeLogin} />
