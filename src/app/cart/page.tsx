@@ -269,6 +269,10 @@ const Cart = () => {
 
     if (isUserLoggedIn) {
 
+      const response = await fetch(`https://129.148.27.50/api/carrinho/${idUserClient}`);
+      const cartUserLogin = await response.json();
+      // console.log(cartUserLogin.id);
+
       const productPromises = cartItems.map(async (cartItem) => {
         const response = await fetch(
           `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
@@ -304,11 +308,13 @@ const Cart = () => {
         return console.log("Ocorreu um erro ao realizar a compra");
       }
 
-      const { sessionId } = await res.json();
+      window.location.href = `/buy/address/${cartUserLogin.id}`;
 
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
+      // const { sessionId } = await res.json();
 
-      await stripe?.redirectToCheckout({ sessionId })
+      // const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
+
+      // await stripe?.redirectToCheckout({ sessionId })
 
     } else {
 
@@ -392,7 +398,7 @@ const Cart = () => {
           </div>
         )}
 
-        <div className="mx-6 lg:w-[30%]">
+        <div className="mx-6 mt-6 bg-gray-300 h-80 rounded-xl p-4 lg:w-[30%]">
           <h3 className="font-semibold text-xl mb-4">Resumo do pedido</h3>
 
           <div>

@@ -59,7 +59,7 @@ const ProductCard = ({ product, value, valueUnity, quantity, onRemove, onQuantit
   }
 
   return (
-    <div className="bg-gray-100 shadow-md rounded-lg p-4 my-3 w-[90%] lg:w-[50em]">
+    <div className="bg-gray-300 shadow-md rounded-lg p-4 my-3 w-[90%] lg:w-[50em]">
 
       <div className="flex">
         <div className="flex-shrink-0 w-24 h-24 mr-4 flex items-center">
