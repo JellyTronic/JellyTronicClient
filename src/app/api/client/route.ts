@@ -10,7 +10,7 @@ export async function POST() {
   try {
 
     const session = await stripe.checkout.sessions.create({
-      success_url: 'http://localhost:3000/minha-conta',
+      success_url: process.env.STRIPE_CONFIRMATION!,
       metadata: {
         name: "teste"
       },

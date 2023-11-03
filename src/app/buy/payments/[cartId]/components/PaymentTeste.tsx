@@ -23,7 +23,7 @@ const PaymentTeste = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `http://localhost:3000/minha-conta`
+        return_url: process.env.STRIPE_CONFIRMATION!
       }
     })
 

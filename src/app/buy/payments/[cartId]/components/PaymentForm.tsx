@@ -20,7 +20,7 @@ const PaymentForm = () => {
 
     addMessages('Creating Payment intent...');
 
-    const { clientSecret } =  await fetch('http://localhost:3000/api/clientID', {
+    const { clientSecret } =  await fetch(process.env.STRIPE_CLIENTID!, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

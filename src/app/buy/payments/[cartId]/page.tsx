@@ -16,7 +16,7 @@ export default function App({ params }: { params: { cartId: string } }) {
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/clientID', {
+    fetch(process.env.STRIPE_CLIENTID!, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
