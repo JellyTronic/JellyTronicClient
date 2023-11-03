@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import CartItem from '@/types/Cart';
 import CartItems from '@/types/Cart';
-import ProductCard from "./productCard";
+import ProductCard from "../../../components/productCard";
 
 interface ResumoPaymentProps {
   cartId: string;

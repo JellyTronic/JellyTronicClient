@@ -23,7 +23,7 @@ const PaymentTeste = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: process.env.STRIPE_CONFIRMATION!
+        return_url: process.env.NEXT_PUBLIC_STRIPE_CONFIRMATION!
       }
     })
 
@@ -71,14 +71,17 @@ const PaymentTeste = () => {
   }
 
   return (
-    <div className="">
-      <form id="payment-form" onSubmit={handleSubmit}>
+    <div>
+      <form id="payment-form">
 
         <PaymentElement />
 
-        <div className="flex justify-center mt-6">
-          <Button className="text-lg px-10">Pay</Button>
+        <div className="mt-6 mb-2 lg:flex justify-center">
+          <Button className="w-[100%] lg:w-[50%] py-2 font-semibold text-xl" onSubmit={handleSubmit}>
+            confirmar pagamento
+          </Button>
         </div>
+
       </form>
     </div>
   );

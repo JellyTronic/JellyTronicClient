@@ -1,3 +1,4 @@
+import ProductCard from "../../../components/productCard";
 import Button from "@/components/Button";
 import { formatPrice } from "@/providers/formatCurrency";
 import CartItem from "@/types/Cart";
@@ -14,7 +15,7 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
   const [totalQuantity, setTotalQuantity] = useState<number>(0);
   const [secretToken, setSecretToken] = useState<string>('');
   const [idUserClient, setIdUserClient] = useState<string>('');
-  const [cartItems, setCartItems] = useState();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   // const getUser = async (idUserClient: string, token: string) => {
   //   const response = await fetch(`${perfil.api_online}/${idUserClient}`, {
@@ -52,6 +53,22 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
     // setIsLoading(false);
   };
 
+  const getCartUserLogin = async (idUserClient: string) => {
+    const response = await fetch(`https://129.148.27.50/api/carrinho/${idUserClient}`);
+    const cartUserLogin = await response.json();
+    console.log(cartUserLogin);
+
+    const cartItemArray = cartUserLogin.cart_items.map((item: any) => {
+      return {
+        product_id: item.product_id,
+        amount: item.amount
+      };
+    });
+
+    localStorage.setItem('cart', JSON.stringify(cartItemArray));
+    setCartItems(cartUserLogin.cart_items);
+  }
+
   useEffect(() => {
     const nomeLocalStorage = localStorage.getItem("nome");
     const token = sessionStorage.getItem("secretToken")
@@ -75,15 +92,32 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
       setCartItems(parsedCartItems);
       calculateTotal(parsedCartItems);
     }
+
+    getCartUserLogin(idUser!);
   }, []);
 
 
 
+
   return (
-    <div className="bg-gray-300 h-80 p-4 rounded-lg mx-4 lg:w-[30%]">
+    <div className="bg-gray-300 h-auto p-4 rounded-lg lg:w-[30%]">
       <h3 className="font-semibold text-xl mb-4">Resumo do pedido</h3>
 
       <div>
+        {cartItems.map(async (cartItem, index) => {
+          const response = await fetch(
+            `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
+          );
+          const data = await response.json();
+          const itemValue2 = cartItem.item_total
+
+          return (
+            <ProductCard key={index} product={cartItem.product_id} value={itemValue2} valueUnity={data.price} quantity={cartItem.amount} />
+          )
+        })}
+      </div>
+
+      <div className="mt-2 pt-2">
         <div className="flex justify-between mb-1">
           <p>{totalQuantity} produtos</p>
           <p>{formatPrice(totalValue)}</p>
@@ -99,18 +133,10 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
           <p>R$ 0,00</p>
         </div>
 
-        <div className="flex justify-between border-b border-gray-400 pb-2 mb-6">
+        <div className="flex justify-between pb-2 mb-2">
           <p className="font-semibold text-lg">total</p>
           <p className="font-semibold text-lg">{formatPrice(totalValue)}</p>
         </div>
-      </div>
-
-      <div>
-        <Button className="w-[100%] py-2 font-semibold text-xl">
-          <Link href={`/buy/payments/${cartId}`}>
-            continuar
-          </Link>
-        </Button>
       </div>
     </div >
   );

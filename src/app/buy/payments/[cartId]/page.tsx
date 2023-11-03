@@ -31,8 +31,8 @@ export default function App({ params }: { params: { cartId: string } }) {
 
 
   return (
-    <div className="mx-auto p-2 h-full flex">
-      <div className="bg-gray-300 rounded-lg lg:mx-4 lg:w-[70%] p-4">
+    <div className="mx-auto p-2 lg:flex">
+      <div className="bg-gray-300 rounded-lg lg:h-full mb-6 lg:mb-0 lg:mx-4 lg:w-[70%] p-4">
         {stripePromise && clientSecret && (
           <Elements stripe={stripePromise} options={{ clientSecret }} >
             <h1 className="font-semibold text-2xl mt-2 mb-10">formas de pagamento</h1>
