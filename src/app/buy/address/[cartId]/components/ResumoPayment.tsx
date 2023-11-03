@@ -101,7 +101,7 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
 
 
   return (
-    <div className="bg-gray-300 h-auto p-4 rounded-lg mx-4 lg:w-[30%]">
+    <div className="mt-6 lg:mt-0 bg-gray-300 h-auto p-4 rounded-lg mx-4 lg:w-[30%]">
       <h3 className="font-semibold text-xl mb-4">Resumo do pedido</h3>
 
       <div>

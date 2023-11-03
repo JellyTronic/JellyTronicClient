@@ -61,8 +61,8 @@ const Address = ({ params }: { params: { cartId: string } }) => {
   return (
     <div className="mx-auto container mt-2">
       <h1 className='font-semibold text-xl mb-4'>opções de entrega</h1>
-      <div className='flex'>
-        <div className="p-8 rounded shadow-md bg-gray-300 w-[70%] h-full">
+      <div className='lg:flex'>
+        <div className="p-8 rounded shadow-md bg-gray-300 ml-4 lg:ml-0 w-[92%] lg:w-[70%] h-full">
           <h2 className="text-1xl font-semibold mb-4">endereço de entrega</h2>
 
           <div className="mb-4">
