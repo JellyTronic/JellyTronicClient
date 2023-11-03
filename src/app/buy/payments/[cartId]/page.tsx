@@ -12,7 +12,7 @@ import ResumoPayment from "./components/ResumoPayment";
 
 export default function App({ params }: { params: { cartId: string } }) {
   const [cartId, setCartId] = useState(params.cartId);
-  const stripePromise = loadStripe('pk_test_51NXaMiKZZkxd9m1G2rMHg2w4TDF1ZCp9kMcZB6iopf2Ss2Al4iWvxNCco5KRmzPhFUehlLsdCfl1XVgetfDMZdG700OgjjYpSE')
+  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
