@@ -1,6 +1,5 @@
 'use client'
 
-// import { AiOutlineArrowLeft } from "react-icons/ai";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import ProductCard from "./components/productCard";
 import Link from "next/link";
@@ -8,16 +7,9 @@ import { useEffect, useState } from "react";
 import CartItem from "@/types/Cart";
 import Button from "@/components/Button";
 import { formatPrice } from "@/providers/formatCurrency";
-import Loading from "../loading";
-import { loadStripe } from "@stripe/stripe-js";
 import { nanoid } from 'nanoid';
-// import { tokenToString } from "typescript";
-import { apiAtualizarEndereco, apiPayment, perfil } from "@/utils/apiUrl";
+import { apiPayment, perfil } from "@/utils/apiUrl";
 import Address from "@/types/Address";
-// import { Atomic_Age } from "next/font/google";
-import InputMask from 'react-input-mask';
-import Swal from "sweetalert2";
-// import { InputMask } from "primereact/inputmask";
 
 const Cart = () => {
 
@@ -281,9 +273,9 @@ const Cart = () => {
         const data = await response.json();
         const itemValue = data.price * cartItem.amount;
         return ({
-          name: data.desc, // Substitua com a propriedade correta que contém o nome do produto
-          totalPrice: itemValue, // Substitua com a propriedade correta que contém o preço do produto
-          quantity: cartItem.amount, // Substitua com a propriedade correta que contém a quantidade do produto
+          name: data.desc,
+          totalPrice: itemValue,
+          quantity: cartItem.amount,
           price: data.price,
           images: data.images[0].image_path
         })
@@ -293,15 +285,15 @@ const Cart = () => {
       const products = await Promise.all(productPromises);
 
       const data = {
-        products // Substitua pelo valor desejado
+        products
       };
 
       const res = await fetch(`${apiPayment.api}`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data), // Converte o objeto em uma string JSON
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) {
@@ -309,12 +301,6 @@ const Cart = () => {
       }
 
       window.location.href = `/buy/address/${cartUserLogin.id}`;
-
-      // const { sessionId } = await res.json();
-
-      // const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
-
-      // await stripe?.redirectToCheckout({ sessionId })
 
     } else {
 
