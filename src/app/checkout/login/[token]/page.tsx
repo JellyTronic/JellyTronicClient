@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import FormLogin from "./components/formLogin";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import IsLogged from "./components/isLogged";
+import IsLogged from "@/components/isLogged";
 import CartItem from "@/types/Cart";
 import { loadStripe } from "@stripe/stripe-js";
 import { apiPayment } from "@/utils/apiUrl";
@@ -19,15 +19,15 @@ export default function Login({ params }: { params: { token: string } }) {
 
   const handleLoginSubmit = (formData: { token: string; id: number }) => {
     sessionStorage.setItem("secretToken", formData.token);
-    const idClient = sessionStorage.setItem("id", formData.id.toString());
+    sessionStorage.setItem("id", formData.id.toString());
     setIdUser(formData.id.toString());
     setIsAuthenticated(true);
     sessionStorage.removeItem('specialToken')
-    handleBuyClick(idClient);
+    handleBuyClick(formData.id.toString());
 
   };
 
-  const handleBuyClick = async (idUserClient: any) => {
+  const handleBuyClick = async (idUserClient: string) => {
 
     const isUserLoggedIn = sessionStorage.getItem("secretToken") !== null;
 
@@ -35,6 +35,7 @@ export default function Login({ params }: { params: { token: string } }) {
 
       const responseClient = await fetch(`https://129.148.27.50/api/carrinho/${idUserClient}`);
       const cartUserLogin = await responseClient.json();
+      console.log(cartUserLogin);
 
       const teste = sessionStorage.getItem("id");
 
