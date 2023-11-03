@@ -19,32 +19,34 @@ export default function Login({ params }: { params: { token: string } }) {
 
   const handleLoginSubmit = (formData: { token: string; id: number }) => {
     sessionStorage.setItem("secretToken", formData.token);
-    sessionStorage.setItem("id", formData.id.toString());
+    const idClient = sessionStorage.setItem("id", formData.id.toString());
     setIdUser(formData.id.toString());
     setIsAuthenticated(true);
     sessionStorage.removeItem('specialToken')
-    handleBuyClick();
+    handleBuyClick(idClient);
 
   };
 
-  const handleBuyClick = async () => {
+  const handleBuyClick = async (idUserClient: any) => {
 
     const isUserLoggedIn = sessionStorage.getItem("secretToken") !== null;
 
     if (isUserLoggedIn) {
+
+      const responseClient = await fetch(`https://129.148.27.50/api/carrinho/${idUserClient}`);
+      const cartUserLogin = await responseClient.json();
 
       const teste = sessionStorage.getItem("id");
 
       const response = await fetch(`https://129.148.27.50/api/carrinho/add/item/${teste}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(cartItems)
       })
 
       if (response.ok) {
-        // console.log(response)
         console.log("adicionado com sucesso")
       } else {
         return console.log("Ocorreu um erro ao realizar a compra");
@@ -59,9 +61,9 @@ export default function Login({ params }: { params: { token: string } }) {
         const data = await response.json();
         const itemValue = data.price * cartItem.amount;
         return ({
-          name: data.name, // Substitua com a propriedade correta que contém o nome do produto
-          totalPrice: itemValue, // Substitua com a propriedade correta que contém o preço do produto
-          quantity: cartItem.amount, // Substitua com a propriedade correta que contém a quantidade do produto
+          name: data.name,
+          totalPrice: itemValue,
+          quantity: cartItem.amount,
           price: data.price,
           images: data.images[0].image_path || '26013e08-95ba-4a74-94df-ba83ec5c3516.png'
         })
@@ -71,26 +73,28 @@ export default function Login({ params }: { params: { token: string } }) {
       const products = await Promise.all(productPromises);
 
       const data = {
-        products // Substitua pelo valor desejado
+        products
       };
 
       const res = await fetch(`${apiPayment.api}`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Defina o tipo de conteúdo como JSON
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data), // Converte o objeto em uma string JSON
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) {
         return console.log("Ocorreu um erro ao realizar a compra");
       }
 
-      const { sessionId } = await res.json();
+      window.location.href = `/buy/address/${cartUserLogin.id}`;
 
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
+      // const { sessionId } = await res.json();
 
-      await stripe?.redirectToCheckout({ sessionId })
+      // const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY as string);
+
+      // await stripe?.redirectToCheckout({ sessionId })
     }
   }
 
@@ -108,11 +112,9 @@ export default function Login({ params }: { params: { token: string } }) {
       if (cartItemsFromLocalStorage) {
         const parsedCartItems = JSON.parse(cartItemsFromLocalStorage);
         setCartItems(parsedCartItems);
-        // calculateTotal(parsedCartItems);
       }
 
     } else {
-      // alert("Desculpa, você não precisa acessar essa página e estamos redirecionando você a tela de login!")
       window.location.href = "/login"
       sessionStorage.removeItem('specialToken')
     }
