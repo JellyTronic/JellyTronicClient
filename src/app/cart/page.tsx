@@ -14,7 +14,7 @@ import Address from "@/types/Address";
 const Cart = () => {
 
   const [isCustomerRegistered, setIsCustomerRegistered] = useState(false);
-  const [quantidades, setQuantidades] = useState<{ [productId: string]: number }>({}); // Estado para armazenar as quantidades por productId
+  const [quantidades, setQuantidades] = useState<{ [productId: string]: number }>({});
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartItemsLogin, setCartItemsLogin] = useState<CartItem[]>([]);
   const [totalValue, setTotalValue] = useState<number>(0);
@@ -30,71 +30,6 @@ const Cart = () => {
   const [editandoCep, setEditandoCep] = useState(false);
   const [isLoadingCep, setIsLoadingCep] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  // const [customerName, setCustomerName] = useState("");4
-
-
-  // const handleEdicaoCep = async () => {
-  //   // event?.preventDefault();
-  //   if (editandoCep) {
-  //     try {
-  //       setIsLoadingCep(true);
-  //       const response = await fetch(
-  //         `${apiAtualizarEndereco.api_online}/${addressId}`,
-  //         {
-  //           method: "PATCH",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${secretToken}`,
-  //           },
-  //           body: JSON.stringify({ cep }),
-  //         }
-  //       );
-
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setIsLoadingCep(false);
-  //         Swal.fire("Cep atualizado!", data, "success");
-  //         const newCep = cep.replace("-", "");
-  //         fetch(`https://viacep.com.br/ws/${newCep}/json`, {
-  //           method: "GET",
-  //         })
-  //           .then((response) => response.json())
-  //           .then((data) => {
-  //             console.log(data)
-  //             // setBairro(data.bairro);
-  //             // setLocalidade(data.localidade);
-  //             // setLogradouro(data.logradouro);
-  //             // setUf(data.uf);
-  //           });
-  //       } else {
-  //         if (response.status === 400) {
-  //           const errorData = await response.json();
-  //           const { message } = errorData;
-  //           setIsLoadingCep(false);
-  //           Swal.fire("Erro ao atualizar!", message, "error");
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  //   setEditandoCep(!editandoCep);
-  // };
-
-  // const handleChangeCep = (e: any) => {
-  //   setCep(e.target.value);
-  // };
-
-  // const handleChange = (e:any) => {
-  //   setInputValue(e.target.value);
-  // };
-
-  // const handleSubmit = (e:any) => {
-  //   e.preventDefault(); // Isso evita o recarregamento da página
-  //   // Restante do seu código de tratamento do formulário
-  // };
-
-
 
   useEffect(() => {
     const nomeLocalStorage = localStorage.getItem("nome");
@@ -325,7 +260,7 @@ const Cart = () => {
       <div className="lg:flex lg:justify-between">
 
         {secretToken ? (
-          <div className="lg:m-4">
+          <div className="ml-4 lg:m-4">
             {cartItemsLogin.length === 0 ? (
               <div className='flex flex-col items-center'>
                 <p className='mb-6'>
@@ -354,7 +289,7 @@ const Cart = () => {
 
           </div>
         ) : (
-          <div className="lg:m-4">
+          <div className="ml-4 lg:m-4">
             {cartItems.length === 0 ? (
               <div className='flex flex-col items-center'>
                 <p className='mb-6'>
@@ -384,7 +319,7 @@ const Cart = () => {
           </div>
         )}
 
-        <div className="mx-6 mt-6 bg-gray-300 h-80 rounded-xl p-4 lg:w-[30%]">
+        <div className="ml-4 w-[86%] mt-10 lg:mx-6 lg:mt-6 bg-gray-300 h-80 rounded-xl p-4 lg:w-[30%]">
           <h3 className="font-semibold text-xl mb-4">Resumo do pedido</h3>
 
           <div>
@@ -423,7 +358,7 @@ const Cart = () => {
 
 
 
-      <div className="w-1/2">
+      {/* <div className="w-1/2">
         <h2 className="text-2xl font-bold mb-4">Seu endereço</h2>
         <div className="rounded-lg p-4 bg-white shadow-md">
           <div className="user-addresses space-y-4">
@@ -436,9 +371,9 @@ const Cart = () => {
           </div>
         </div>
         <div className="mt-6">
-          <h3>Se deseja receber em outro endereço, digite o cep:</h3>
+          <h3>Se deseja receber em outro endereço, digite o cep:</h3> */}
 
-          {/* <InputMask
+      {/* <InputMask
             type="text"
             value={cep}
             className="form-input border rounded py-2 px-4"
@@ -446,14 +381,14 @@ const Cart = () => {
             onChange={handleChangeCep}
             mask="99999-999"
           /> */}
-          {/* <input
+      {/* <input
             type="number"
             placeholder="Digite o CEP"
             className="w-32 p-2 border rounded-md focus:outline-none focus:ring focus:ring-primary focus:border-primary-dark"
             value={newAddress}
             onChange={(e) => setNewAddress(e.target.value)}
           /> */}
-          {/* <Button
+      {/* <Button
             // onClick={handleAddAddress}
             // onClick={handleEdicaoCep}
             // disabled={isLoading}
@@ -462,10 +397,10 @@ const Cart = () => {
             Adicionar Endereço
           </Button> */}
 
-          <Link href='https://buscacepinter.correios.com.br/app/endereco/index.php' className="ml-4">não seu meu cep</Link>
+      {/* <Link href='https://buscacepinter.correios.com.br/app/endereco/index.php' className="ml-4">não seu meu cep</Link> */}
 
-        </div>
-      </div>
+      {/* </div>
+      </div> */}
 
 
 

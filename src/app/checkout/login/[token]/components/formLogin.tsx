@@ -1,4 +1,4 @@
-import "./formLogin.css";
+'use client'
 
 import { apiLogin } from "@/utils/apiUrl";
 import { useEffect, useState } from "react";
@@ -65,7 +65,7 @@ export default function FormLogin({ onSubmit }: LoginFormProps) {
 
       if (response.ok) {
         const data = await response.json();
-        Swal.fire("Bom trabalho!", data.message, "success");
+        // Swal.fire("Bom trabalho!", data.message, "success");
 
         onSubmit({ token: data.token, id: data.id });
       } else {
