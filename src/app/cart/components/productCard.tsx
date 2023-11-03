@@ -12,12 +12,13 @@ import Link from 'next/link';
 interface ProductCardProps {
   product: any,
   quantity: number;
-  value: number
+  value: number;
+  valueUnity: number;
   onRemove: () => void;
   onQuantityChange: (productId: string, currentQuantity: number, action: "decrement" | "increment") => void;
 }
 
-const ProductCard = ({ product, value, quantity, onRemove, onQuantityChange }: ProductCardProps) => {
+const ProductCard = ({ product, value, valueUnity, quantity, onRemove, onQuantityChange }: ProductCardProps) => {
 
   const [quantiti, setQuantity] = useState(quantity);
   const [produto, setProduto] = useState<Produto[] | any>([]);
@@ -85,7 +86,7 @@ const ProductCard = ({ product, value, quantity, onRemove, onQuantityChange }: P
           </p>
           <p className="text-primaryDarker font-bold mt-2">
             {value !== undefined ? (
-              formatPrice(value)
+              formatPrice((valueUnity * quantiti))
             ) : (
               formatPrice(0)
             )}

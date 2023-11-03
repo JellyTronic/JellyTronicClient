@@ -1,5 +1,6 @@
 'use client'
 
+// import { AiOutlineArrowLeft } from "react-icons/ai";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import ProductCard from "./components/productCard";
 import Link from "next/link";
@@ -10,9 +11,13 @@ import { formatPrice } from "@/providers/formatCurrency";
 import Loading from "../loading";
 import { loadStripe } from "@stripe/stripe-js";
 import { nanoid } from 'nanoid';
-import { tokenToString } from "typescript";
+// import { tokenToString } from "typescript";
 import { apiAtualizarEndereco, apiPayment, perfil } from "@/utils/apiUrl";
 import Address from "@/types/Address";
+// import { Atomic_Age } from "next/font/google";
+import InputMask from 'react-input-mask';
+import Swal from "sweetalert2";
+// import { InputMask } from "primereact/inputmask";
 
 const Cart = () => {
 
@@ -29,7 +34,73 @@ const Cart = () => {
   const [idUserClient, setIdUserClient] = useState<string>('');
   const [userAddresses, setUserAddresses] = useState<Address | undefined | any>([]);
   const [newAddress, setNewAddress] = useState("");
+  const [cep, setCep] = useState("*****-***");
+  const [editandoCep, setEditandoCep] = useState(false);
+  const [isLoadingCep, setIsLoadingCep] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   // const [customerName, setCustomerName] = useState("");4
+
+
+  // const handleEdicaoCep = async () => {
+  //   // event?.preventDefault();
+  //   if (editandoCep) {
+  //     try {
+  //       setIsLoadingCep(true);
+  //       const response = await fetch(
+  //         `${apiAtualizarEndereco.api_online}/${addressId}`,
+  //         {
+  //           method: "PATCH",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${secretToken}`,
+  //           },
+  //           body: JSON.stringify({ cep }),
+  //         }
+  //       );
+
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setIsLoadingCep(false);
+  //         Swal.fire("Cep atualizado!", data, "success");
+  //         const newCep = cep.replace("-", "");
+  //         fetch(`https://viacep.com.br/ws/${newCep}/json`, {
+  //           method: "GET",
+  //         })
+  //           .then((response) => response.json())
+  //           .then((data) => {
+  //             console.log(data)
+  //             // setBairro(data.bairro);
+  //             // setLocalidade(data.localidade);
+  //             // setLogradouro(data.logradouro);
+  //             // setUf(data.uf);
+  //           });
+  //       } else {
+  //         if (response.status === 400) {
+  //           const errorData = await response.json();
+  //           const { message } = errorData;
+  //           setIsLoadingCep(false);
+  //           Swal.fire("Erro ao atualizar!", message, "error");
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  //   setEditandoCep(!editandoCep);
+  // };
+
+  // const handleChangeCep = (e: any) => {
+  //   setCep(e.target.value);
+  // };
+
+  // const handleChange = (e:any) => {
+  //   setInputValue(e.target.value);
+  // };
+
+  // const handleSubmit = (e:any) => {
+  //   e.preventDefault(); // Isso evita o recarregamento da página
+  //   // Restante do seu código de tratamento do formulário
+  // };
 
 
 
@@ -108,6 +179,7 @@ const Cart = () => {
     } else {
       console.error('Erro ao excluir o item');
     }
+
   };
 
   // Função de retorno de chamada para atualizar o total de produtos
@@ -127,7 +199,6 @@ const Cart = () => {
     }
 
     localStorage.setItem("cart", JSON.stringify(existingCart));
-
     calculateTotal(existingCart);
   };
 
@@ -162,7 +233,6 @@ const Cart = () => {
       }
 
       localStorage.setItem("cart", JSON.stringify(existingCart));
-      // setCart(existingCart);
 
       calculateTotal(existingCart);
     } else {
@@ -245,11 +315,7 @@ const Cart = () => {
       const specialToken = nanoid(); // Gera um token aleatório
       console.log(specialToken);
       sessionStorage.setItem("specialToken", specialToken)
-      // Redirecione o usuário para a página de checkout com o token especial
       window.location.href = `/checkout/login/${specialToken}`;
-      // alert('Você precisa estar logado para continuar.');
-      // window.location.href = "/login"
-
     }
   };
 
@@ -285,9 +351,10 @@ const Cart = () => {
                   );
                   const data = await response.json();
                   const itemValue2 = cartItem.item_total
+                  console.log(data);
 
                   return (
-                    <ProductCard key={index} product={cartItem.product_id} value={itemValue2} quantity={cartItem.amount} onRemove={() => handleRemoveProductLogin(cartItem.id)} onQuantityChange={handleQuantityChangeLogin} />
+                    <ProductCard key={index} product={cartItem.product_id} value={itemValue2} valueUnity={data.price} quantity={cartItem.amount} onRemove={() => handleRemoveProductLogin(cartItem.id)} onQuantityChange={handleQuantityChangeLogin} />
                   )
                 })}
               </>
@@ -308,18 +375,15 @@ const Cart = () => {
             ) : (
               <>
                 {cartItems.map(async (cartItem, index) => {
-                  // let valorTotal = 0
                   const response = await fetch(
                     `https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`
                   );
                   const data = await response.json();
-                  // console.log(cartItem.quantity)
                   const itemValue2 = data.price * cartItem.amount;
-
-                  // setItemValue(itemValue2)
-
+                  console.log(cartItem)
+                  // console.log(cartItem * data0)
                   return (
-                    <ProductCard key={index} product={cartItem.product_id} value={itemValue2} quantity={cartItem.amount} onRemove={() => handleRemoveProduct(cartItem.product_id)} onQuantityChange={handleQuantityChange} />
+                    <ProductCard key={index} product={cartItem.product_id} value={itemValue2} valueUnity={data.price} quantity={cartItem.amount} onRemove={() => handleRemoveProduct(cartItem.product_id)} onQuantityChange={(productId, currentQuantity, action) => handleQuantityChange(productId, currentQuantity, action)} />
                   )
                 })}
               </>
@@ -328,19 +392,22 @@ const Cart = () => {
           </div>
         )}
 
-
         <div className="mx-6 lg:w-[30%]">
           <h3 className="font-semibold text-xl mb-4">Resumo do pedido</h3>
 
           <div>
             <div className="flex justify-between mb-1">
-              {/* <p>{cartItems.index}</p> */}
               <p>{totalQuantity} produtos</p>
               <p>{formatPrice(totalValue)}</p>
             </div>
 
-            <div className="flex justify-between border-b border-gray-400 pb-2 mb-2">
+            <div className="flex justify-between pb-1">
               <p>frete</p>
+              <p>R$ 0,00</p>
+            </div>
+
+            <div className="flex justify-between border-b border-gray-400 pb-2 mb-2">
+              <p>desconto</p>
               <p>R$ 0,00</p>
             </div>
 
@@ -360,7 +427,6 @@ const Cart = () => {
             </p>
           </div>
         </div>
-
       </div>
 
 
@@ -379,23 +445,35 @@ const Cart = () => {
         </div>
         <div className="mt-6">
           <h3>Se deseja receber em outro endereço, digite o cep:</h3>
-          <input
+
+          {/* <InputMask
             type="text"
+            value={cep}
+            className="form-input border rounded py-2 px-4"
+            // disabled={!editandoCep}
+            onChange={handleChangeCep}
+            mask="99999-999"
+          /> */}
+          {/* <input
+            type="number"
             placeholder="Digite o CEP"
-            className="w-full p-2 border rounded-md focus:outline-none focus:ring focus:ring-primary focus:border-primary-dark"
+            className="w-32 p-2 border rounded-md focus:outline-none focus:ring focus:ring-primary focus:border-primary-dark"
             value={newAddress}
             onChange={(e) => setNewAddress(e.target.value)}
-          />
-          <button
+          /> */}
+          {/* <Button
             // onClick={handleAddAddress}
-            disabled={isLoading}
-            className="mt-2 bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-md transition duration-300"
+            // onClick={handleEdicaoCep}
+            // disabled={isLoading}
+            className="mt-2 ml-2"
           >
             Adicionar Endereço
-          </button>
+          </Button> */}
+
+          <Link href='https://buscacepinter.correios.com.br/app/endereco/index.php' className="ml-4">não seu meu cep</Link>
+
         </div>
       </div>
-
 
 
 
