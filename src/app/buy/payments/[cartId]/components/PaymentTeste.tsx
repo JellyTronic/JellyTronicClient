@@ -10,8 +10,8 @@ const PaymentTeste = () => {
 
   const elements = useElements();
   const stripe = useStripe();
-  // const [messages, addMessages] = useMessages();
-  // const [clientSecret, setClientSecret] = useState('');
+  const [messages, addMessages] = useMessages();
+  const [clientSecret, setClientSecret] = useState('');
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -23,16 +23,17 @@ const PaymentTeste = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: process.env.NEXT_PUBLIC_STRIPE_CONFIRMATION!
+        return_url: 'http://localhost:3000/minha-conta'
       }
     })
+
+    localStorage.setItem('cart', '');
 
     if (error) {
       console.log('error')
       console.log(error.message);
     }
 
-    // setIsProce
 
     // addMessages('Creating Payment intent...');
 
@@ -47,14 +48,16 @@ const PaymentTeste = () => {
     //   }),
     // }).then(r => r.json())
 
-    // const elementsStripe = elements({clientSecret});
-    // const paymentElement = elementsStripe.create('payment')
-    // paymentElement.mount("")
+    // // const elementsStripe = elements({clientSecret});
+    // // const paymentElement = elementsStripe.create('payment')
+    // // paymentElement.mount("")
 
 
     // console.log(clientSecret);
 
     // addMessages('Payment intent created');
+    // console.log('Payment intent created');
+    // console.log(elements)
 
     // console.log(clientSecret);
     // const { paymentIntent } = await stripe.confirmCardPayment(
@@ -67,17 +70,18 @@ const PaymentTeste = () => {
     // console.log(clientSecret);
 
     // addMessages(`PaymentIntent (${paymentIntent!.id}): ${paymentIntent?.status}`);
+    // console.log(`PaymentIntent (${paymentIntent!.id}): ${paymentIntent?.status}`);
 
   }
 
   return (
     <div>
-      <form id="payment-form">
+      <form id="payment-form" onSubmit={handleSubmit}>
 
         <PaymentElement />
 
         <div className="mt-6 mb-2 lg:flex justify-center">
-          <Button className="w-[100%] lg:w-[50%] py-2 font-semibold text-xl" onSubmit={handleSubmit}>
+          <Button className="w-[100%] lg:w-[50%] py-2 font-semibold text-xl">
             confirmar pagamento
           </Button>
         </div>

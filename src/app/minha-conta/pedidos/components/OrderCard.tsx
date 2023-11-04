@@ -68,19 +68,32 @@ const OrderCard = ({ order }: OrderCardProps) => {
     setIsOpen(!isOpen);
   };
 
+  console.log(order);
+
 
   return (
     <div className="border border-gray-300 rounded-md p-4 mb-4">
       <Link href={`/minha-conta/pedidos/${order.id}`}>
         <div className="mb-4 flex items-start">
           <div className="mr-4">
-            <Image
-              src={order.sale_items[0].image_path[0]}
-              alt={order.sale_items[0].product_name}
-              width={200}
-              height={200}
-              className="object-contain"
-            />
+            {!order.sale_items[0] ? (
+              <Image
+                src='/logo.png'
+                alt='teste'
+                width={200}
+                height={200}
+                className="object-contain"
+              />
+            ) : (
+              <Image
+                src={order.sale_items[0].images[0].image_path}
+                alt='teste'
+                width={200}
+                height={200}
+                className="object-contain"
+              />
+            )}
+
           </div>
           <div className="w-full">
             <p className="text-lg font-semibold text-gray-800">
@@ -96,7 +109,8 @@ const OrderCard = ({ order }: OrderCardProps) => {
               Tipo de Entrega: {order.delivery_type}
             </p>
             <p className="text-sm text-gray-600">
-              Total: R$ {order.total.toFixed(2)}
+              {/* Total: R$ {order.total.toFixed(2)} */}
+              Total: R$ 10
             </p>
           </div>
         </div>
@@ -114,7 +128,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
           CEP: {order.delivery_address.cep}
         </p>
       </div>
-      <div className="border-t border-gray-300 pt-4 mt-4">
+      {/* <div className="border-t border-gray-300 pt-4 mt-4">
         <p className="text-lg font-semibold text-gray-800">Detalhes do Produto</p>
         <p className="text-sm text-gray-600">
           Nome do Produto: {order.sale_items[0].product_name}
@@ -125,7 +139,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
         <p className="text-sm text-gray-600">
           Preço Unitário: R$ {order.sale_items[0].unity_price.toFixed(2)}
         </p>
-      </div>
+      </div> */}
 
 
 

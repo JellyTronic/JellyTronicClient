@@ -32,7 +32,7 @@ const PaymentForm = () => {
     }).then(r => r.json())
 
 
-    // console.log(clientSecret);
+    console.log(clientSecret);
 
     addMessages('Payment intent created');
 

@@ -48,7 +48,7 @@ export async function POST() {
 
     // Resto do código para criar a sessão de pagamento com o Stripe
     const session = await stripe.checkout.sessions.create({
-      success_url: process.env.STRIPE_CONFIRMATION!,
+      success_url: 'http://localhost:3000/minha-conta',
       metadata: {
         name: "teste"
       },
