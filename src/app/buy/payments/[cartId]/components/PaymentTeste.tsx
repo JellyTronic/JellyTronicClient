@@ -5,8 +5,12 @@ import { useState } from "react";
 import Button from "@/components/Button";
 // import stripe from "stripe";
 
+interface PaymentTesteProps {
+  cartId: string;
+}
 
-const PaymentTeste = () => {
+
+const PaymentTeste = ({cartId}:PaymentTesteProps) => {
 
   const elements = useElements();
   const stripe = useStripe();
@@ -33,55 +37,30 @@ const PaymentTeste = () => {
 
     localStorage.setItem('cart', '');
 
+    const data = {
+      status: 2
+    }
+
     if (error) {
       setMessage(error.message!)
     } else if (paymentIntent && paymentIntent.status === 'succeeded'){
+      console.log(paymentIntent);
       setMessage('Payment status: ' + paymentIntent.status + "🎉");
       localStorage.setItem('cart', '');
+      const res = await fetch(`https://129.148.27.50/api/pedido/update/${cartId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
       window.location.href = process.env.NEXT_PUBLIC_STRIPE_CONFIRMATION!
     } else {
       setMessage('Unexpected state');
     }
 
     setIsProcessing(false)
-
-
-    // addMessages('Creating Payment intent...');
-
-    // const { clientSecret } =  await fetch('http://localhost:3000/api/clientID', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     paymentMethodType: 'card',
-    //     currency: 'brl',
-    //   }),
-    // }).then(r => r.json())
-
-    // // const elementsStripe = elements({clientSecret});
-    // // const paymentElement = elementsStripe.create('payment')
-    // // paymentElement.mount("")
-
-
-    // console.log(clientSecret);
-
-    // addMessages('Payment intent created');
-    // console.log('Payment intent created');
-    // console.log(elements)
-
-    // console.log(clientSecret);
-    // const { paymentIntent } = await stripe.confirmCardPayment(
-    //   clientSecret, {
-    //   payment_method: {
-    //     card: elements?.getElement(CardElement)!,
-    //   }
-    // });
-
-    // console.log(clientSecret);
-
-    // addMessages(`PaymentIntent (${paymentIntent!.id}): ${paymentIntent?.status}`);
-    // console.log(`PaymentIntent (${paymentIntent!.id}): ${paymentIntent?.status}`);
 
   }
 
