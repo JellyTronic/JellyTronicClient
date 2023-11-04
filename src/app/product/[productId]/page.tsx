@@ -60,17 +60,33 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
         amount: 1,
       }];
 
+      const dataCart = {
+        product_id: productId,
+        amount: 1,
+      };
+
       const config = {
         headers: {
           'Content-Type': 'application/json',
         },
       };
 
-      console.log(JSON.stringify(data));
-
       const response = await axios.put(`https://129.148.27.50/api/carrinho/add/item/${idClient}`, data)
         .then((response) => {
           if (response.status === 200) {
+            const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+            // Verifique se o produto já existe no carrinho
+            const existingItemIndex = existingCart.findIndex((item: { product_id: string; }) => item.product_id === productId);
+
+            if (existingItemIndex !== -1) {
+              existingCart[existingItemIndex].amount += 1; // Se existe, aumente a quantidade
+            } else {
+              existingCart.push(dataCart); // Se não existe, adicione o novo item
+            }
+
+            localStorage.setItem("cart", JSON.stringify(existingCart));
+            // setCart(existingCart);
             console.log('Item adicionado com sucesso:', response.data);
           } else {
             console.error('Erro ao adicionar o item ao carrinho.');

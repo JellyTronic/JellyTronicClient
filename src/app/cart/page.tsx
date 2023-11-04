@@ -79,7 +79,11 @@ const Cart = () => {
     });
 
     localStorage.setItem('cart', JSON.stringify(cartItemArray));
-    setCartItemsLogin(cartUserLogin.cart_items);
+    const teste = localStorage.getItem('cart');
+    const teste2 = JSON.parse(teste!);
+
+    setCartItemsLogin(cartUserLogin.cart_items.reverse());
+    calculateTotal(cartUserLogin.cart_items);
   }
 
   const handleRemoveProduct = (productId: string) => {

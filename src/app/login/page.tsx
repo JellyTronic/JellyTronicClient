@@ -15,6 +15,7 @@ export default function Login() {
   useEffect(() => {
     if (sessionStorage.getItem("secretToken")) {
       setIsAuthenticated(true);
+      localStorage.clear();
     }
   }, []);
 
