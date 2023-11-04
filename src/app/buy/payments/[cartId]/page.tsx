@@ -71,7 +71,7 @@ export default function App({ params }: { params: { cartId: string } }) {
 
     console.log(data);
 
-    const res = await fetch('http://localhost:3000/api/clientID', {
+    const res = await fetch(process.env.NEXT_PUBLIC_STRIPE_CLIENTID!, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
