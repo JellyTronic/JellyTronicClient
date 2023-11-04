@@ -37,6 +37,7 @@ const PaymentTeste = () => {
       setMessage(error.message!)
     } else if (paymentIntent && paymentIntent.status === 'succeeded'){
       setMessage('Payment status: ' + paymentIntent.status + "🎉");
+      localStorage.setItem('cart', '');
       window.location.href = process.env.NEXT_PUBLIC_STRIPE_CONFIRMATION!
     } else {
       setMessage('Unexpected state');
