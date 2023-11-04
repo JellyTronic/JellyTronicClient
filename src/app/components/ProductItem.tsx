@@ -42,11 +42,11 @@ const ProductItem = () => {
           <Link href={`/product/${product.id}`} key={product.id} className="h-96 lg:h-1/4">
             <div className="bg-gray-50 shadow-md rounded-lg overflow-hidden h-96 hover:shadow-xl transition duration-200">
               <div className="p-4 flex flex-col h-full justify-center">
-                <div className="w-9/10 mt-3">
+                <div className="relative h-[200px] w-full lg:h-[200px] mt-3">
                   {product && product.images && product.images.length > 0 ? (
-                    <Image src={product.images[0].image_path} alt={product.name} height={100} width={100} className="w-full container" />
+                    <Image src={product.images[0].image_path} alt={product.name} layout="fill" objectFit="contain" />
                   ) : (
-                    <Image src="/produto-sem-imagem.png" alt="Default Product" height={100} width={100} className="w-full container" />
+                    <Image src="/produto-sem-imagem.png" alt="Default Product" layout="fill" objectFit="contain" />
                   )}
 
                   {/* {product && product.images && product.images.lenght === 0 && (
