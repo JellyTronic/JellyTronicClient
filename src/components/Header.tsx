@@ -22,6 +22,22 @@ const Header = () => {
   const [name, setName] = useState<string>("");
 
   useEffect(() => {
+
+    if (menuIsOpen || menuIsOpenDesk) {
+      const handleClickOutside = (e: any) => {
+        if (!e.target.closest('.modal-content')) {
+          setMenuIsOpen(false);
+          setMenuIsOpenDesk(false);
+        }
+      };
+
+      document.addEventListener('click', handleClickOutside);
+
+      return () => {
+        document.removeEventListener('click', handleClickOutside);
+      };
+    }
+
     if (typeof window !== "undefined") {
       const id = sessionStorage.getItem("id");
       const secretToken = sessionStorage.getItem("secretToken");
@@ -56,7 +72,7 @@ const Header = () => {
       }
     }
 
-  }, []);
+  }, [menuIsOpen, menuIsOpenDesk]);
 
   const handleLogout = () => {
     sessionStorage.clear();
@@ -73,7 +89,7 @@ const Header = () => {
 
           <Link href='/'>
             <div className='hidden lg:flex relative h-[100px] w-[120px]'>
-              <Image src='/logo.png' alt='ShopWave' fill objectFit='cover'/>
+              <Image src='/logo.png' alt='ShopWave' fill objectFit='cover' />
             </div>
           </Link>
 
@@ -90,66 +106,68 @@ const Header = () => {
             <AiOutlineClose size={25} color='#f36300' onClick={handleMenuClick} className='cursor-pointer lg:hidden' />
           )}
 
-          {menuIsOpen && (
+          <div className='lg:hidden'>
+            {menuIsOpen && (
 
-            <div className='z-50 absolute top-12 left-[-8px] w-[260px] h-auto bg-white rounded-lg shadow-md flex flex-col justify-center p-2 pl-4'>
+              <div className='z-50 absolute top-12 left-[-8px] w-[260px] h-auto bg-white rounded-lg shadow-md flex flex-col justify-center p-2 pl-4'>
 
-              {token ? (
-                <>
-                  <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold  hover:text-primary'>
-                    <BsFillPersonFill />Bem-vindo, {name}
-                  </p>
+                {token ? (
+                  <>
+                    <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold  hover:text-primary'>
+                      <BsFillPersonFill />Bem-vindo, {name}
+                    </p>
 
-                  <Link href={'/cart'} onClick={() => setMenuIsOpen(false)}>
-                    <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><AiOutlineShoppingCart />Carrinho</p>
-                  </Link>
+                    <Link href={'/cart'} onClick={() => setMenuIsOpen(false)}>
+                      <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><AiOutlineShoppingCart />Carrinho</p>
+                    </Link>
 
-                  <Link href={'/minha-conta/pedidos'} onClick={() => setMenuIsOpen(false)}>
-                    <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><BsBoxFill />Meus pedidos</p>
-                  </Link>
+                    <Link href={'/minha-conta/pedidos'} onClick={() => setMenuIsOpen(false)}>
+                      <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><BsBoxFill />Meus pedidos</p>
+                    </Link>
 
-                  <Link href={'/'} onClick={() => setMenuIsOpen(false)}>
-                    <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><CgFileDocument />Terms & Conditions</p>
-                  </Link>
+                    <Link href={'/'} onClick={() => setMenuIsOpen(false)}>
+                      <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><CgFileDocument />Terms & Conditions</p>
+                    </Link>
 
-                  <Link href={'/'} onClick={() => setMenuIsOpen(false)} className='pb-2'>
-                    <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><MdOutlinePrivacyTip />Privacy Policy</p>
-                  </Link>
-                  <p
-                    className='flex items-center justify-center gap-2 text-primary pt-1 text-lg font-bold border-t border-gray-800 w-[100%] cursor-pointer'
-                    onClick={handleLogout}
-                  >
-                    <AiOutlineLogout size={22} />Logout
-                  </p>
-                </>
-              ) : (
-                <>
-                  <Link href={'/cadastro'} onClick={() => setMenuIsOpen(false)}>
-                    <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold  hover:text-primary'><BsFillPersonPlusFill />Cadastre-se</p>
-                  </Link>
+                    <Link href={'/'} onClick={() => setMenuIsOpen(false)} className='pb-2'>
+                      <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><MdOutlinePrivacyTip />Privacy Policy</p>
+                    </Link>
+                    <p
+                      className='flex items-center justify-center gap-2 text-primary pt-1 text-lg font-bold border-t border-gray-800 w-[100%] cursor-pointer'
+                      onClick={handleLogout}
+                    >
+                      <AiOutlineLogout size={22} />Logout
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <Link href={'/cadastro'} onClick={() => setMenuIsOpen(false)}>
+                      <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold  hover:text-primary'><BsFillPersonPlusFill />Cadastre-se</p>
+                    </Link>
 
-                  <Link href={'/login'} onClick={() => setMenuIsOpen(false)}>
-                    <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold hover:text-primary'><BsFillPersonFill />Acesse agora</p>
-                  </Link>
+                    <Link href={'/login'} onClick={() => setMenuIsOpen(false)}>
+                      <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold hover:text-primary'><BsFillPersonFill />Acesse agora</p>
+                    </Link>
 
-                  <Link href={'/'} onClick={() => setMenuIsOpen(false)}>
-                    <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold hover:text-primary'><CgFileDocument />Terms & Conditions</p>
-                  </Link>
+                    <Link href={'/'} onClick={() => setMenuIsOpen(false)}>
+                      <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold hover:text-primary'><CgFileDocument />Terms & Conditions</p>
+                    </Link>
 
-                  <Link href={'/'} onClick={() => setMenuIsOpen(false)} className='pb-2'>
-                    <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold hover:text-primary'><MdOutlinePrivacyTip />Privacy Policy</p>
-                  </Link>
+                    <Link href={'/'} onClick={() => setMenuIsOpen(false)} className='pb-2'>
+                      <p className='flex items-center gap-2 text-xl font-medium p-2 hover:font-semibold hover:text-primary'><MdOutlinePrivacyTip />Privacy Policy</p>
+                    </Link>
 
-                </>
-              )}
-            </div>
-          )}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
 
         </div>
 
         <Link href='/' className='pl-1 md:pl-8'>
           <div className='relative h-[32px] w-[260px] md:w-[440px]  lg:hidden'>
-            <Image src='/logoName.png' alt='ShopWave' fill objectFit='container'/>
+            <Image src='/logoName.png' alt='ShopWave' fill objectFit='container' />
           </div>
         </Link>
 
@@ -197,6 +215,10 @@ const Header = () => {
 
             <Link href={'/minha-conta/pedidos'} onClick={() => setMenuIsOpen(false)}>
               <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><BsBoxFill />pedidos</p>
+            </Link>
+
+            <Link href={'/minha-conta/usuario'} onClick={() => setMenuIsOpen(false)} className='pb-2'>
+              <p className='flex items-center gap-2 text-xl font-semibold p-2 hover:font-semibold hover:text-primary'><BsFillPersonFill size={22} />cadastro</p>
             </Link>
 
             <Link href={'/minha-conta/endereco'} onClick={() => setMenuIsOpen(false)} className='pb-2'>
