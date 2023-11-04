@@ -8,8 +8,8 @@ import ToastProvider from '@/providers/toast'
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'] })
 
 export const metadata = {
-  title: 'ShopWave - O Seu Mar de Opções de Compra',
-  description: 'ShopWave: O Seu Mar de Opções de Compra',
+  title: 'JellyTronic - O Seu Mar de Opções para Comprar',
+  description: 'JellyTronic: O Seu Mar de Opções para Comprar',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
