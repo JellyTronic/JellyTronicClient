@@ -24,8 +24,9 @@ const PaymentTeste = () => {
       elements,
       confirmParams: {
         return_url: process.env.NEXT_PUBLIC_STRIPE_CONFIRMATION!
-      }
-    })
+      },
+      redirect: 'if_required',
+    });
 
     localStorage.setItem('cart', '');
 
