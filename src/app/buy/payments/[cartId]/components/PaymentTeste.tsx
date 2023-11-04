@@ -12,6 +12,8 @@ const PaymentTeste = () => {
   const stripe = useStripe();
   const [messages, addMessages] = useMessages();
   const [clientSecret, setClientSecret] = useState('');
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -20,20 +22,27 @@ const PaymentTeste = () => {
       return;
     }
 
-    const { error } = await stripe.confirmPayment({
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: process.env.NEXT_PUBLIC_STRIPE_CONFIRMATION!
       },
       redirect: 'if_required',
     });
+    console.log('pagamento confirmado')
 
     localStorage.setItem('cart', '');
 
     if (error) {
-      console.log('error')
-      console.log(error.message);
+      setMessage(error.message!)
+    } else if (paymentIntent && paymentIntent.status === 'succeeded'){
+      setMessage('Payment status: ' + paymentIntent.status + "🎉");
+      window.location.href = process.env.NEXT_PUBLIC_STRIPE_CONFIRMATION!
+    } else {
+      setMessage('Unexpected state');
     }
+
+    setIsProcessing(false)
 
 
     // addMessages('Creating Payment intent...');
@@ -82,10 +91,16 @@ const PaymentTeste = () => {
         <PaymentElement />
 
         <div className="mt-6 mb-2 lg:flex justify-center">
-          <Button className="w-[100%] lg:w-[50%] py-2 font-semibold text-xl">
-            confirmar pagamento
+          <Button disabled={isProcessing} className="w-[100%] lg:w-[50%] py-2 font-semibold text-xl">
+            {isProcessing ? "Processing..." : "Pay now"}
           </Button>
         </div>
+
+        {message && (
+          <div>
+            <p>{message}</p>
+          </div>
+        )}
 
       </form>
     </div>
