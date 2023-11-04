@@ -196,6 +196,16 @@ const OrderCard = ({ order }: OrderCardProps) => {
 
         )}
 
+        {order.status == 5 && (
+
+          <div className="flex-1 relative text-center ml-[-5em]">
+            <div className={`w-4 h-4 mx-auto rounded-full ${order.status >= 4 ? 'bg-primary' : 'bg-gray-300'}`} />
+            <p className="text-xs mt-1">Cancelado</p>
+          </div>
+
+        )}
+
+
       </div>
 
       <div className='flex items-center justify-center mt-10'>
