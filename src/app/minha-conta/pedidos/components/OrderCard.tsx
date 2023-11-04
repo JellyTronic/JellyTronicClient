@@ -35,26 +35,6 @@ const OrderCard = ({ order }: OrderCardProps) => {
     return statusMap[status] || 'Desconhecido';
   };
 
-  const getStatusLineClass = (currentStatus: number, targetStatus: number) => {
-    return currentStatus >= targetStatus ? 'bg-primary' : 'bg-gray-300';
-  };
-
-
-
-  // const OrderStatusIndicator: React.FC<OrderStatusIndicatorProps> = ({ status }) => {
-  //   const statusMap: Record<number, string> = {
-  //     0: 'Carrinho',
-  //     1: 'Emitido',
-  //     2: 'Pagamento Aprovado',
-  //     3: 'Em Transporte',
-  //     4: 'Recebido',
-  //     5: 'Cancelado',
-  //     6: 'Pagamento Não Aprovado',
-  //     7: 'Problemas com o Transporte',
-  //     8: 'Problemas no Recebimento',
-  //   };
-  // };
-
   const statusLabels = [
     'Pedido Emitido',
     'Pagamento Aprovado',
@@ -150,7 +130,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
           <div className={`w-4 h-4 mx-auto rounded-full ${order.status >= 1 ? 'bg-primary' : 'bg-gray-300'}`}></div>
           <p className="text-xs mt-1">Pedido Emitido</p>
         </div>
-        <div className="w-1/4 relative flex mt-1 ml-[-5em]">
+        <div className="w-1/4 relative flex mt-1 ml-[-4em] lg:ml-[-5em]">
           <div className={`w-1/2 h-2 relative ${order.status >= 1 ? 'bg-primary' : 'bg-gray-300'}`}>
             {order.status === 1 && (
               <div className="w-[0.55em] h-[0.55em] mt-1 bg-primary transform rotate-45 absolute right-[-0.2em] -translate-y-1/2" />
@@ -160,11 +140,11 @@ const OrderCard = ({ order }: OrderCardProps) => {
         </div>
 
 
-        <div className="flex-1 relative text-center ml-[-5em]">
+        <div className="flex-1 relative text-center ml-[-4em] lg:ml-[-5em]">
           <div className={`w-4 h-4 mx-auto rounded-full ${order.status >= 2 ? 'bg-primary' : 'bg-gray-300'}`} />
           <p className="text-xs mt-1">Pagamento Aprovado</p>
         </div>
-        <div className="w-1/4 relative flex mt-1 ml-[-5em]">
+        <div className="w-1/4 relative flex mt-1 ml-[-4em] lg:ml-[-5em]">
           <div className={`w-1/2 h-2 relative ${order.status >= 2 ? 'bg-primary' : 'bg-gray-300'}`}>
             {order.status === 2 && (
               <div className="w-[0.55em] h-[0.55em] mt-1 bg-primary transform rotate-45 absolute right-[-0.2em] -translate-y-1/2" />
@@ -174,11 +154,11 @@ const OrderCard = ({ order }: OrderCardProps) => {
         </div>
 
 
-        <div className="flex-1 relative text-center ml-[-5em]">
+        <div className="flex-1 relative text-center ml-[-4em] lg:ml-[-5em]">
           <div className={`w-4 h-4 mx-auto rounded-full ${order.status >= 3 ? 'bg-primary' : 'bg-gray-300'}`} />
           <p className="text-xs mt-1">Em Transporte</p>
         </div>
-        <div className="w-1/4 relative flex mt-1 ml-[-5em]">
+        <div className="w-1/4 relative flex mt-1 ml-[-4em] lg:ml-[-5em]">
           <div className={`w-1/2 h-2 relative ${order.status >= 3 ? 'bg-primary' : 'bg-gray-300'}`}>
             {order.status === 3 && (
               <div className="w-[0.55em] h-[0.55em] mt-1 bg-primary transform rotate-45 absolute right-[-0.2em] -translate-y-1/2" />
@@ -189,7 +169,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
 
         {order.status <= 4 && (
 
-          <div className="flex-1 relative text-center ml-[-5em]">
+          <div className="flex-1 relative text-center ml-[-4em] lg:ml-[-5em]">
             <div className={`w-4 h-4 mx-auto rounded-full ${order.status >= 4 ? 'bg-primary' : 'bg-gray-300'}`} />
             <p className="text-xs mt-1">Recebido</p>
           </div>
@@ -198,7 +178,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
 
         {order.status == 5 && (
 
-          <div className="flex-1 relative text-center ml-[-5em]">
+          <div className="flex-1 relative text-center ml-[-4em] lg:ml-[-5em]">
             <div className={`w-4 h-4 mx-auto rounded-full ${order.status >= 4 ? 'bg-primary' : 'bg-gray-300'}`} />
             <p className="text-xs mt-1">Cancelado</p>
           </div>

@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={poppins.className}>
         <ToastProvider>
           <div className="flex flex-col h-screen">
-            <div className='h-12 lg:h-[95px]'>
+            <div className='h-20 lg:h-[95px]'>
               <Header />
             </div>
             <div className="flex-1 mt-6">{children}</div>

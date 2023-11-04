@@ -28,34 +28,14 @@ const Address = ({ params }: { params: { cartId: string } }) => {
       setIsAuthenticated(true);
       setToken(currentToken!);
       fetch(`https://129.148.27.50/api/cliente/addresses/${id}`)
-        // headers: {
-        //   Authorization: `Bearer ${currentToken}`,
-        // },
-        // method: "GET",
-        // })
         .then((response) => response.json())
         .then((data) => {
           // const newCep = data.data.deliveryAddress.cep.replace("-", "");
           console.log(data);
           setAdresses(data);
-          // setCep(data.data.deliveryAddress.cep);
-          // setAddressId(data.data.deliveryAddress.id);
-          // setComplement(data.data.deliveryAddress.complement);
-          // setNumber(data.data.deliveryAddress.number);
-          // setReference(data.data.deliveryAddress.reference);
-
-          // fetch(`https://viacep.com.br/ws/${newCep}/json`, {
-          //   method: "GET",
-          // })
-          //   .then((response) => response.json())
-          //   .then((data) => {
-          //     console.log(data);
-          //     setAdresses(data);
-          //   });
         });
     }
   }, []);
-
 
 
   return (
@@ -82,9 +62,16 @@ const Address = ({ params }: { params: { cartId: string } }) => {
             </div>
           ))}
 
+
           <div>
-            <input type="text" name="" id="" />
+            <h3>Deseja adicionar outro dendereço para entrega ?</h3>
+
+            <div className='lg:flex'>
+              <input type="text" name="" id="" />
+              <Button>ok</Button>
+            </div>
           </div>
+
         </div>
 
         <ResumoPayment cartId={cartId} />

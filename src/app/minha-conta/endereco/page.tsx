@@ -233,7 +233,7 @@ const Endereco = () => {
 
   return (
     <div className="container mx-auto pl-2 pb-4 mt-8 bg-gray-200">
-      <div className="flex">
+      <div className="lg:flex">
         <Sidebar activeLink={"endereco"} />
         <main className="flex-1 p-4 bg-white rounded-md mt-4 mr-4">
           {/* Conteúdo principal da página */}
