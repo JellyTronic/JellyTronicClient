@@ -81,6 +81,10 @@ const Address = ({ params }: { params: { cartId: string } }) => {
               <AddressCard address={address} />
             </div>
           ))}
+
+          <div>
+            <input type="text" name="" id="" />
+          </div>
         </div>
 
         <ResumoPayment cartId={cartId} />
