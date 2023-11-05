@@ -1,3 +1,5 @@
+'use client'
+
 import Button from "@/components/Button";
 import { formatPrice } from "@/providers/formatCurrency";
 // import <CartItem></CartItem> from "@/types/Cart";
@@ -7,6 +9,7 @@ import { useEffect, useState } from "react";
 import CartItem from '@/types/Cart';
 import CartItems from '@/types/Cart';
 import ProductCard from "../../../components/productCard";
+import { useRouter } from "next/navigation";
 
 interface ResumoPaymentProps {
   cartId: string;
@@ -18,6 +21,7 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
   const [secretToken, setSecretToken] = useState<string>('');
   const [idUserClient, setIdUserClient] = useState<string>('');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const router = useRouter();
 
   const getCartUserLogin = async (idUserClient: string) => {
     const response = await fetch(`https://129.148.27.50/api/carrinho/${idUserClient}`);
@@ -98,6 +102,16 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
     getCartUserLogin(idUser!);
   }, []);
 
+  const handleVerifySelectAddress = () => {
+    const idAddressLocal = sessionStorage.getItem('idAddress');
+
+    if(!idAddressLocal) {
+      alert('Selecione um endereço antes de continuar!');
+    } else {
+      router.push(`/buy/payments/${cartId}`);
+    }
+  }
+
 
 
   return (
@@ -141,10 +155,10 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
       </div>
 
       <div>
-        <Button className="w-[100%] py-2 font-semibold text-xl">
-          <Link href={`/buy/payments/${cartId}`}>
+        <Button className="w-[100%] py-2 font-semibold text-xl" onClick={handleVerifySelectAddress}>
+          {/* <Link href={`/buy/payments/${cartId}`}> */}
             continuar
-          </Link>
+          {/* </Link> */}
         </Button>
       </div>
     </div >
