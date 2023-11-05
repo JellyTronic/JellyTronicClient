@@ -18,6 +18,8 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
     return paymentImages[paymentType] || 'default.png';
   };
 
+  console.log(order);
+
   return (
     <div className="bg-white p-4 rounded-md shadow-lg">
       <h2 className="text-3xl font-semibold text-center mb-4">Detalhes do Pedido #{order.id}</h2>
@@ -99,9 +101,9 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
           {order.sale_items.map((item) => (
             <li key={item.id} className="flex items-center space-x-4">
               {/* <div className="w-16 h-16"> */}
-              {item.image_path && (
+              {item.images && (
                 <Image
-                  src={item.image_path[0]}
+                  src={item.images[0].image_path}
                   alt={item.product_name}
                   width={150}
                   height={150}
