@@ -15,6 +15,7 @@ export default function App({ params }: { params: { cartId: string } }) {
   const [cartId, setCartId] = useState(params.cartId);
   const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
   const [clientSecret, setClientSecret] = useState('');
+  const [idAddress, setIdAddress] = useState('');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
@@ -22,6 +23,8 @@ export default function App({ params }: { params: { cartId: string } }) {
     const cartItemsLocal2 = localStorage.getItem('cart');
     // console.log(JSON.parse(cartItemsLocal2!));
     setCartItems(JSON.parse(cartItemsLocal2!));
+    const idAddresLocal = sessionStorage.getItem('idAddress');
+    setIdAddress(idAddresLocal!);
     // fetch(process.env.NEXT_PUBLIC_STRIPE_CLIENTID!, {
     //   method: 'POST',
     //   headers: {
@@ -34,16 +37,15 @@ export default function App({ params }: { params: { cartId: string } }) {
     //   setClientSecret(clientSecret);
     // });
 
-    handleBuyClick(idUser!);
+    handleBuyClick(idUser!, idAddresLocal!);
   }, []);
 
-  const handleBuyClick = async (idUserClient: string) => {
+  const handleBuyClick = async (idUserClient: string, idAddress:string) => {
     const response = await fetch(`https://129.148.27.50/api/carrinho/${idUserClient}`);
     const cartUserLogin = await response.json();
     console.log(cartUserLogin.cart_items);
 
-    // console.log(cartItems);
-    const productPromises = cartUserLogin.cart_items.map(async (cartItem:any) => {
+    const productPromises = cartUserLogin.cart_items.map(async (cartItem: any) => {
       console.log(cartItem);
       const response = await fetch(`https://api-fatec.onrender.com/api/v1/product/${cartItem.product_id}`);
 
@@ -52,6 +54,7 @@ export default function App({ params }: { params: { cartId: string } }) {
       console.log(data);
       const itemValue = data.price * cartItem.amount;
       return ({
+        idAddress: idAddress,
         idUserClient: idUserClient,
         name: data.name,
         totalPrice: itemValue,
@@ -97,7 +100,7 @@ export default function App({ params }: { params: { cartId: string } }) {
           <Elements stripe={stripePromise} options={{ clientSecret }} >
             <h1 className="font-semibold text-2xl mt-2 mb-10">formas de pagamento</h1>
             <div className="mx-auto px-2">
-              <PaymentTeste cartId={cartId}/>
+              <PaymentTeste cartId={cartId} />
             </div>
           </Elements >
         )}

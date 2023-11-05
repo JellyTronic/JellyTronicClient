@@ -36,6 +36,7 @@ const PaymentTeste = ({cartId}:PaymentTesteProps) => {
     console.log('pagamento confirmado')
 
     localStorage.clear();
+    sessionStorage.setItem('idAddress', '');
 
     const data = {
       status: 2

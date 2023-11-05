@@ -23,6 +23,7 @@ export async function POST(request: Request) {
 
       console.log(productName)
 
+
       // Criar um item de linha para o produto atual
       const metadate = {
         price_data: {
@@ -53,13 +54,13 @@ export async function POST(request: Request) {
     });
 
     console.log('depois do payment')
-
+    console.log(products[0].idAddress);
 
     const data = {
       delivery_type: 2,
       payment_type: "Card",
       installment_payment: 2,
-      delivery_address: 7,
+      delivery_address: products[0].idAddress,
       coupon_id: 0,
       obs: "Frágil"
     }
