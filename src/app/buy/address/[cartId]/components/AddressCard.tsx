@@ -1,3 +1,4 @@
+import { formatPrice } from '@/providers/formatCurrency';
 import React from 'react';
 
 interface AddressCardPorps {
@@ -5,6 +6,7 @@ interface AddressCardPorps {
 }
 
 const AddressCard = ({ address }: AddressCardPorps) => {
+
   return (
     <div className="border p-4 rounded-lg shadow-md mb-1 bg-gray-100">
       <p>{address.street}, {address.number}</p>
@@ -23,6 +25,12 @@ const AddressCard = ({ address }: AddressCardPorps) => {
         ) : (
           <p><span className='font-medium text-lg'>referencia:</span> {address.reference}</p>
         )}
+
+
+        <div className='mt-2 flex items-center justify-around'>
+          <p><span className='font-medium text-lg'>entrega padrão:</span> {formatPrice(address.freight.default)}</p>
+          <p><span className='font-medium text-lg'>entrega express:</span> {formatPrice(address.freight.express)}</p>
+        </div>
 
       </div>
 

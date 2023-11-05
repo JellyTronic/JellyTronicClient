@@ -141,7 +141,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
                   className="hidden"
                 />
 
-                <div className="p-4 rounded w-[80%]">
+                <div className="p-4 rounded w-[100%] lg:w-[80%]">
                   <AddressCard address={address} />
                 </div>
               </label>

@@ -1,4 +1,8 @@
 interface AddressPayment {
+  freight: {
+    default: number,
+    express: number
+  };
   id: number;
   default: boolean;
   cep: string;
