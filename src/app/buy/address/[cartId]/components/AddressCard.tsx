@@ -6,12 +6,12 @@ interface AddressCardPorps {
 
 const AddressCard = ({ address }: AddressCardPorps) => {
   return (
-    <div className="border p-4 rounded-lg shadow-md mb-4 bg-gray-100">
+    <div className="border p-4 rounded-lg shadow-md mb-1 bg-gray-100">
       <p>{address.street}, {address.number}</p>
       <p>{address.district} | {address.city} - {address.state}</p>
       <p>{address.cep}</p>
 
-      <div className='mt-4'>
+      <div className='mt-2'>
         {!address.complement ? (
           <></>
         ) : (
