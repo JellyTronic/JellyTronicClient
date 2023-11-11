@@ -21,12 +21,32 @@ const Address = ({ params }: { params: { cartId: string } }) => {
   const [addressReference, setAddressReference] = useState<string>('');
   const [addressComplement, setAddressComplement] = useState<string>('');
 
-  const [newAddress, setNewAddress] = useState({
-    cep: '',
-    number: '',
-    complement: '',
-    reference: '',
-  });
+  // const [newAddress, setNewAddress] = useState({
+  //   cep: '',
+  //   number: '',
+  //   complement: '',
+  //   reference: '',
+  // });
+
+  const updateAddress = (type: string, event: any) => {
+    event?.preventDefault()
+
+    if (type === 'number') {
+      // setAddressNumber(event.target.value);
+      sessionStorage.setItem('number', event.target.value);
+    }
+
+    if (type === 'reference') {
+      // setAddressReference(event.target.value);
+      sessionStorage.setItem('reference', event.target.value);
+    }
+
+    if (type === 'complement') {
+      sessionStorage.setItem('complement', event.target.value);
+      // setAddressComplement(event.target.value);
+    }
+
+  }
 
   const handleAddressChange = (event: any) => {
     event.preventDefault();
@@ -65,36 +85,49 @@ const Address = ({ params }: { params: { cartId: string } }) => {
       .then((response) => response.json())
       .then((data) => {
         setCep([data]);
-        setNewAddress({ ...newAddress, cep: data.cep })
+        setAddressCep(data.cep)
       });
   }
 
   const handleNewAddressSubmit = () => {
 
-    if(newAddress.reference === '') {
+    const number = sessionStorage.getItem('number');
+    const reference = sessionStorage.getItem('reference');
+    const complement = sessionStorage.getItem('complement');
+
+    if (reference === '') {
       alert('insira uma referencia para a entrega!');
-    return;
+      return;
     };
 
-    if(newAddress.complement === '') {
+    if (complement === '') {
       alert('insira uma complemeto para a entrega!');
       return;
     }
 
-    if(newAddress.number === '') {
+    if (number === '') {
       alert('insira um número para a entrega!');
       return;
     }
 
-    if(newAddress.complement.length <= 3) {
+    if (complement!.length <= 3) {
       alert('insira mais de 3 caracteres para o complemento!');
       return;
     }
 
-    if(newAddress.reference.length <= 3) {
+    if (reference!.length <= 3) {
       alert('insira mais de 3 caracteres para a referencia!');
       return;
     }
+
+    const dataEnviar = {
+      cep: addressCep,
+      number: number,
+      reference: reference,
+      complement: complement
+    }
+
+    console.log(dataEnviar)
 
     fetch(`${apiAtualizarEndereco.api_online}/cliente/${idUser}`, {
       method: 'POST',
@@ -102,7 +135,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(newAddress),
+      body: JSON.stringify(dataEnviar),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -198,9 +231,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
                     className='bg-gray-100 p-2 w-[30%] rounded-md mr-4'
                     placeholder="Ex: 999"
                     required
-                    onChange={(e) =>
-                      setNewAddress({ ...newAddress, number: e.target.value })
-                    }
+                    onChange={(e) => updateAddress('number', e)}
                   />
                 </div>
 
@@ -210,9 +241,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
                     type="text"
                     className='bg-gray-100 p-2 w-full rounded-md mr-4 mb-4'
                     placeholder="Ex: casa 01"
-                    onChange={(e) =>
-                      setNewAddress({ ...newAddress, complement: e.target.value })
-                    }
+                    onChange={(e) => updateAddress('complement', e)}
                   />
                 </div>
 
@@ -222,9 +251,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
                     type="text"
                     className='bg-gray-100 p-2 w-full rounded-md mr-4 mb-4'
                     placeholder="Ex: próximo a pádaria Dom João"
-                    onChange={(e) =>
-                      setNewAddress({ ...newAddress, reference: e.target.value })
-                    }
+                    onChange={(e) => updateAddress('reference', e)}
                   />
                 </div>
 
