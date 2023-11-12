@@ -150,6 +150,10 @@ const Address = ({ params }: { params: { cartId: string } }) => {
       });
   };
 
+  const updateAddOBS = (event:any) => {
+    sessionStorage.setItem('obsercacao', event.target.value);
+  }
+
 
 
   return (
@@ -202,6 +206,16 @@ const Address = ({ params }: { params: { cartId: string } }) => {
               </form>
               <Link href="https://buscacepinter.correios.com.br/app/endereco/index.php" target='_blank' className='text-gray-800'>não sei meu cep</Link>
             </div>
+          </div>
+
+          <div className='mt-4'>
+            <p>Adicione uma observação a sua entrega</p>
+            <input
+              type="text"
+              className='bg-gray-100 p-2 rounded-md mr-4'
+              placeholder="Ex: objeto frágil"
+              onChange={updateAddOBS}
+            />
           </div>
 
           {cep.length >= 1 && (
