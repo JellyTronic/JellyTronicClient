@@ -20,6 +20,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
   const [addressCep, setAddressCep] = useState<string>('');
   const [addressReference, setAddressReference] = useState<string>('');
   const [addressComplement, setAddressComplement] = useState<string>('');
+  const [addValueFrete, setAddValueFrete] = useState<string>('');
 
 
   // const [newAddress, setNewAddress] = useState({
@@ -60,7 +61,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
   useEffect(() => {
     const currentToken = sessionStorage.getItem("secretToken");
     const id = sessionStorage.getItem("id");
-  
+
     setIdUser(id!);
 
     if (!currentToken) {
@@ -150,6 +151,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
   };
 
 
+
   return (
     <div className="mx-auto container mt-2">
       <h1 className='font-semibold text-xl mb-4'>opções de entrega</h1>
@@ -176,7 +178,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
                   className="hidden"
                 />
 
-                <div className="p-4 rounded w-[100%] lg:w-[80%]">
+                <div className="p-4 rounded w-[100%]">
                   <AddressCard address={address} />
                 </div>
               </label>

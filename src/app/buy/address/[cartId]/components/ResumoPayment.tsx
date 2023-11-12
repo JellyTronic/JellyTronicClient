@@ -22,6 +22,7 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
   const [idUserClient, setIdUserClient] = useState<string>('');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cupomDesconto, setCupomDesconto] = useState<number>();
+  const [valueFrete, setValueFrete] = useState<string>('');
   const router = useRouter();
 
   const getCartUserLogin = async (idUserClient: string) => {
@@ -76,8 +77,8 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
     // setIsLoading(false);
   };
 
+
   useEffect(() => {
-    const nomeLocalStorage = localStorage.getItem("nome");
     const token = sessionStorage.getItem("secretToken")
     const idUser = sessionStorage.getItem("id")
     const cartItemsFromLocalStorage = localStorage.getItem("cart");
@@ -85,6 +86,11 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
     const cupom = sessionStorage.getItem("desconto");
     if (cupom) {
       setCupomDesconto(Number(cupom));
+    }
+
+    const frete = sessionStorage.getItem("valueEntrega");
+    if (frete) {
+      setValueFrete(frete);
     }
 
     setSecretToken(token!);
@@ -110,9 +116,12 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
 
   const handleVerifySelectAddress = () => {
     const idAddressLocal = sessionStorage.getItem('idAddress');
+    const tipyEntrega = sessionStorage.getItem('typeEntrega');
 
     if (!idAddressLocal) {
       alert('Selecione um endereço antes de continuar!');
+    } else if (!tipyEntrega) {
+      alert('Selecione um tipo de entrega antes de continuar!');
     } else {
       router.push(`/buy/payments/${cartId}`);
     }
@@ -146,7 +155,11 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
 
         <div className="flex justify-between pb-1">
           <p>frete</p>
-          <p>R$ 0,00</p>
+          {valueFrete ? (
+            <p>{formatPrice(valueFrete)}</p>
+          ) : (
+            <p>{formatPrice(0)}</p>
+          )}
         </div>
 
         {cupomDesconto && (
@@ -163,7 +176,32 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
 
         <div className="flex justify-between border-b border-gray-400 pb-2 mb-6">
           <p className="font-semibold text-lg">total</p>
-          <p className="font-semibold text-lg">{formatPrice(totalValue)}</p>
+          {cupomDesconto && valueFrete && (
+            // Se houver desconto e frete, calcular o preço com desconto e adicionar o frete
+            <p className="font-semibold text-lg">
+              {formatPrice(totalValue * Number(cupomDesconto) + Number(valueFrete))}
+            </p>
+          )}
+
+          {cupomDesconto && !valueFrete && (
+            // Se houver desconto, mas sem frete, calcular apenas o preço com desconto
+            <p className="font-semibold text-lg">
+              {formatPrice(totalValue * Number(cupomDesconto))}
+            </p>
+          )}
+
+          {!cupomDesconto && valueFrete && (
+            // Se não houver desconto, mas houver frete, calcular o preço total com frete
+            <p className="font-semibold text-lg">
+              {formatPrice(totalValue + Number(valueFrete))}
+            </p>
+          )}
+
+          {!cupomDesconto && !valueFrete && (
+            // Se não houver desconto nem frete, mostrar o preço total
+            <p className="font-semibold text-lg">{formatPrice(totalValue)}</p>
+          )}
+          {/* <p className="font-semibold text-lg">{formatPrice(totalValue)}</p> */}
         </div>
       </div>
 
