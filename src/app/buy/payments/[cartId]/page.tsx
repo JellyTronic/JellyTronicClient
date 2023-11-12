@@ -17,6 +17,7 @@ export default function App({ params }: { params: { cartId: string } }) {
   const [clientSecret, setClientSecret] = useState('');
   const [idAddress, setIdAddress] = useState('');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [entrega, setEntrega] = useState<string>('');
 
   useEffect(() => {
     const idUser = sessionStorage.getItem('id');
@@ -25,6 +26,10 @@ export default function App({ params }: { params: { cartId: string } }) {
     setCartItems(JSON.parse(cartItemsLocal2!));
     const idAddresLocal = sessionStorage.getItem('idAddress');
     setIdAddress(idAddresLocal!);
+
+    // const discount = sessionStorage.getItem('desconto');
+    const typeEntrega = sessionStorage.getItem('typeEntrega');
+    setEntrega(typeEntrega!);
     // fetch(process.env.NEXT_PUBLIC_STRIPE_CLIENTID!, {
     //   method: 'POST',
     //   headers: {
@@ -37,10 +42,10 @@ export default function App({ params }: { params: { cartId: string } }) {
     //   setClientSecret(clientSecret);
     // });
 
-    handleBuyClick(idUser!, idAddresLocal!);
+    handleBuyClick(idUser!, idAddresLocal!, typeEntrega!);
   }, []);
 
-  const handleBuyClick = async (idUserClient: string, idAddress:string) => {
+  const handleBuyClick = async (idUserClient: string, idAddress:string, typeEntrega:string) => {
     const response = await fetch(`https://129.148.27.50/api/carrinho/${idUserClient}`);
     const cartUserLogin = await response.json();
     console.log(cartUserLogin.cart_items);
@@ -52,10 +57,13 @@ export default function App({ params }: { params: { cartId: string } }) {
       const data = await response.json();
       console.log('aqui é o 51');
       console.log(data);
+      console.log(entrega);
+
       const itemValue = data.price * cartItem.amount;
       return ({
         idAddress: idAddress,
         idUserClient: idUserClient,
+        delivery_type: typeEntrega,
         name: data.name,
         totalPrice: itemValue,
         quantity: cartItem.amount,

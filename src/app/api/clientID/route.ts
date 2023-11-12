@@ -57,7 +57,7 @@ export async function POST(request: Request) {
     console.log(products[0].idAddress);
 
     const data = {
-      delivery_type: 2,
+      delivery_type: Number(products[0].delivery_type),
       payment_type: "Card",
       installment_payment: 2,
       delivery_address: products[0].idAddress,
