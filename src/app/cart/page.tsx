@@ -290,6 +290,7 @@ const Cart = () => {
         console.log(data);
         setFormatCuppom(data.discount_value)
         sessionStorage.setItem('desconto', data.discount_value);
+        sessionStorage.setItem('desconto_id', data.id);
       } else {
         console.log("Ocorreu um erro ao realizar a compra");
       }

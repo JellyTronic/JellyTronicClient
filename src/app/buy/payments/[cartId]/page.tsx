@@ -29,6 +29,7 @@ export default function App({ params }: { params: { cartId: string } }) {
 
     // const discount = sessionStorage.getItem('desconto');
     const typeEntrega = sessionStorage.getItem('typeEntrega');
+    const cuponId = sessionStorage.getItem('desconto_id');
     setEntrega(typeEntrega!);
     // fetch(process.env.NEXT_PUBLIC_STRIPE_CLIENTID!, {
     //   method: 'POST',
@@ -42,10 +43,10 @@ export default function App({ params }: { params: { cartId: string } }) {
     //   setClientSecret(clientSecret);
     // });
 
-    handleBuyClick(idUser!, idAddresLocal!, typeEntrega!);
+    handleBuyClick(idUser!, idAddresLocal!, typeEntrega!, cuponId!);
   }, []);
 
-  const handleBuyClick = async (idUserClient: string, idAddress:string, typeEntrega:string) => {
+  const handleBuyClick = async (idUserClient: string, idAddress:string, typeEntrega:string, cuponId:string) => {
     const response = await fetch(`https://129.148.27.50/api/carrinho/${idUserClient}`);
     const cartUserLogin = await response.json();
     console.log(cartUserLogin.cart_items);
@@ -64,6 +65,7 @@ export default function App({ params }: { params: { cartId: string } }) {
         idAddress: idAddress,
         idUserClient: idUserClient,
         delivery_type: typeEntrega,
+        coupon_id: cuponId,
         name: data.name,
         totalPrice: itemValue,
         quantity: cartItem.amount,

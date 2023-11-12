@@ -55,13 +55,14 @@ export async function POST(request: Request) {
 
     console.log('depois do payment')
     console.log(products[0].idAddress);
+    console.log(products[0].coupon_id);
 
     const data = {
       delivery_type: Number(products[0].delivery_type),
       payment_type: "Card",
       installment_payment: 2,
       delivery_address: products[0].idAddress,
-      coupon_id: 0,
+      coupon_id: Number(products[0].coupon_id),
       obs: "Frágil"
     }
 
