@@ -16,6 +16,8 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
   const [secretToken, setSecretToken] = useState<string>('');
   const [idUserClient, setIdUserClient] = useState<string>('');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [valueDesconto, setValueDesconto] = useState<string>('');
+  const [valueFrete, setValueFrete] = useState<string>('');
 
   // const getUser = async (idUserClient: string, token: string) => {
   //   const response = await fetch(`${perfil.api_online}/${idUserClient}`, {
@@ -74,6 +76,10 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
     const token = sessionStorage.getItem("secretToken")
     const idUser = sessionStorage.getItem("id")
     const cartItemsFromLocalStorage = localStorage.getItem("cart");
+    const valueFrete2 = sessionStorage.getItem("valueEntrega");
+    const valueDesconto2 = sessionStorage.getItem("desconto");
+    setValueDesconto(valueDesconto2!);
+    setValueFrete(valueFrete2!)
 
     setSecretToken(token!);
     setIdUserClient(idUser!);
@@ -125,17 +131,42 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
 
         <div className="flex justify-between pb-1">
           <p>frete</p>
-          <p>R$ 0,00</p>
+          <p>{formatPrice(Number(valueFrete))}</p>
         </div>
 
         <div className="flex justify-between border-b border-gray-400 pb-2 mb-2">
-          <p>desconto</p>
-          <p>R$ 0,00</p>
+          <p>total com desconto</p>
+          <p>{formatPrice((totalValue * Number(valueDesconto)))}</p>
         </div>
 
         <div className="flex justify-between pb-2 mb-2">
           <p className="font-semibold text-lg">total</p>
-          <p className="font-semibold text-lg">{formatPrice(totalValue)}</p>
+          {valueDesconto && valueFrete && (
+            // Se houver desconto e frete, calcular o preço com desconto e adicionar o frete
+            <p className="font-semibold text-lg">
+              {formatPrice(totalValue * Number(valueDesconto) + Number(valueFrete))}
+            </p>
+          )}
+
+          {valueDesconto && !valueFrete && (
+            // Se houver desconto, mas sem frete, calcular apenas o preço com desconto
+            <p className="font-semibold text-lg">
+              {formatPrice(totalValue * Number(valueDesconto))}
+            </p>
+          )}
+
+          {!valueDesconto && valueFrete && (
+            // Se não houver desconto, mas houver frete, calcular o preço total com frete
+            <p className="font-semibold text-lg">
+              {formatPrice(totalValue + Number(valueFrete))}
+            </p>
+          )}
+
+          {!valueDesconto && !valueFrete && (
+            // Se não houver desconto nem frete, mostrar o preço total
+            <p className="font-semibold text-lg">{formatPrice(totalValue)}</p>
+          )}
+          {/* <p className="font-semibold text-lg">{formatPrice(totalValue)}</p> */}
         </div>
       </div>
     </div >
