@@ -21,6 +21,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
   const [addressReference, setAddressReference] = useState<string>('');
   const [addressComplement, setAddressComplement] = useState<string>('');
 
+
   // const [newAddress, setNewAddress] = useState({
   //   cep: '',
   //   number: '',
@@ -59,6 +60,7 @@ const Address = ({ params }: { params: { cartId: string } }) => {
   useEffect(() => {
     const currentToken = sessionStorage.getItem("secretToken");
     const id = sessionStorage.getItem("id");
+  
     setIdUser(id!);
 
     if (!currentToken) {

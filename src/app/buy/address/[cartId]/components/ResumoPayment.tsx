@@ -21,6 +21,7 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
   const [secretToken, setSecretToken] = useState<string>('');
   const [idUserClient, setIdUserClient] = useState<string>('');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cupomDesconto, setCupomDesconto] = useState<number>();
   const router = useRouter();
 
   const getCartUserLogin = async (idUserClient: string) => {
@@ -81,6 +82,11 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
     const idUser = sessionStorage.getItem("id")
     const cartItemsFromLocalStorage = localStorage.getItem("cart");
 
+    const cupom = sessionStorage.getItem("desconto");
+    if (cupom) {
+      setCupomDesconto(Number(cupom));
+    }
+
     setSecretToken(token!);
     setIdUserClient(idUser!);
 
@@ -105,7 +111,7 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
   const handleVerifySelectAddress = () => {
     const idAddressLocal = sessionStorage.getItem('idAddress');
 
-    if(!idAddressLocal) {
+    if (!idAddressLocal) {
       alert('Selecione um endereço antes de continuar!');
     } else {
       router.push(`/buy/payments/${cartId}`);
@@ -143,10 +149,17 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
           <p>R$ 0,00</p>
         </div>
 
-        <div className="flex justify-between border-b border-gray-400 pb-2 mb-2">
+        {cupomDesconto && (
+          <div className="flex justify-between border-b border-gray-400 pb-2 mb-2">
+            <p>total com desconto</p>
+            <p>{formatPrice((totalValue * cupomDesconto))}</p>
+          </div>
+        )}
+
+        {/* <div className="flex justify-between border-b border-gray-400 pb-2 mb-2">
           <p>desconto</p>
           <p>R$ 0,00</p>
-        </div>
+        </div> */}
 
         <div className="flex justify-between border-b border-gray-400 pb-2 mb-6">
           <p className="font-semibold text-lg">total</p>
@@ -157,7 +170,7 @@ const ResumoPayment = ({ cartId }: ResumoPaymentProps) => {
       <div>
         <Button className="w-[100%] py-2 font-semibold text-xl" onClick={handleVerifySelectAddress}>
           {/* <Link href={`/buy/payments/${cartId}`}> */}
-            continuar
+          continuar
           {/* </Link> */}
         </Button>
       </div>
