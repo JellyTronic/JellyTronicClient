@@ -10,6 +10,7 @@ import { formatPrice } from "@/providers/formatCurrency";
 import { nanoid } from 'nanoid';
 import { apiPayment, perfil } from "@/utils/apiUrl";
 import Address from "@/types/Address";
+import FretePriceType from "@/types/fretePrice";
 
 const Cart = () => {
 
@@ -30,11 +31,17 @@ const Cart = () => {
   const [editandoCep, setEditandoCep] = useState(false);
   const [isLoadingCep, setIsLoadingCep] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [fretePrice, setFretePrice] = useState<FretePriceType>();
+  const [formatPriceFrete, setFormatPriceFrete] = useState<string>('');
+  const [formatCuppom, setFormatCuppom] = useState<string>('');
+
 
   useEffect(() => {
     const token = sessionStorage.getItem("secretToken")
     const idUser = sessionStorage.getItem("id")
     const cartItemsFromLocalStorage = localStorage.getItem("cart");
+
+    setFormatPriceFrete(sessionStorage.getItem("formatFrete")!);
 
     setSecretToken(token!);
     setIdUserClient(idUser!);
@@ -244,6 +251,54 @@ const Cart = () => {
     }
   };
 
+  const setNewAddressCep = async (event: any) => {
+
+    const frete = event.target.value;
+
+    if (frete.length === 8) {
+      const formatCep = frete.replace(/(\d{5})(\d{3})/, '$1-$2');
+
+      const res = await fetch(`https://129.148.27.50/api/dados/frete/${formatCep}`);
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data);
+        setFretePrice(data);
+      } else {
+        console.log("Ocorreu um erro ao realizar a compra");
+      }
+
+    } else {
+      // Se o CEP não tiver 8 dígitos, retornar o valor original
+      return frete;
+    }
+
+  }
+
+  const setCuppomDiscount = async (event: any) => {
+    const cupomValue = event.target.value;
+
+    const cupom = cupomValue.toUpperCase();
+    console.log(cupom);
+
+    if (cupom.length === 11) {
+
+      const res = await fetch(`https://129.148.27.50/api/cupom/validate/${cupom}`);
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data);
+        setFormatCuppom(data.discount_value)
+        sessionStorage.setItem('desconto', data.discount_value);
+      } else {
+        console.log("Ocorreu um erro ao realizar a compra");
+      }
+    } else {
+      return;
+    }
+
+  }
+
 
   return (
     <div className='container mx-auto pl-2 mt-8'>
@@ -316,88 +371,128 @@ const Cart = () => {
           </div>
         )}
 
-        <div className="ml-4 w-[86%] mt-10 lg:mx-6 lg:mt-6 bg-gray-300 h-80 rounded-xl p-4 lg:w-[30%]">
-          <h3 className="font-semibold text-xl mb-4">Resumo do pedido</h3>
+        <div className="lg:w-[30%]">
 
-          <div>
-            <div className="flex justify-between mb-1">
-              <p>{totalQuantity} produtos</p>
-              <p>{formatPrice(totalValue)}</p>
+          <div className="ml-4 w-[86%] mt-10 lg:mx-6 lg:mt-6 bg-gray-300 h-80 rounded-xl p-4" >
+
+            <h3 className="font-semibold text-xl mb-4">Resumo do pedido</h3>
+
+            <div>
+              <div className="flex justify-between mb-1">
+                <p>{totalQuantity} produtos</p>
+                <p>{formatPrice(totalValue)}</p>
+              </div>
+
+              <div className="flex justify-between pb-1">
+                <p>frete</p>
+                {formatPriceFrete ? (
+                  <p>{formatPrice(Number(formatPriceFrete))}</p>
+                ) : (
+                  <p>{formatPrice(0)}</p>
+                )}
+
+              </div>
+
+              {formatCuppom != '' && (
+                <div className="flex justify-between border-b border-gray-400 pb-2 mb-2">
+                  <p>total com desconto</p>
+                  <p>{formatPrice((totalValue * Number(formatCuppom)))}</p>
+                </div>
+              )}
+
+              <div className="flex justify-between border-b border-gray-400 pb-2 mb-6">
+                <p className="font-semibold text-lg">total</p>
+
+                {formatCuppom && formatPriceFrete && (
+                  // Se houver desconto e frete, calcular o preço com desconto e adicionar o frete
+                  <p className="font-semibold text-lg">
+                    {formatPrice(totalValue * Number(formatCuppom) + Number(formatPriceFrete))}
+                  </p>
+                )}
+
+                {formatCuppom && !formatPriceFrete && (
+                  // Se houver desconto, mas sem frete, calcular apenas o preço com desconto
+                  <p className="font-semibold text-lg">
+                    {formatPrice(totalValue * Number(formatCuppom))}
+                  </p>
+                )}
+
+                {!formatCuppom && formatPriceFrete && (
+                  // Se não houver desconto, mas houver frete, calcular o preço total com frete
+                  <p className="font-semibold text-lg">
+                    {formatPrice(totalValue + Number(formatPriceFrete))}
+                  </p>
+                )}
+
+                {!formatCuppom && !formatPriceFrete && (
+                  // Se não houver desconto nem frete, mostrar o preço total
+                  <p className="font-semibold text-lg">{formatPrice(totalValue)}</p>
+                )}
+
+                {/* <p className="font-semibold text-lg">{formatPrice(((totalValue * Number(formatCuppom)) + Number(formatPriceFrete)))}</p> */}
+              </div>
             </div>
 
-            <div className="flex justify-between pb-1">
-              <p>frete</p>
-              <p>R$ 0,00</p>
-            </div>
+            <div>
+              <Button className="w-[100%] py-2 font-semibold text-xl" onClick={handleBuyClick}>
+                continuar
+              </Button>
 
-            <div className="flex justify-between border-b border-gray-400 pb-2 mb-2">
-              <p>desconto</p>
-              <p>R$ 0,00</p>
-            </div>
-
-            <div className="flex justify-between border-b border-gray-400 pb-2 mb-6">
-              <p className="font-semibold text-lg">total</p>
-              <p className="font-semibold text-lg">{formatPrice(totalValue)}</p>
+              <p className="text-center mt-4 underline">
+                <Link href="/" className="">Adicionar mais produtos</Link>
+              </p>
             </div>
           </div>
 
-          <div>
-            <Button className="w-[100%] py-2 font-semibold text-xl" onClick={handleBuyClick}>
-              continuar
-            </Button>
+          <div className="ml-6 mt-2">
 
-            <p className="text-center mt-4 underline">
-              <Link href="/" className="">Adicionar mais produtos</Link>
-            </p>
+            <div>
+              <h3>Você possui um cupom de desconto ?</h3>
+            </div>
+            <input
+              type="text"
+              placeholder="Digite o cupom de dessonto"
+              className="w-full mr-2 p-2 border rounded-md focus:outline-none focus:ring focus:ring-primary focus:border-primary-dark"
+              onChange={setCuppomDiscount}
+            />
           </div>
         </div>
       </div>
 
 
 
-      {/* <div className="w-1/2">
-        <h2 className="text-2xl font-bold mb-4">Seu endereço</h2>
-        <div className="rounded-lg p-4 bg-white shadow-md">
-          <div className="user-addresses space-y-4">
-            <div className="border p-4">
-              <p><span className="font-semibold">CEP:</span> {userAddresses.cep}</p>
-              <p><span className="font-semibold">Complemento:</span> {userAddresses.complement}</p>
-              <p><span className="font-semibold">Número:</span> {userAddresses.number}</p>
-              <p><span className="font-semibold">Referência:</span> {userAddresses.reference}</p>
-            </div>
+      <div className="w-1/2 mb-20">
+        <div>
+
+          <div>
+            <h3>Calcule seu frete</h3>
           </div>
-        </div>
-        <div className="mt-6">
-          <h3>Se deseja receber em outro endereço, digite o cep:</h3> */}
-
-      {/* <InputMask
+          <input
             type="text"
-            value={cep}
-            className="form-input border rounded py-2 px-4"
-            // disabled={!editandoCep}
-            onChange={handleChangeCep}
-            mask="99999-999"
-          /> */}
-      {/* <input
-            type="number"
             placeholder="Digite o CEP"
+            maxLength={8}
             className="w-32 p-2 border rounded-md focus:outline-none focus:ring focus:ring-primary focus:border-primary-dark"
-            value={newAddress}
-            onChange={(e) => setNewAddress(e.target.value)}
-          /> */}
-      {/* <Button
-            // onClick={handleAddAddress}
-            // onClick={handleEdicaoCep}
-            // disabled={isLoading}
-            className="mt-2 ml-2"
-          >
-            Adicionar Endereço
-          </Button> */}
+            onChange={setNewAddressCep}
+          />
 
-      {/* <Link href='https://buscacepinter.correios.com.br/app/endereco/index.php' className="ml-4">não seu meu cep</Link> */}
+          <Link href='https://buscacepinter.correios.com.br/app/endereco/index.php' target="_blank" className="ml-4">não seu meu cep</Link>
+        </div>
+        <div className="mt-3">
+          {fretePrice && (
+            <div>
 
-      {/* </div>
-      </div> */}
+              <h3 className="mb-1">Escolha um frete</h3>
+
+              <div>
+                {/* <Button onClick={() => sessionStorage.setItem('formartFrete', fretePrice.default.toString())}>{formatPrice(fretePrice.default)}</Button> */}
+                {/* <Button onClick={() => sessionStorage.setItem('formartFrete', fretePrice.express.toString())} className="ml-3">{formatPrice(fretePrice.express)}</Button> */}
+                <Button onClick={() => setFormatPriceFrete(fretePrice.default.toString())} className="ml-3">{formatPrice(fretePrice.default)}</Button>
+                <Button onClick={() => setFormatPriceFrete(fretePrice.express.toString())} className="ml-3">{formatPrice(fretePrice.express)}</Button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
 
 
