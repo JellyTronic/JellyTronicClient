@@ -18,7 +18,7 @@ const ProductsByCategory = ({ params }: { params: { id: string } }) => {
     const products = await response.json();
     // console.log(products)
     setProductByCategory(products);
-    setName(products[0].id_categoria.nome);
+    setName(products[0].category_.name);
   };
 
   useEffect(() => {
